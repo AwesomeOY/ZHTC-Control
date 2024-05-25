@@ -1,3 +1,7 @@
+/**
+*** 电磁阀控制接口
+**/
+
 #ifndef VALVE_CONTROL_H_
 #define VALVE_CONTROL_H_
 

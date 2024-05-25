@@ -1,3 +1,7 @@
+/**
+*** 水泵控制接口
+**/
+
 #ifndef WATER_PUMP_H_
 #define WATER_PUMP_H_
 

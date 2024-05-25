@@ -1,3 +1,7 @@
+/**
+*** 液位反馈开关接口
+**/
+
 #ifndef LEVEL_SWITCH_H_
 #define LEVEL_SWITCH_H_
 
