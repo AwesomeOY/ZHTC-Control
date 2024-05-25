@@ -490,61 +490,71 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, SYS_LED_Pin|GPIO_PIN_4|RS485_EN1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(SYS_LED_GPIO_Port, SYS_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6|MOTOR_DIC_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOC, MOTOR_DIC_Pin|WATER_PUMP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RS485_EN3_GPIO_Port, RS485_EN3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RS485_EN2_GPIO_Port, RS485_EN2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, MOTOR_SPEED_Pin|RS485_EN1_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : SYS_LED_Pin RS485_EN1_Pin */
-  GPIO_InitStruct.Pin = SYS_LED_Pin|RS485_EN1_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RS485_EN2_GPIO_Port, RS485_EN2_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : SYS_LED_Pin */
+  GPIO_InitStruct.Pin = SYS_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(SYS_LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA2 PA5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_5;
+  /*Configure GPIO pins : MOTOR_DIC_Pin WATER_PUMP_Pin */
+  GPIO_InitStruct.Pin = MOTOR_DIC_Pin|WATER_PUMP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LEVEL_INPUT1_Pin LEVEL_INPUT2_Pin LEVEL_INPUT3_Pin */
+  GPIO_InitStruct.Pin = LEVEL_INPUT1_Pin|LEVEL_INPUT2_Pin|LEVEL_INPUT3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA4 PA6 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_6;
+  /*Configure GPIO pins : LEVEL_INPUT4_Pin XY03K_OPEN_INPUT_Pin XY03K_CLOSE_INPUT_Pin MOTOR_FB_INPUT_Pin */
+  GPIO_InitStruct.Pin = LEVEL_INPUT4_Pin|XY03K_OPEN_INPUT_Pin|XY03K_CLOSE_INPUT_Pin|MOTOR_FB_INPUT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : RS485_EN3_Pin */
+  GPIO_InitStruct.Pin = RS485_EN3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RS485_EN3_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MOTOR_SPEED_Pin RS485_EN1_Pin */
+  GPIO_InitStruct.Pin = MOTOR_SPEED_Pin|RS485_EN1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : MOTOR_DIC_Pin */
-  GPIO_InitStruct.Pin = MOTOR_DIC_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(MOTOR_DIC_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : RS485_EN3_Pin */
-  GPIO_InitStruct.Pin = RS485_EN3_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(RS485_EN3_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pin : RS485_EN2_Pin */
   GPIO_InitStruct.Pin = RS485_EN2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(RS485_EN2_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
