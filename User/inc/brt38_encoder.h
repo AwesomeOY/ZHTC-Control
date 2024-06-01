@@ -8,7 +8,7 @@ void brt38_encoder_init(void);
 
 float get_brt38_angle(void);
 
-void brt38_hw_reset(void);
+uint8_t brt38_hw_reset(void);
 
 void brt38_send_cmpt_process(void);
 

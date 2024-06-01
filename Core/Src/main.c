@@ -499,7 +499,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SYS_LED_GPIO_Port, SYS_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, MOTOR_DIC_Pin|WATER_PUMP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, WATER_PUMP_Pin|MOTOR_DIC_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(XY03K_CONTROL_GPIO_Port, XY03K_CONTROL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RS485_EN3_GPIO_Port, RS485_EN3_Pin, GPIO_PIN_RESET);
@@ -510,6 +513,12 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RS485_EN2_GPIO_Port, RS485_EN2_Pin, GPIO_PIN_SET);
 
+  /*Configure GPIO pin : KEY_IN_Pin */
+  GPIO_InitStruct.Pin = KEY_IN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(KEY_IN_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : SYS_LED_Pin */
   GPIO_InitStruct.Pin = SYS_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -517,8 +526,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SYS_LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MOTOR_DIC_Pin WATER_PUMP_Pin */
-  GPIO_InitStruct.Pin = MOTOR_DIC_Pin|WATER_PUMP_Pin;
+  /*Configure GPIO pins : WATER_PUMP_Pin MOTOR_DIC_Pin */
+  GPIO_InitStruct.Pin = WATER_PUMP_Pin|MOTOR_DIC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
@@ -530,11 +539,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LEVEL_INPUT4_Pin XY03K_OPEN_INPUT_Pin XY03K_CLOSE_INPUT_Pin MOTOR_FB_INPUT_Pin */
-  GPIO_InitStruct.Pin = LEVEL_INPUT4_Pin|XY03K_OPEN_INPUT_Pin|XY03K_CLOSE_INPUT_Pin|MOTOR_FB_INPUT_Pin;
+  /*Configure GPIO pins : LEVEL_INPUT4_Pin XY03K_OPEN_INPUT_Pin XY03K_CLOSE_INPUT_Pin */
+  GPIO_InitStruct.Pin = LEVEL_INPUT4_Pin|XY03K_OPEN_INPUT_Pin|XY03K_CLOSE_INPUT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : XY03K_CONTROL_Pin */
+  GPIO_InitStruct.Pin = XY03K_CONTROL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(XY03K_CONTROL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : RS485_EN3_Pin */
   GPIO_InitStruct.Pin = RS485_EN3_Pin;
@@ -579,8 +595,9 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin);
-    osDelay(1000);
+	// HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin);
+	app_run();
+    osDelay(10);
   }
   /* USER CODE END 5 */
 }

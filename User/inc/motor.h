@@ -8,9 +8,11 @@
 #include "userdef.h"
 #include "main.h"
 
+// 水泵
 #define water_pump_open()  WRITE_PIN(WATER_PUMP_GPIO_Port, WATER_PUMP_Pin, GPIO_PIN_SET)
 #define water_pump_close() WRITE_PIN(WATER_PUMP_GPIO_Port, WATER_PUMP_Pin, GPIO_PIN_RESET)
 
+// 调速电机，驱动绞盘
 #define motor_push() WRITE_PIN(MOTOR_DIC_GPIO_Port, MOTOR_DIC_Pin, GPIO_PIN_SET); WRITE_PIN(MOTOR_SPEED_GPIO_Port, MOTOR_SPEED_Pin, GPIO_PIN_RESET);
 #define motor_pull() WRITE_PIN(MOTOR_DIC_GPIO_Port, MOTOR_DIC_Pin, GPIO_PIN_RESET); WRITE_PIN(MOTOR_SPEED_GPIO_Port, MOTOR_SPEED_Pin, GPIO_PIN_RESET);
 #define motor_stop() WRITE_PIN(MOTOR_SPEED_GPIO_Port, MOTOR_SPEED_Pin, GPIO_PIN_SET)

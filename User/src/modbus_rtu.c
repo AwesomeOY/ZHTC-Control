@@ -46,6 +46,7 @@ uint8_t modbus_rtu_read_reg_pack(uint8_t* pack, uint8_t addr, uint16_t regAdd, u
 	return 8;
 }
 
+/* 读单个寄存器值 */
 uint8_t modbus_rtu_write_single_reg_pack(uint8_t* pack, uint8_t addr, uint16_t regAdd, uint16_t regValue)
 {
 	uint16_t crc = 0;
@@ -66,6 +67,7 @@ uint8_t modbus_rtu_write_single_reg_pack(uint8_t* pack, uint8_t addr, uint16_t r
 	return 8;
 }
 
+/* modbus RTU数据包CRC检查 */
 uint8_t modbus_rtu_check_crc(const uint8_t* pack, uint8_t size)
 {
 	uint16_t crc = 0;
@@ -79,6 +81,7 @@ uint8_t modbus_rtu_check_crc(const uint8_t* pack, uint8_t size)
 	return 0;
 }
 
+/* 读寄存器值 */
 uint8_t modbus_rtu_read_reg(const uint8_t* pack, uint8_t size, uint16_t* regValue)
 {
 	uint8_t i = 0;

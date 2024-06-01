@@ -662,6 +662,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\src\motor.c</FilePath>
             </File>
+            <File>
+              <FileName>valve_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\valve_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

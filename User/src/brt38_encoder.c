@@ -47,9 +47,21 @@ float get_brt38_angle(void)
 }
 
 /* 编码器置零，复位 */
-void brt38_hw_reset(void)
+uint8_t brt38_hw_reset(void)
 {
+	uint8_t sendSize = modbus_rtu_write_single_reg_pack(brt38_uart_tx_buff, BRT38_MODBUS_ADDR, 0x08, 0x01);
 	
+	brt38_rx_len = 0;
+	brt38_rs485_tx_enable();
+	if (serial_write(SERIAL_ID1, brt38_uart_tx_buff, sendSize) > 0) {
+		if (serial_can_read(SERIAL_ID1, 5000) && brt38_rx_len > 0) {
+			if (modbus_rtu_check_crc(brt38_rx_buff, brt38_rx_len)) {
+				return 1;
+			}
+		}
+	}
+		
+	return 0;
 }
 
 /* 获取编码器值，寄存器地址为0x00 ~ 0x01 */
@@ -78,6 +90,8 @@ uint8_t brt38_get_encoder_value(uint32_t* value)
 static void brt38_process_task(void* arg)
 {
 	uint32_t last_time_ms = osKernelGetTickCount();
+
+	brt38_hw_reset();
 	
 	while (1) {
 		uint32_t now = osKernelGetTickCount();
