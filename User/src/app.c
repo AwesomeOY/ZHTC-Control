@@ -5,7 +5,7 @@
 
 uint8_t key_status = 0;    // 0-空,1-按下,2-释放
 uint32_t key_increment = 0;
-valve_control_obj valve_input; // 进水电磁阀
+valve_control_obj valve_input, valve_output; // 进水电磁阀
 
 static void key_process(void);
 static void valve_init(void);
@@ -16,7 +16,7 @@ void app_init(void)
 	
 	brt38_encoder_init();
 	
-//	valve_init();
+	valve_init();
 }
 
 void app_run(void)

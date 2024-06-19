@@ -36,6 +36,7 @@ void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
 	}	
 }
 
+/* 指定缓冲区将串口数据发送出去 */
 uint16_t serial_write(SERIAL_ID id, uint8_t* pbuf, uint16_t len)
 {
 	HAL_UART_Transmit_DMA(uart_handles[(uint8_t)id], pbuf, len);
