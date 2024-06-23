@@ -33,7 +33,7 @@ void collect_task(void* arg)
 				break;
 			case COLLECT_TASK_STATUS_CLEAN_BUS: // 排空汇流排
 				// 开启排水阀门
-				output_valve_open();
+				//output_valve_open();
 				// 等待一段时间
 				// 进入排空支路状态
 				break;

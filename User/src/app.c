@@ -14,54 +14,54 @@ void app_init(void)
 {
 	HAL_TIM_Base_Start_IT(&htim1);
 	
-	brt38_encoder_init();
+//	brt38_encoder_init();
 	
-	valve_init();
+//	valve_init();
 }
 
 void app_run(void)
 {
-	if (key_status != 1 && key_is_down()) {
-		osDelay(10);
-		if (key_is_down()) {;
-			key_status = 1;
-			sys_run_led_toggle();
-			key_process();
-		}
-	}
-	
-	if (key_status != 2 && key_is_release()) {
-		osDelay(10);
-		if (key_is_release()) {;
-			key_status = 2;
-		}
-	}
+//	if (key_status != 1 && key_is_down()) {
+//		osDelay(10);
+//		if (key_is_down()) {;
+//			key_status = 1;
+//			sys_run_led_toggle();
+//			key_process();
+//		}
+//	}
+//	
+//	if (key_status != 2 && key_is_release()) {
+//		osDelay(10);
+//		if (key_is_release()) {;
+//			key_status = 2;
+//		}
+//	}
 	
 //	valve_status_update(&valve_input);
 }
 
 static void valve_init(void)
 {
-	Pin ctrl_pin = { XY03K_CONTROL_Pin, XY03K_CONTROL_GPIO_Port};
-	Pin open_pin = { XY03K_OPEN_INPUT_Pin, XY03K_OPEN_INPUT_GPIO_Port};
-	Pin close_pin = { XY03K_CLOSE_INPUT_Pin, XY03K_CLOSE_INPUT_GPIO_Port}; 
-	valve_control_init(&valve_input, ctrl_pin, open_pin, close_pin);
+//	Pin ctrl_pin = { XY03K_CONTROL_Pin, XY03K_CONTROL_GPIO_Port};
+//	Pin open_pin = { XY03K_OPEN_INPUT_Pin, XY03K_OPEN_INPUT_GPIO_Port};
+//	Pin close_pin = { XY03K_CLOSE_INPUT_Pin, XY03K_CLOSE_INPUT_GPIO_Port}; 
+//	valve_control_init(&valve_input, ctrl_pin, open_pin, close_pin);
 }
 
 static void key_process(void)
 {
 	switch (key_increment++) {
 		case 0:
-			motor_push();
+			//motor_push();
 			break;
 		case 1:
-			motor_stop();			
+			//motor_stop();			
 			break;
 		case 2:
-			motor_pull();
+			//motor_pull();
 			break;
 		case 3:
-			motor_stop();
+			//motor_stop();
 			break;
 		case 4:
 			valve_open(&valve_input);
@@ -70,10 +70,10 @@ static void key_process(void)
 			valve_close(&valve_input);
 			break;
 		case 6:
-			water_pump_open();
+			//water_pump_open();
 			break;
 		case 7:
-			water_pump_close();
+			//water_pump_close();
 			break;
 		case 8:
 			key_increment = 0;

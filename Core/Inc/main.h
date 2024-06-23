@@ -57,36 +57,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define KEY_IN_Pin GPIO_PIN_0
-#define KEY_IN_GPIO_Port GPIOA
-#define SYS_LED_Pin GPIO_PIN_1
-#define SYS_LED_GPIO_Port GPIOA
-#define WATER_PUMP_Pin GPIO_PIN_5
-#define WATER_PUMP_GPIO_Port GPIOC
-#define LEVEL_INPUT1_Pin GPIO_PIN_0
-#define LEVEL_INPUT1_GPIO_Port GPIOB
-#define LEVEL_INPUT2_Pin GPIO_PIN_1
-#define LEVEL_INPUT2_GPIO_Port GPIOB
-#define LEVEL_INPUT3_Pin GPIO_PIN_2
-#define LEVEL_INPUT3_GPIO_Port GPIOB
-#define LEVEL_INPUT4_Pin GPIO_PIN_7
-#define LEVEL_INPUT4_GPIO_Port GPIOE
-#define XY03K_OPEN_INPUT_Pin GPIO_PIN_8
-#define XY03K_OPEN_INPUT_GPIO_Port GPIOE
-#define XY03K_CLOSE_INPUT_Pin GPIO_PIN_9
-#define XY03K_CLOSE_INPUT_GPIO_Port GPIOE
-#define XY03K_CONTROL_Pin GPIO_PIN_10
-#define XY03K_CONTROL_GPIO_Port GPIOE
-#define RS485_EN3_Pin GPIO_PIN_12
-#define RS485_EN3_GPIO_Port GPIOB
-#define MOTOR_SPEED_Pin GPIO_PIN_8
-#define MOTOR_SPEED_GPIO_Port GPIOA
-#define RS485_EN1_Pin GPIO_PIN_11
-#define RS485_EN1_GPIO_Port GPIOA
-#define MOTOR_DIC_Pin GPIO_PIN_10
-#define MOTOR_DIC_GPIO_Port GPIOC
-#define RS485_EN2_Pin GPIO_PIN_4
-#define RS485_EN2_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 
