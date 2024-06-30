@@ -4,6 +4,9 @@
 #include "main.h"
 #include "brt38_encoder.h"
 #include "userdef.h"
+#include "serial.h"
+#include "ByteQueue.h"
+#include "mavlink.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -77,5 +80,9 @@ extern UART_HandleTypeDef huart6;
 void app_init(void);
 
 void app_run(void);
+
+void mavlink_init(void);
+
+void mavlink_process_task(void* arg);
 
 #endif

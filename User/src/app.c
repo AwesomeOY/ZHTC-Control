@@ -14,6 +14,8 @@ void app_init(void)
 {
 	HAL_TIM_Base_Start_IT(&htim1);
 	
+	mavlink_init();
+	
 //	brt38_encoder_init();
 	
 //	valve_init();
@@ -38,6 +40,14 @@ void app_run(void)
 //	}
 	
 //	valve_status_update(&valve_input);
+	
+	osDelay(1000);
+	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
+	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+	
+	osDelay(1000);
+	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
+	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
 }
 
 static void valve_init(void)

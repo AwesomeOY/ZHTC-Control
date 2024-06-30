@@ -22,7 +22,8 @@ typedef struct {
 }serial_rx_bf;
 
 typedef struct {
-	uint8_t init;
+	uint8_t init : 1;
+	uint8_t cand_send : 1;
 	uint16_t tx_buff_size;
 	uint16_t rx_buff_size;
 	uint16_t rx_len;
@@ -40,6 +41,8 @@ void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen);
 uint16_t serial_write(SERIAL_ID id, uint8_t* pbuf, uint16_t len);
 
 uint8_t serial_can_read(SERIAL_ID id, uint32_t timeout);
+
+uint8_t serial_can_write(SERIAL_ID id, uint32_t timeout);
 
 uint16_t serial_read(SERIAL_ID id, uint8_t* pbuf, uint16_t len);
 

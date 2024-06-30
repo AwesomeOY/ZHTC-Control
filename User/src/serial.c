@@ -1,12 +1,13 @@
 #include "serial.h"
 
+extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart5;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 
-UART_HandleTypeDef* uart_handles[SERIAL_ID_MAX] = { &huart1, &huart2, &huart3, NULL, &huart5, &huart6 };
+UART_HandleTypeDef* uart_handles[SERIAL_ID_MAX] = { &huart1, &huart2, &huart3, &huart4, &huart5, &huart6 };
 serial_obj serial_objs[SERIAL_ID_MAX];
 
 void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
@@ -32,6 +33,8 @@ void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
 		
 		serial_objs[(uint8_t)id].huart = uart_handles[(uint8_t)id];
 		
+		serial_objs[(uint8_t)id].cand_send = 1;
+		
 		HAL_UARTEx_ReceiveToIdle_DMA(serial_objs[(uint8_t)id].huart, serial_objs[(uint8_t)id].p_rx_buff, serial_objs[(uint8_t)id].rx_buff_size);
 	}	
 }
@@ -40,10 +43,12 @@ void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
 uint16_t serial_write(SERIAL_ID id, uint8_t* pbuf, uint16_t len)
 {
 	HAL_UART_Transmit_DMA(uart_handles[(uint8_t)id], pbuf, len);
-	if (osOK == osSemaphoreAcquire(serial_objs[(uint8_t)id].tx_sem, 100)) {
-		return len;
-	}
-	return 0;
+	return len;
+}
+
+uint8_t serial_can_write(SERIAL_ID id, uint32_t timeout)
+{
+	return serial_objs[(uint8_t)id].cand_send;
 }
 
 uint8_t serial_can_read(SERIAL_ID id, uint32_t timeout)
@@ -66,11 +71,9 @@ inline SERIAL_ID get_serial_id(UART_HandleTypeDef *huart)
 	else if (huart == &huart3) {
 		id = SERIAL_ID3;
 	}
-	/*
 	else if (huart == &huart4) {
-	
+		id = SERIAL_ID4;
 	}
-	*/
 	else if (huart == &huart5) {
 		id = SERIAL_ID5;
 	}
@@ -99,7 +102,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 	if (serial_objs[(uint8_t)id].p_tx_cmplt_cb) {
 		serial_objs[(uint8_t)id].p_tx_cmplt_cb(&serial_objs[(uint8_t)id]);
 	}
-	osSemaphoreRelease(serial_objs[(uint8_t)id].tx_sem);
+	serial_objs[(uint8_t)id].cand_send = 1;
+//	osSemaphoreRelease(serial_objs[(uint8_t)id].tx_sem);
 }
 
 /* 数据接收完成中断 */
@@ -110,6 +114,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		serial_objs[(uint8_t)id].rx_len = Size;
 		serial_objs[(uint8_t)id].p_rx_cmplt_cb(&serial_objs[(uint8_t)id]);
 	}
+
 	HAL_UARTEx_ReceiveToIdle_DMA(huart, serial_objs[(uint8_t)id].p_rx_buff, serial_objs[(uint8_t)id].rx_buff_size);
 	osSemaphoreRelease(serial_objs[(uint8_t)id].rx_sem);
 }
