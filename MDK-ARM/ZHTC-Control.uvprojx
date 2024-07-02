@@ -349,7 +349,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -369,7 +369,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../User/inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../mavlink;../mavlink/ardupilotmega;../mavlink/minimal;../mavlink/common</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../User/inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\mavlink\ardupilotmega;..\mavlink\common</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1410,41 +1410,6 @@
           <GroupName>Mavlink</GroupName>
           <Files>
             <File>
-              <FileName>checksum.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\checksum.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_conversions.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_conversions.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_get_info.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_get_info.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_helpers.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_helpers.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_sha256.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_sha256.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_types.h</FilePath>
-            </File>
-            <File>
-              <FileName>protocol.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\protocol.h</FilePath>
-            </File>
-            <File>
               <FileName>ardupilotmega.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\ardupilotmega.h</FilePath>
@@ -1453,11 +1418,6 @@
               <FileName>mavlink.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_adap_tuning.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_adap_tuning.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_ahrs.h</FileName>
@@ -1478,11 +1438,6 @@
               <FileName>mavlink_msg_airspeed_autocal.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_airspeed_autocal.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_aoa_ssa.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_aoa_ssa.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_ap_adc.h</FileName>
@@ -1540,26 +1495,6 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_deepstall.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_device_op_read.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_read.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_device_op_read_reply.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_read_reply.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_device_op_write.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_write.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_device_op_write_reply.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_write_reply.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_digicam_configure.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_digicam_configure.h</FilePath>
@@ -1573,46 +1508,6 @@
               <FileName>mavlink_msg_ekf_status_report.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_ekf_status_report.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_1_to_4.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_1_to_4.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_5_to_8.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_5_to_8.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_9_to_12.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_9_to_12.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_13_to_16.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_13_to_16.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_17_to_20.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_17_to_20.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_21_to_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_21_to_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_25_to_28.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_25_to_28.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_esc_telemetry_29_to_32.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_29_to_32.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_fence_fetch_point.h</FileName>
@@ -1685,11 +1580,6 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mag_cal_progress.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_mcu_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mcu_status.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_meminfo.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_meminfo.h</FilePath>
@@ -1708,31 +1598,6 @@
               <FileName>mavlink_msg_mount_status.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mount_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_obstacle_distance_3d.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_obstacle_distance_3d.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_osd_param_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_config.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_osd_param_config_reply.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_config_reply.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_osd_param_show_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_show_config.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_osd_param_show_config_reply.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_show_config_reply.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_pid_tuning.h</FileName>
@@ -1775,16 +1640,6 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_rpm.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_secure_command.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_secure_command.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_secure_command_reply.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_secure_command_reply.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_sensor_offsets.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_sensor_offsets.h</FilePath>
@@ -1798,16 +1653,6 @@
               <FileName>mavlink_msg_simstate.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_simstate.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_vision_position_delta.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_vision_position_delta.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_water_depth.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_water_depth.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_wind.h</FileName>
@@ -1825,34 +1670,14 @@
               <FilePath>..\mavlink\ardupilotmega\version.h</FilePath>
             </File>
             <File>
-              <FileName>common.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\common.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_actuator_control_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_actuator_control_target.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_actuator_output_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_actuator_output_status.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_adsb_vehicle.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_adsb_vehicle.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_ais_vessel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_ais_vessel.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_altitude.h</FileName>
@@ -1890,11 +1715,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_auth_key.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_autopilot_state_for_gimbal_device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_autopilot_state_for_gimbal_device.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_autopilot_version.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_autopilot_version.h</FilePath>
@@ -1905,49 +1725,9 @@
               <FilePath>..\mavlink\common\mavlink_msg_battery_status.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_button_change.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_button_change.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_camera_capture_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_camera_capture_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_camera_image_captured.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_camera_image_captured.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_camera_information.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_camera_information.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_camera_settings.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_camera_settings.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_camera_trigger.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_camera_trigger.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_can_filter_modify.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_can_filter_modify.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_can_frame.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_can_frame.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_canfd_frame.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_canfd_frame.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_change_operator_control.h</FileName>
@@ -2000,11 +1780,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_debug.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_debug_float_array.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_debug_float_array.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_debug_vect.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_debug_vect.h</FilePath>
@@ -2045,34 +1820,9 @@
               <FilePath>..\mavlink\common\mavlink_msg_file_transfer_protocol.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_flight_information.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_flight_information.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_follow_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_follow_target.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_generator_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_generator_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_gimbal_device_attitude_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_attitude_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_gimbal_device_information.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_information.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_gimbal_device_set_attitude.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_set_attitude.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_global_position_int.h</FileName>
@@ -2195,16 +1945,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_home_position.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_hygrometer_sensor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_hygrometer_sensor.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_isbd_link_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_isbd_link_status.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_landing_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_landing_target.h</FilePath>
@@ -2253,21 +1993,6 @@
               <FileName>mavlink_msg_log_request_list.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_log_request_list.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_logging_ack.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_logging_ack.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_logging_data.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_logging_data.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_logging_data_acked.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_logging_data_acked.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_mag_cal_report.h</FileName>
@@ -2360,11 +2085,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_mission_write_partial_list.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_mount_orientation.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_mount_orientation.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_named_value_float.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_named_value_float.h</FilePath>
@@ -2380,61 +2100,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_nav_controller_output.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_obstacle_distance.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_obstacle_distance.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_odometry.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_odometry.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_arm_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_arm_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_authentication.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_authentication.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_basic_id.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_basic_id.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_location.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_location.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_message_pack.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_message_pack.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_operator_id.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_operator_id.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_self_id.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_self_id.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_system.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_system.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_open_drone_id_system_update.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_system_update.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_optical_flow.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_optical_flow.h</FilePath>
@@ -2443,31 +2108,6 @@
               <FileName>mavlink_msg_optical_flow_rad.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_optical_flow_rad.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_param_ext_ack.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_param_ext_ack.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_param_ext_request_list.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_param_ext_request_list.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_param_ext_request_read.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_param_ext_request_read.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_param_ext_set.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_param_ext_set.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_param_ext_value.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_param_ext_value.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_param_map_rc.h</FileName>
@@ -2500,11 +2140,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_ping.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_play_tune.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_play_tune.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_position_target_global_int.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_position_target_global_int.h</FilePath>
@@ -2533,11 +2168,6 @@
               <FileName>mavlink_msg_raw_pressure.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_raw_pressure.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_raw_rpm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_raw_rpm.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_rc_channels.h</FileName>
@@ -2655,29 +2285,14 @@
               <FilePath>..\mavlink\common\mavlink_msg_set_position_target_local_ned.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_setup_signing.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_setup_signing.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_sim_state.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_sim_state.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_smart_battery_info.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_smart_battery_info.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_statustext.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_statustext.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_storage_information.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_storage_information.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_sys_status.h</FileName>
@@ -2715,26 +2330,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_timesync.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_tunnel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_tunnel.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_uavcan_node_info.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_uavcan_node_info.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_uavcan_node_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_uavcan_node_status.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_utm_global_position.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_utm_global_position.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_v2_extension.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_v2_extension.h</FilePath>
@@ -2755,16 +2350,6 @@
               <FilePath>..\mavlink\common\mavlink_msg_vicon_position_estimate.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_video_stream_information.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_video_stream_information.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_video_stream_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_video_stream_status.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_vision_position_estimate.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_vision_position_estimate.h</FilePath>
@@ -2775,39 +2360,9 @@
               <FilePath>..\mavlink\common\mavlink_msg_vision_speed_estimate.h</FilePath>
             </File>
             <File>
-              <FileName>mavlink_msg_wheel_distance.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_wheel_distance.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_wifi_config_ap.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_wifi_config_ap.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_winch_status.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\mavlink_msg_winch_status.h</FilePath>
-            </File>
-            <File>
               <FileName>mavlink_msg_wind_cov.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_wind_cov.h</FilePath>
-            </File>
-            <File>
-              <FileName>testsuite.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\testsuite.h</FilePath>
-            </File>
-            <File>
-              <FileName>version.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\common\version.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\minimal\mavlink.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_heartbeat.h</FileName>
@@ -2815,19 +2370,29 @@
               <FilePath>..\mavlink\minimal\mavlink_msg_heartbeat.h</FilePath>
             </File>
             <File>
-              <FileName>minimal.h</FileName>
+              <FileName>checksum.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\mavlink\minimal\minimal.h</FilePath>
+              <FilePath>..\mavlink\checksum.h</FilePath>
             </File>
             <File>
-              <FileName>testsuite.h</FileName>
+              <FileName>mavlink_conversions.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\mavlink\minimal\testsuite.h</FilePath>
+              <FilePath>..\mavlink\mavlink_conversions.h</FilePath>
             </File>
             <File>
-              <FileName>version.h</FileName>
+              <FileName>mavlink_types.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\mavlink\minimal\version.h</FilePath>
+              <FilePath>..\mavlink\mavlink_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_helpers.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_helpers.h</FilePath>
             </File>
           </Files>
         </Group>

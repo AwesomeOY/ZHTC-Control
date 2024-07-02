@@ -288,4 +288,3 @@ uint8_t measurement_running(void)
 	return 1;
 }
 
-

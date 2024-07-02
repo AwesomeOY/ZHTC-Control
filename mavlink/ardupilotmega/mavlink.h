@@ -6,10 +6,10 @@
 #ifndef MAVLINK_H
 #define MAVLINK_H
 
-#define MAVLINK_PRIMARY_XML_HASH -1515888556139025800
+#define MAVLINK_PRIMARY_XML_HASH 5279198142149813561
 
 #ifndef MAVLINK_STX
-#define MAVLINK_STX 253
+#define MAVLINK_STX 254
 #endif
 
 #ifndef MAVLINK_ENDIAN
@@ -25,8 +25,10 @@
 #endif
 
 #ifndef MAVLINK_COMMAND_24BIT
-#define MAVLINK_COMMAND_24BIT 1
+#define MAVLINK_COMMAND_24BIT 0
 #endif
+
+#define MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
 #include "version.h"
 #include "ardupilotmega.h"

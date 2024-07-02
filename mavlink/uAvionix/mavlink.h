@@ -6,10 +6,10 @@
 #ifndef MAVLINK_H
 #define MAVLINK_H
 
-#define MAVLINK_PRIMARY_XML_HASH -3118203350593365915
+#define MAVLINK_PRIMARY_XML_HASH -1849175815448192527
 
 #ifndef MAVLINK_STX
-#define MAVLINK_STX 253
+#define MAVLINK_STX 254
 #endif
 
 #ifndef MAVLINK_ENDIAN
@@ -25,7 +25,7 @@
 #endif
 
 #ifndef MAVLINK_COMMAND_24BIT
-#define MAVLINK_COMMAND_24BIT 1
+#define MAVLINK_COMMAND_24BIT 0
 #endif
 
 #include "version.h"

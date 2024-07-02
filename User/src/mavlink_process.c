@@ -1,8 +1,9 @@
 #include "app.h"
+#include "mavlink.h"
 
 static uint8_t _mavlink_serial_rec_buf[32];
 static uint8_t _mavlink_serial_send_buf[256];
-static uint8_t _mavlink_rec_buff[2048];
+static uint8_t _mavlink_rec_buff[4096];
 static uint8_t _mavlink_send_buff[2048];
 static Queue _mavlink_rec_queue;
 static Queue _mavlink_send_queue;
@@ -14,6 +15,7 @@ mavlink_position_target_global_int_t position_global;
 mavlink_gps_raw_int_t gps_raw;
 mavlink_attitude_t attitude;
 mavlink_sys_status_t uav_status;
+mavlink_command_ack_t ack;
 
 static void _mavlink_request_msg(void);
 
@@ -33,7 +35,7 @@ void mavlink_init(void)
 	queue_init(&_mavlink_send_queue, _mavlink_send_buff, sizeof(_mavlink_send_buff));
 	serial_init(SERIAL_ID1, _mavlink_serial_rec_buf, sizeof(_mavlink_serial_rec_buf));
 	serial_set_rx_cb(SERIAL_ID1, _mavlink_serial_rx_cb);
-	
+	mavlink_status_t *status = mavlink_get_channel_status(SERIAL_ID1);
 	
 	const osThreadAttr_t mavlinkTask_attributes = {
 	  .name = "mavTask",
@@ -70,8 +72,8 @@ static void _mavlink_parse(void)
 				switch (msg.msgid) {
 					case MAVLINK_MSG_ID_HEARTBEAT:
 						if (_uav_mavlink_system.sysid==0 && _uav_mavlink_system.compid == 0) {
-							_uav_mavlink_system.sysid = msg.sysid;
-							_uav_mavlink_system.compid = msg.compid;
+							_uav_mavlink_system.sysid = 2;
+							_uav_mavlink_system.compid = 1;
 						}
 						break;
 					case MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT:
@@ -86,6 +88,11 @@ static void _mavlink_parse(void)
 					case MAVLINK_MSG_ID_SYS_STATUS:
 						mavlink_msg_sys_status_decode(&msg, &uav_status);
 						break;
+					case MAVLINK_MSG_ID_COMMAND_ACK:
+					{
+						mavlink_msg_command_ack_decode(&msg, &ack);
+						break;
+					}
 					default:
 						break;
 				}
@@ -99,7 +106,7 @@ void mavlink_process_task(void* arg)
 {
 	uint32_t _last_send_time_ms = 0;
 	while (1) {
-		uint32_t now = osKernelGetSysTimerCount();
+		uint32_t now = osKernelGetTickCount();
 		
 		if (now - _last_send_time_ms >= 5) {
 			_last_send_time_ms = now;
@@ -131,8 +138,9 @@ void mavlink_process_task(void* arg)
 static void _mavlink_request_msg(void)
 {
 	static uint32_t _last_time_ms = 0;
-	uint32_t now = osKernelGetSysTimerCount();
-	if (now - _last_time_ms >= 10000) {
+	static uint32_t _last_heabeat_ms = 0;
+	uint32_t now = osKernelGetTickCount();
+	if (now - _last_time_ms >= 1000) {
 		_last_time_ms = now;		
 		
 		mavlink_command_long_t commd_long;
@@ -142,24 +150,34 @@ static void _mavlink_request_msg(void)
 //		}
 		
 		commd_long.target_system = _uav_mavlink_system.sysid;
-		commd_long.target_component = _uav_mavlink_system.compid;
+		commd_long.target_component = 0;
 		commd_long.confirmation = 0;
+		commd_long.param7 = 0;
 		
-		commd_long.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-		commd_long.param1 = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;  // 全局位置
-		commd_long.param1 = 500000;  // 500ms发送一次
-		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+//		commd_long.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+//		commd_long.param1 = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;  // 全局位置
+//		commd_long.param2 = 500000;  // 500ms发送一次
+//		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
 //		
 //		commd_long.param1 = MAVLINK_MSG_ID_GPS_RAW_INT;  // GPS原始数据
-//		commd_long.param1 = 500000;   // 500ms发一次
+//		commd_long.param2 = 500000;   // 500ms发一次
 //		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
 //		
-//		commd_long.param1 = MAVLINK_MSG_ID_ATTITUDE;     // 姿态数据
-//		commd_long.param1 = 200000;   // 200ms发一次
-//		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
-//		
+		commd_long.param1 = MAVLINK_MSG_ID_ATTITUDE;     // 姿态数据
+		commd_long.param2 = 200000;   // 200ms发一次
+		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_command_long_t*)&commd_long);
+		
 //		commd_long.param1 = MAVLINK_MSG_ID_SYS_STATUS;   // 系统状态标志
-//		commd_long.param1 = 500000;   // 500ms发一次
+//		commd_long.param2 = 500000;   // 500ms发一次
 //		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+	}
+
+	if (now - _last_heabeat_ms >= 1000){
+		mavlink_heartbeat_t hbt;
+		hbt.autopilot = 0;
+		hbt.base_mode = 0;
+		hbt.custom_mode = 0;
+		_last_heabeat_ms = now;
+		mavlink_msg_heartbeat_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_heartbeat_t*)&hbt);
 	}
 }
