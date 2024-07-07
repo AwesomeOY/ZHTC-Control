@@ -1,6 +1,8 @@
 #ifndef APP_H_
 #define APP_H_
 
+#include <stdio.h>
+#include <string.h>
 #include "main.h"
 #include "brt38_encoder.h"
 #include "userdef.h"

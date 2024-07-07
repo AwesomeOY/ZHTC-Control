@@ -4,8 +4,8 @@
 typedef struct {
 	unsigned char* buff;
 	int len;
-	int front;
-	int rear;
+	volatile int front;
+	volatile int rear;
 }Queue;
 
 void queue_init(Queue* pq, unsigned char* buf, int len);

@@ -1,10 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="project_projx.xsd">
   <SchemaVersion>2.1</SchemaVersion>
-
   <Header>### uVision Project, (C) Keil Software</Header>
-
   <Targets>
     <Target>
       <TargetName>ZHTC-Control</TargetName>
@@ -17,28 +14,28 @@
           <PackID>Keil.STM32F4xx_DFP.2.17.1</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2001BFFF) IRAM2(0x2001C000-0x2001FFFF) IROM(0x8000000-0x807FFFF)  CLOCK(25000000) FPU2 CPUTYPE("Cortex-M4") TZ</Cpu>
-          <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile></StartupFile>
-          <FlashDriverDll></FlashDriverDll>
+          <FlashUtilSpec />
+          <StartupFile />
+          <FlashDriverDll />
           <DeviceId>0</DeviceId>
-          <RegisterFile></RegisterFile>
-          <MemoryEnv></MemoryEnv>
-          <Cmp></Cmp>
-          <Asm></Asm>
-          <Linker></Linker>
-          <OHString></OHString>
-          <InfinionOptionDll></InfinionOptionDll>
-          <SLE66CMisc></SLE66CMisc>
-          <SLE66AMisc></SLE66AMisc>
-          <SLE66LinkerMisc></SLE66LinkerMisc>
+          <RegisterFile />
+          <MemoryEnv />
+          <Cmp />
+          <Asm />
+          <Linker />
+          <OHString />
+          <InfinionOptionDll />
+          <SLE66CMisc />
+          <SLE66AMisc />
+          <SLE66LinkerMisc />
           <SFDFile>$$Device:STM32F407VETx$CMSIS\SVD\STM32F407.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath></BinPath>
-          <IncludePath></IncludePath>
-          <LibPath></LibPath>
-          <RegisterFilePath></RegisterFilePath>
-          <DBRegisterFilePath></DBRegisterFilePath>
+          <BinPath />
+          <IncludePath />
+          <LibPath />
+          <RegisterFilePath />
+          <DBRegisterFilePath />
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -53,15 +50,15 @@
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath></ListingPath>
+          <ListingPath />
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name />
+            <UserProg2Name />
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopU1X>0</nStopU1X>
@@ -70,8 +67,8 @@
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name />
+            <UserProg2Name />
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -80,15 +77,15 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name />
+            <UserProg2Name />
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>1</SelectedForBatchBuild>
-          <SVCSIdString></SVCSIdString>
+          <SVCSIdString />
         </TargetCommonOption>
         <CommonProperty>
           <UseCPPCompiler>0</UseCPPCompiler>
@@ -102,8 +99,8 @@
           <AssembleAssemblyFile>0</AssembleAssemblyFile>
           <PublicsOnly>0</PublicsOnly>
           <StopOnExitCode>3</StopOnExitCode>
-          <CustomArgument></CustomArgument>
-          <IncludeLibraryModules></IncludeLibraryModules>
+          <CustomArgument />
+          <IncludeLibraryModules />
           <ComprImg>0</ComprImg>
         </CommonProperty>
         <DllOption>
@@ -151,18 +148,18 @@
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>12</TargetSelection>
           <SimDlls>
-            <CpuDll></CpuDll>
-            <CpuDllArguments></CpuDllArguments>
-            <PeripheralDll></PeripheralDll>
-            <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
+            <CpuDll />
+            <CpuDllArguments />
+            <PeripheralDll />
+            <PeripheralDllArguments />
+            <InitializationFile />
           </SimDlls>
           <TargetDlls>
-            <CpuDll></CpuDll>
-            <CpuDllArguments></CpuDllArguments>
-            <PeripheralDll></PeripheralDll>
-            <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
+            <CpuDll />
+            <CpuDllArguments />
+            <PeripheralDll />
+            <PeripheralDllArguments />
+            <InitializationFile />
             <Driver>BIN\CMSIS_AGDI.dll</Driver>
           </TargetDlls>
         </DebugOption>
@@ -177,11 +174,11 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3></Flash3>
-          <Flash4></Flash4>
-          <pFcarmOut></pFcarmOut>
-          <pFcarmGrp></pFcarmGrp>
-          <pFcArmRoot></pFcArmRoot>
+          <Flash3 />
+          <Flash4 />
+          <pFcarmOut />
+          <pFcarmGrp />
+          <pFcArmRoot />
           <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
@@ -214,7 +211,7 @@
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M4"</AdsCpuType>
-            <RvctDeviceName></RvctDeviceName>
+            <RvctDeviceName />
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
@@ -345,7 +342,7 @@
                 <Size>0x4000</Size>
               </OCR_RVCT10>
             </OnChipMemories>
-            <RvctStartVector></RvctStartVector>
+            <RvctStartVector />
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
@@ -366,10 +363,10 @@
             <v6Lang>5</v6Lang>
             <v6LangP>3</v6LangP>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls />
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
-              <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../User/inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\mavlink\ardupilotmega;..\mavlink\common</IncludePath>
+              <Undefine />
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../User/inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../mavlink/ardupilotmega;../mavlink/common;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -383,9 +380,9 @@
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
             <VariousControls>
-              <MiscControls></MiscControls>
-              <Define></Define>
-              <Undefine></Undefine>
+              <MiscControls />
+              <Define />
+              <Undefine />
               <IncludePath>../Core/Inc</IncludePath>
             </VariousControls>
           </Aads>
@@ -396,15 +393,15 @@
             <noStLib>0</noStLib>
             <RepFail>1</RepFail>
             <useFile>0</useFile>
-            <TextAddressRange></TextAddressRange>
-            <DataAddressRange></DataAddressRange>
-            <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
-            <IncludeLibs></IncludeLibs>
-            <IncludeLibsPath></IncludeLibsPath>
-            <Misc></Misc>
-            <LinkerInputFile></LinkerInputFile>
-            <DisabledWarnings></DisabledWarnings>
+            <TextAddressRange />
+            <DataAddressRange />
+            <pXoBase />
+            <ScatterFile />
+            <IncludeLibs />
+            <IncludeLibsPath />
+            <Misc />
+            <LinkerInputFile />
+            <DisabledWarnings />
           </LDads>
         </TargetArmAds>
       </TargetOption>
@@ -444,8 +441,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -467,12 +462,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -493,9 +482,9 @@
           <GroupName>Drivers/STM32F4xx_HAL_Driver</GroupName>
           <Files>
             <File>
-              <FileName>stm32f4xx_hal_adc.c</FileName>
+              <FileName>stm32f4xx_hal_pcd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c</FilePath>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -509,8 +498,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -532,20 +519,14 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
             </File>
             <File>
-              <FileName>stm32f4xx_hal_adc_ex.c</FileName>
+              <FileName>stm32f4xx_hal_pcd_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -559,8 +540,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -582,20 +561,14 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
             </File>
             <File>
-              <FileName>stm32f4xx_ll_adc.c</FileName>
+              <FileName>stm32f4xx_ll_usb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -609,8 +582,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -632,12 +603,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -708,6 +673,132 @@
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f4xx_hal_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_adc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32f4xx_ll_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</FilePath>
@@ -734,8 +825,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -757,12 +846,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -854,8 +937,6 @@
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
               <PublicsOnly>2</PublicsOnly>
               <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
               <ComprImg>1</ComprImg>
             </CommonProperty>
             <GroupArmAds>
@@ -877,12 +958,6 @@
                 <useXO>2</useXO>
                 <v6Lang>0</v6Lang>
                 <v6LangP>0</v6LangP>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
               </Cads>
               <Aads>
                 <interw>2</interw>
@@ -894,12 +969,6 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
               </Aads>
             </GroupArmAds>
           </GroupOption>
@@ -921,8 +990,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -944,12 +1011,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -971,8 +1032,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -994,12 +1053,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1021,8 +1074,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1044,12 +1095,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1071,8 +1116,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1094,12 +1137,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1121,8 +1158,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1144,12 +1179,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1171,8 +1200,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1194,12 +1221,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1221,8 +1242,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1244,12 +1263,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1271,8 +1284,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1294,12 +1305,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1321,8 +1326,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1344,12 +1347,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1371,8 +1368,6 @@
                   <AssembleAssemblyFile>2</AssembleAssemblyFile>
                   <PublicsOnly>2</PublicsOnly>
                   <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
@@ -1394,12 +1389,6 @@
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
                   </Cads>
                 </FileArmAds>
               </FileOption>
@@ -1407,7 +1396,502 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Mavlink</GroupName>
+          <GroupName>Application/User/USB_DEVICE/App</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>4</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>usb_device.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../USB_DEVICE/App/usb_device.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>usbd_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../USB_DEVICE/App/usbd_desc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>usbd_cdc_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../USB_DEVICE/App/usbd_cdc_if.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/USB_DEVICE/Target</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>4</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>usbd_conf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../USB_DEVICE/Target/usbd_conf.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/USB_Device_Library</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>4</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>usbd_ctlreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>usbd_ioreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>usbd_cdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Mavlink2</GroupName>
           <Files>
             <File>
               <FileName>ardupilotmega.h</FileName>
@@ -1418,6 +1902,11 @@
               <FileName>mavlink.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_adap_tuning.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_adap_tuning.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_ahrs.h</FileName>
@@ -1438,6 +1927,11 @@
               <FileName>mavlink_msg_airspeed_autocal.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_airspeed_autocal.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_aoa_ssa.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_aoa_ssa.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_ap_adc.h</FileName>
@@ -1495,6 +1989,26 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_deepstall.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_device_op_read.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_read.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_device_op_read_reply.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_read_reply.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_device_op_write.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_write.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_device_op_write_reply.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_device_op_write_reply.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_digicam_configure.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_digicam_configure.h</FilePath>
@@ -1508,6 +2022,46 @@
               <FileName>mavlink_msg_ekf_status_report.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_ekf_status_report.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_1_to_4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_1_to_4.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_5_to_8.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_5_to_8.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_9_to_12.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_9_to_12.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_13_to_16.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_13_to_16.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_17_to_20.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_17_to_20.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_21_to_24.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_21_to_24.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_25_to_28.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_25_to_28.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_esc_telemetry_29_to_32.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_esc_telemetry_29_to_32.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_fence_fetch_point.h</FileName>
@@ -1580,6 +2134,11 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mag_cal_progress.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_mcu_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mcu_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_meminfo.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_meminfo.h</FilePath>
@@ -1598,6 +2157,31 @@
               <FileName>mavlink_msg_mount_status.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_mount_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_obstacle_distance_3d.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_obstacle_distance_3d.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_osd_param_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_osd_param_config_reply.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_config_reply.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_osd_param_show_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_show_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_osd_param_show_config_reply.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_osd_param_show_config_reply.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_pid_tuning.h</FileName>
@@ -1640,6 +2224,16 @@
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_rpm.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_secure_command.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_secure_command.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_secure_command_reply.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_secure_command_reply.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_sensor_offsets.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_sensor_offsets.h</FilePath>
@@ -1653,6 +2247,16 @@
               <FileName>mavlink_msg_simstate.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\ardupilotmega\mavlink_msg_simstate.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_vision_position_delta.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_vision_position_delta.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_water_depth.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\ardupilotmega\mavlink_msg_water_depth.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_wind.h</FileName>
@@ -1670,14 +2274,64 @@
               <FilePath>..\mavlink\ardupilotmega\version.h</FilePath>
             </File>
             <File>
+              <FileName>checksum.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\checksum.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_conversions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_conversions.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_get_info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_get_info.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_helpers.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_helpers.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_sha256.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_sha256.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\mavlink_types.h</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_heartbeat.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\minimal\mavlink_msg_heartbeat.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_actuator_control_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_actuator_control_target.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_actuator_output_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_actuator_output_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_adsb_vehicle.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_adsb_vehicle.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_ais_vessel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_ais_vessel.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_altitude.h</FileName>
@@ -1715,6 +2369,11 @@
               <FilePath>..\mavlink\common\mavlink_msg_auth_key.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_autopilot_state_for_gimbal_device.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_autopilot_state_for_gimbal_device.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_autopilot_version.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_autopilot_version.h</FilePath>
@@ -1725,9 +2384,64 @@
               <FilePath>..\mavlink\common\mavlink_msg_battery_status.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_button_change.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_button_change.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_capture_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_capture_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_fov_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_fov_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_image_captured.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_image_captured.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_information.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_settings.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_settings.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_tracking_geo_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_tracking_geo_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_camera_tracking_image_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_camera_tracking_image_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_camera_trigger.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_camera_trigger.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_can_filter_modify.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_can_filter_modify.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_can_frame.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_can_frame.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_canfd_frame.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_canfd_frame.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_change_operator_control.h</FileName>
@@ -1780,6 +2494,11 @@
               <FilePath>..\mavlink\common\mavlink_msg_debug.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_debug_float_array.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_debug_float_array.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_debug_vect.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_debug_vect.h</FilePath>
@@ -1820,9 +2539,59 @@
               <FilePath>..\mavlink\common\mavlink_msg_file_transfer_protocol.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_flight_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_flight_information.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_follow_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_follow_target.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_generator_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_generator_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_device_attitude_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_attitude_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_device_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_information.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_device_set_attitude.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_device_set_attitude.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_manager_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_manager_information.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_manager_set_attitude.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_manager_set_attitude.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_manager_set_manual_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_manager_set_manual_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_manager_set_pitchyaw.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_manager_set_pitchyaw.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_gimbal_manager_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_gimbal_manager_status.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_global_position_int.h</FileName>
@@ -1945,6 +2714,16 @@
               <FilePath>..\mavlink\common\mavlink_msg_home_position.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_hygrometer_sensor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_hygrometer_sensor.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_isbd_link_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_isbd_link_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_landing_target.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_landing_target.h</FilePath>
@@ -1993,6 +2772,21 @@
               <FileName>mavlink_msg_log_request_list.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_log_request_list.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_logging_ack.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_logging_ack.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_logging_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_logging_data.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_logging_data_acked.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_logging_data_acked.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_mag_cal_report.h</FileName>
@@ -2085,6 +2879,11 @@
               <FilePath>..\mavlink\common\mavlink_msg_mission_write_partial_list.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_mount_orientation.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_mount_orientation.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_named_value_float.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_named_value_float.h</FilePath>
@@ -2100,6 +2899,61 @@
               <FilePath>..\mavlink\common\mavlink_msg_nav_controller_output.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_obstacle_distance.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_obstacle_distance.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_odometry.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_odometry.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_arm_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_arm_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_authentication.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_authentication.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_basic_id.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_basic_id.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_location.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_location.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_message_pack.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_message_pack.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_operator_id.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_operator_id.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_self_id.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_self_id.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_system.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_open_drone_id_system_update.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_open_drone_id_system_update.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_optical_flow.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_optical_flow.h</FilePath>
@@ -2108,6 +2962,31 @@
               <FileName>mavlink_msg_optical_flow_rad.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_optical_flow_rad.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_param_ext_ack.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_param_ext_ack.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_param_ext_request_list.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_param_ext_request_list.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_param_ext_request_read.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_param_ext_request_read.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_param_ext_set.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_param_ext_set.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_param_ext_value.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_param_ext_value.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_param_map_rc.h</FileName>
@@ -2140,6 +3019,11 @@
               <FilePath>..\mavlink\common\mavlink_msg_ping.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_play_tune.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_play_tune.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_position_target_global_int.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_position_target_global_int.h</FilePath>
@@ -2170,6 +3054,11 @@
               <FilePath>..\mavlink\common\mavlink_msg_raw_pressure.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_raw_rpm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_raw_rpm.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_rc_channels.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_rc_channels.h</FilePath>
@@ -2188,6 +3077,11 @@
               <FileName>mavlink_msg_rc_channels_scaled.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_rc_channels_scaled.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_relay_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_relay_status.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_request_data_stream.h</FileName>
@@ -2285,14 +3179,29 @@
               <FilePath>..\mavlink\common\mavlink_msg_set_position_target_local_ned.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_setup_signing.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_setup_signing.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_sim_state.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_sim_state.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_smart_battery_info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_smart_battery_info.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_statustext.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_statustext.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_storage_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_storage_information.h</FilePath>
             </File>
             <File>
               <FileName>mavlink_msg_sys_status.h</FileName>
@@ -2330,6 +3239,26 @@
               <FilePath>..\mavlink\common\mavlink_msg_timesync.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_tunnel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_tunnel.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_uavcan_node_info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_uavcan_node_info.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_uavcan_node_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_uavcan_node_status.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_utm_global_position.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_utm_global_position.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_v2_extension.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_v2_extension.h</FilePath>
@@ -2350,6 +3279,16 @@
               <FilePath>..\mavlink\common\mavlink_msg_vicon_position_estimate.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_video_stream_information.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_video_stream_information.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_video_stream_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_video_stream_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_vision_position_estimate.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_vision_position_estimate.h</FilePath>
@@ -2360,39 +3299,24 @@
               <FilePath>..\mavlink\common\mavlink_msg_vision_speed_estimate.h</FilePath>
             </File>
             <File>
+              <FileName>mavlink_msg_wheel_distance.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_wheel_distance.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_wifi_config_ap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_wifi_config_ap.h</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_msg_winch_status.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mavlink\common\mavlink_msg_winch_status.h</FilePath>
+            </File>
+            <File>
               <FileName>mavlink_msg_wind_cov.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\mavlink\common\mavlink_msg_wind_cov.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_msg_heartbeat.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\minimal\mavlink_msg_heartbeat.h</FilePath>
-            </File>
-            <File>
-              <FileName>checksum.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\checksum.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_conversions.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_conversions.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_types.h</FilePath>
-            </File>
-            <File>
-              <FileName>protocol.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\protocol.h</FilePath>
-            </File>
-            <File>
-              <FileName>mavlink_helpers.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mavlink\mavlink_helpers.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2402,18 +3326,17 @@
       </Groups>
     </Target>
   </Targets>
-
   <RTE>
-    <apis/>
+    <apis />
     <components>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0" />
         <targetInfos>
-          <targetInfo name="ZHTC-Control"/>
+          <targetInfo name="ZHTC-Control" />
         </targetInfos>
       </component>
     </components>
-    <files/>
+    <files />
   </RTE>
-
 </Project>
+

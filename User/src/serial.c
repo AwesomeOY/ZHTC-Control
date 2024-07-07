@@ -10,13 +10,19 @@ extern UART_HandleTypeDef huart6;
 UART_HandleTypeDef* uart_handles[SERIAL_ID_MAX] = { &huart1, &huart2, &huart3, &huart4, &huart5, &huart6 };
 serial_obj serial_objs[SERIAL_ID_MAX];
 
-void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
+void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen, SERIAL_DOUBLE_BUF_MODE buf_mode)
 {
 	char name[] = {"SER_TX_SEM0"};
 	osSemaphoreAttr_t attr = { NULL,  0, NULL };
 	
 	serial_objs[(uint8_t)id].p_rx_buff = rbuf;
-	serial_objs[(uint8_t)id].rx_buff_size = rlen;
+	serial_objs[(uint8_t)id].double_mode_enable = buf_mode;
+	if (buf_mode == SERIAL_DOUBLE_BUF_MODE_ENABLE) {
+		serial_objs[(uint8_t)id].rx_buff_size = rlen / 2;
+	} else {
+		serial_objs[(uint8_t)id].rx_buff_size = rlen;
+	}	
+	serial_objs[(uint8_t)id].double_buf_index = 0;
 	
 	if (serial_objs[(uint8_t)id].init == 0) {
 		name[4] = 'T';
@@ -35,7 +41,9 @@ void serial_init(SERIAL_ID id, uint8_t* rbuf, uint16_t rlen)
 		
 		serial_objs[(uint8_t)id].cand_send = 1;
 		
-		HAL_UARTEx_ReceiveToIdle_DMA(serial_objs[(uint8_t)id].huart, serial_objs[(uint8_t)id].p_rx_buff, serial_objs[(uint8_t)id].rx_buff_size);
+		if (serial_objs[(uint8_t)id].p_rx_buff) {
+			HAL_UARTEx_ReceiveToIdle_DMA(serial_objs[(uint8_t)id].huart, serial_objs[(uint8_t)id].p_rx_buff, serial_objs[(uint8_t)id].rx_buff_size);
+		}
 	}	
 }
 
@@ -83,12 +91,12 @@ inline SERIAL_ID get_serial_id(UART_HandleTypeDef *huart)
 	return id;
 }
 
-void serial_set_tx_cb(SERIAL_ID id, serial_cmplt_cb fun)
+void serial_set_tx_cb(SERIAL_ID id, serial_tx_cmplt_cb fun)
 {
 	serial_objs[(uint8_t)id].p_tx_cmplt_cb = fun;
 }
 
-void serial_set_rx_cb(SERIAL_ID id, serial_cmplt_cb fun)
+void serial_set_rx_cb(SERIAL_ID id, serial_rx_cmplt_cb fun)
 {
 	serial_objs[(uint8_t)id].p_rx_cmplt_cb = fun;
 }
@@ -109,14 +117,33 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 /* 数据接收完成中断 */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-	SERIAL_ID id = get_serial_id(huart);
-	if (Size > 0 && serial_objs[(uint8_t)id].p_rx_cmplt_cb != (void*)0) {
-		serial_objs[(uint8_t)id].rx_len = Size;
-		serial_objs[(uint8_t)id].p_rx_cmplt_cb(&serial_objs[(uint8_t)id]);
+	uint8_t id = (uint8_t)get_serial_id(huart);
+	if (serial_objs[id].p_rx_buff && Size > 0) {
+		if (serial_objs[id].double_mode_enable == SERIAL_DOUBLE_BUF_MODE_ENABLE) {
+			uint8_t index = serial_objs[id].double_buf_index;
+			serial_objs[id].double_buf_index = (index == 0) ? 1 : 0;
+			HAL_UARTEx_ReceiveToIdle_DMA(huart, 										 
+										 &(serial_objs[id].p_rx_buff[serial_objs[id].double_buf_index * serial_objs[id].rx_buff_size]), 
+										 serial_objs[id].rx_buff_size);
+			if (serial_objs[id].p_rx_cmplt_cb != (void*)0) {
+				serial_objs[id].p_rx_cmplt_cb(&(serial_objs[id].p_rx_buff[index * serial_objs[id].rx_buff_size]), Size);
+			}
+			osSemaphoreRelease(serial_objs[id].rx_sem);
+		} else {
+			serial_objs[id].rx_len = Size;
+			if (serial_objs[id].p_rx_cmplt_cb != (void*)0) {
+				serial_objs[id].p_rx_cmplt_cb(serial_objs[id].p_rx_buff, Size);
+			}		
+			HAL_UARTEx_ReceiveToIdle_DMA(huart, serial_objs[id].p_rx_buff, serial_objs[id].rx_buff_size);
+			osSemaphoreRelease(serial_objs[id].rx_sem);
+		}
 	}
-
-	HAL_UARTEx_ReceiveToIdle_DMA(huart, serial_objs[(uint8_t)id].p_rx_buff, serial_objs[(uint8_t)id].rx_buff_size);
-	osSemaphoreRelease(serial_objs[(uint8_t)id].rx_sem);
+	else {
+		HAL_UARTEx_ReceiveToIdle_DMA(huart, 
+									&(serial_objs[id].p_rx_buff[serial_objs[id].double_buf_index*serial_objs[id].rx_buff_size]), 
+									 serial_objs[id].rx_buff_size);
+	}
+	
 }
 
 /* 数据接收错误中断处理 */

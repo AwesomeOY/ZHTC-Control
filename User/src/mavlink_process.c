@@ -1,9 +1,10 @@
 #include "app.h"
 #include "mavlink.h"
+#include "usbd_cdc_if.h"
 
-static uint8_t _mavlink_serial_rec_buf[32];
+static uint8_t _mavlink_serial_rec_buf[2*32];
 static uint8_t _mavlink_serial_send_buf[256];
-static uint8_t _mavlink_rec_buff[4096];
+static uint8_t _mavlink_rec_buff[3096];
 static uint8_t _mavlink_send_buff[2048];
 static Queue _mavlink_rec_queue;
 static Queue _mavlink_send_queue;
@@ -20,12 +21,11 @@ mavlink_command_ack_t ack;
 static void _mavlink_request_msg(void);
 
 /* 串口接收数据回调函数，将接收到数据放到队列中存储 */
-static void _mavlink_serial_rx_cb(void* arg)
+static inline void _mavlink_serial_rx_cb(uint8_t* buf, uint16_t size)
 {
-	const serial_obj* pserial = (const serial_obj*)arg;
 	int i = 0;
-	for ( ; i <= pserial->rx_len; ++i) {
-		queue_en(&_mavlink_rec_queue, pserial->p_rx_buff[i]);
+	for ( ; i < size; ++i) {
+		queue_en(&_mavlink_rec_queue, buf[i]);
 	}	
 }
 
@@ -33,8 +33,8 @@ void mavlink_init(void)
 {
 	queue_init(&_mavlink_rec_queue, _mavlink_rec_buff, sizeof(_mavlink_rec_buff));
 	queue_init(&_mavlink_send_queue, _mavlink_send_buff, sizeof(_mavlink_send_buff));
-	serial_init(SERIAL_ID1, _mavlink_serial_rec_buf, sizeof(_mavlink_serial_rec_buf));
 	serial_set_rx_cb(SERIAL_ID1, _mavlink_serial_rx_cb);
+	serial_init(SERIAL_ID1, _mavlink_serial_rec_buf, sizeof(_mavlink_serial_rec_buf), SERIAL_DOUBLE_BUF_MODE_ENABLE);	
 	mavlink_status_t *status = mavlink_get_channel_status(SERIAL_ID1);
 	
 	const osThreadAttr_t mavlinkTask_attributes = {
@@ -62,14 +62,18 @@ static void _mavlink_parse(void)
 {
 	static mavlink_message_t msg;
 	static mavlink_status_t msg_status;
+	char buf[64];
+	static uint8_t rec_buf[256];
+	uint8_t index = 0;
 	int i = 0;
 	int rec_len = queue_len(&_mavlink_rec_queue);
 	
 	for (i = 0; i < rec_len; ++i) {
 		uint8_t data = 0;
 		if (queue_de(&_mavlink_rec_queue, &data)) {
+			rec_buf[index++] = data;
 			if (MAVLINK_FRAMING_OK == mavlink_frame_char(SERIAL_ID1, data, &msg, &msg_status)) {
-				switch (msg.msgid) {
+				switch (msg.msgid) {					
 					case MAVLINK_MSG_ID_HEARTBEAT:
 						if (_uav_mavlink_system.sysid==0 && _uav_mavlink_system.compid == 0) {
 							_uav_mavlink_system.sysid = 2;
@@ -97,6 +101,9 @@ static void _mavlink_parse(void)
 						break;
 				}
 			}
+		}
+		else {
+			break;
 		}
 	}
 }
@@ -140,10 +147,11 @@ static void _mavlink_request_msg(void)
 	static uint32_t _last_time_ms = 0;
 	static uint32_t _last_heabeat_ms = 0;
 	uint32_t now = osKernelGetTickCount();
-	if (now - _last_time_ms >= 1000) {
+	if (now - _last_time_ms >= 5000) {
 		_last_time_ms = now;		
 		
 		mavlink_command_long_t commd_long;
+		memset(&commd_long, 0, sizeof(commd_long));
 		
 //		if (_uav_mavlink_system.sysid == 0 && _uav_mavlink_system.compid == 0) {
 //			return;
@@ -154,22 +162,22 @@ static void _mavlink_request_msg(void)
 		commd_long.confirmation = 0;
 		commd_long.param7 = 0;
 		
-//		commd_long.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-//		commd_long.param1 = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;  // 全局位置
-//		commd_long.param2 = 500000;  // 500ms发送一次
-//		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
-//		
-//		commd_long.param1 = MAVLINK_MSG_ID_GPS_RAW_INT;  // GPS原始数据
-//		commd_long.param2 = 500000;   // 500ms发一次
-//		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
-//		
+		commd_long.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+		commd_long.param1 = MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT;  // 全局位置
+		commd_long.param2 = 500000;  // 500ms发送一次
+		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+		
+		commd_long.param1 = MAVLINK_MSG_ID_GPS_RAW_INT;  // GPS原始数据
+		commd_long.param2 = 500000;   // 500ms发一次
+		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+		
 		commd_long.param1 = MAVLINK_MSG_ID_ATTITUDE;     // 姿态数据
 		commd_long.param2 = 200000;   // 200ms发一次
 		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_command_long_t*)&commd_long);
 		
-//		commd_long.param1 = MAVLINK_MSG_ID_SYS_STATUS;   // 系统状态标志
-//		commd_long.param2 = 500000;   // 500ms发一次
-//		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+		commd_long.param1 = MAVLINK_MSG_ID_SYS_STATUS;   // 系统状态标志
+		commd_long.param2 = 500000;   // 500ms发一次
+		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
 	}
 
 	if (now - _last_heabeat_ms >= 1000){

@@ -5,8 +5,8 @@
 #include "main.h"
 #include <string.h>
 
-#define brt38_rs485_tx_enable() HAL_GPIO_WritePin(RS485_EN1_GPIO_Port, RS485_EN1_Pin, GPIO_PIN_SET)
-#define brt38_rs485_rx_enable() HAL_GPIO_WritePin(RS485_EN1_GPIO_Port, RS485_EN1_Pin, GPIO_PIN_RESET)
+#define brt38_rs485_tx_enable() 
+#define brt38_rs485_rx_enable() 
 
 #define BRT38_MODBUS_ADDR 0x01
 
@@ -20,7 +20,7 @@ uint8_t brt38_uart_tx_buff[BRT38_UART_MAX_BUFF_SIZE];
 float brt38_angle = 0.0f; // 编码器当前多圈角度
 
 static void brt38_process_task(void* arg);
-static void brt38_receive_cmpt_cb(void* arg);
+static void brt38_receive_cmpt_cb(uint8_t* buf, uint16_t len);
 static void brt38_send_cmpt_cb(void* arg);
 
 osThreadId_t brt38TaskHandle;
@@ -33,9 +33,9 @@ const osThreadAttr_t brt38Task_attributes = {
 void brt38_encoder_init(void)
 {
 	brt38_rs485_tx_enable();
-	serial_init(SERIAL_ID1, brt38_uart_rx_buff, BRT38_UART_MAX_BUFF_SIZE);
-	serial_set_tx_cb(SERIAL_ID1, brt38_send_cmpt_cb);
-	serial_set_rx_cb(SERIAL_ID1, brt38_receive_cmpt_cb);
+	serial_init(SERIAL_ID6, brt38_uart_rx_buff, BRT38_UART_MAX_BUFF_SIZE, SERIAL_DOUBLE_BUF_MODE_DISABLE);
+	serial_set_tx_cb(SERIAL_ID6, brt38_send_cmpt_cb);
+	serial_set_rx_cb(SERIAL_ID6, brt38_receive_cmpt_cb);
 	
 	brt38TaskHandle = osThreadNew(brt38_process_task, NULL, &brt38Task_attributes);
 }
@@ -53,8 +53,8 @@ uint8_t brt38_hw_reset(void)
 	
 	brt38_rx_len = 0;
 	brt38_rs485_tx_enable();
-	if (serial_write(SERIAL_ID1, brt38_uart_tx_buff, sendSize) > 0) {
-		if (serial_can_read(SERIAL_ID1, 5000) && brt38_rx_len > 0) {
+	if (serial_write(SERIAL_ID6, brt38_uart_tx_buff, sendSize) > 0) {
+		if (serial_can_read(SERIAL_ID6, 5000) && brt38_rx_len > 0) {
 			if (modbus_rtu_check_crc(brt38_rx_buff, brt38_rx_len)) {
 				return 1;
 			}
@@ -71,8 +71,8 @@ uint8_t brt38_get_encoder_value(uint32_t* value)
 	
 	brt38_rx_len = 0;
 	brt38_rs485_tx_enable();
-	if (serial_write(SERIAL_ID1, brt38_uart_tx_buff, sendSize) > 0) {
-		if (serial_can_read(SERIAL_ID1, 5000) && brt38_rx_len > 0) {
+	if (serial_write(SERIAL_ID6, brt38_uart_tx_buff, sendSize) > 0) {
+		if (serial_can_read(SERIAL_ID6, 5000) && brt38_rx_len > 0) {
 			if (modbus_rtu_check_crc(brt38_rx_buff, brt38_rx_len)) {
 				uint16_t v[2] = {0, 0};
 				if (modbus_rtu_read_reg(brt38_rx_buff, brt38_rx_len, v)) {
@@ -109,13 +109,12 @@ static void brt38_process_task(void* arg)
 /////////////////////////////////////////////////////////////////
 
 /* 串口接收数据完成中断，关闭485接收，开启485发送 */
-static void brt38_receive_cmpt_cb(void* arg)
+static void brt38_receive_cmpt_cb(uint8_t* buf, uint16_t len)
 {
 	brt38_rs485_tx_enable(); // 关闭接收
-	serial_obj* pso = (serial_obj*)arg;
-	if (pso->rx_len > 0) {
-		brt38_rx_len = pso->rx_len;
-		memcpy(brt38_rx_buff, pso->p_rx_buff, pso->rx_len);
+	if (len > 0) {
+		brt38_rx_len = len;
+		memcpy(brt38_rx_buff, buf, len);
 	}	
 }
 
