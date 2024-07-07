@@ -16,7 +16,7 @@ void app_init(void)
 	
 	mavlink_init();
 	
-//	brt38_encoder_init();
+	brt38_encoder_init();
 	
 //	valve_init();
 }

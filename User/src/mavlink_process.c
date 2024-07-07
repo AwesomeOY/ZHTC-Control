@@ -62,16 +62,12 @@ static void _mavlink_parse(void)
 {
 	static mavlink_message_t msg;
 	static mavlink_status_t msg_status;
-	char buf[64];
-	static uint8_t rec_buf[256];
-	uint8_t index = 0;
 	int i = 0;
 	int rec_len = queue_len(&_mavlink_rec_queue);
 	
 	for (i = 0; i < rec_len; ++i) {
 		uint8_t data = 0;
 		if (queue_de(&_mavlink_rec_queue, &data)) {
-			rec_buf[index++] = data;
 			if (MAVLINK_FRAMING_OK == mavlink_frame_char(SERIAL_ID1, data, &msg, &msg_status)) {
 				switch (msg.msgid) {					
 					case MAVLINK_MSG_ID_HEARTBEAT:
