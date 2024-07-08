@@ -92,5 +92,5 @@ uint8_t modbus_rtu_read_reg(const uint8_t* pack, uint8_t size, uint16_t* regValu
 		regValue[i/2] = ((uint16_t)pack[3+i] << 8) | pack[4+i];
 	}
 	
-	return pack[2] / 4;	
+	return pack[2] / 2;	
 }

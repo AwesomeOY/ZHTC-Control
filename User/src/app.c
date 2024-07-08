@@ -18,6 +18,8 @@ void app_init(void)
 	
 	brt38_encoder_init();
 	
+	motor_init();
+	
 //	valve_init();
 }
 
@@ -41,21 +43,26 @@ void app_run(void)
 	
 //	valve_status_update(&valve_input);
 	
-	osDelay(1000);
-	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
-	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
-	
-	osDelay(1000);
-	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
-	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
-	
+//	osDelay(1000);
+//	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
+//	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+//	
+//	osDelay(1000);
+//	WRITE_PIN(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
+//	WRITE_PIN(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+//	
 	WRITE_PIN(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
-	WRITE_PIN(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
-	WRITE_PIN(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
-	
-	osDelay(60000);
-	WRITE_PIN(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
-	osDelay(3000);
+//	WRITE_PIN(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
+//	WRITE_PIN(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
+//	
+//	osDelay(60000);
+//	WRITE_PIN(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
+//	osDelay(3000);
+
+//	motor_set_speed(0.1f);
+//	osDelay(1000);
+//	motor_set_speed(-0.1f);
+//	osDelay(1000);
 }
 
 static void valve_init(void)
