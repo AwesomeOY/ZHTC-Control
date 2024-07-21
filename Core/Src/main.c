@@ -70,7 +70,7 @@ DMA_HandleTypeDef hdma_usart6_tx;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
@@ -378,7 +378,7 @@ static void MX_TIM4_Init(void)
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
@@ -794,7 +794,7 @@ void StartDefaultTask(void *argument)
   {
 	// HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin);
 	app_run();
-    osDelay(10);
+    osDelay(1000);
   }
   /* USER CODE END 5 */
 }

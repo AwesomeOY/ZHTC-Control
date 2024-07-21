@@ -18,6 +18,9 @@ uint8_t brt38_uart_rx_buff[BRT38_UART_MAX_BUFF_SIZE];
 uint8_t brt38_uart_tx_buff[BRT38_UART_MAX_BUFF_SIZE];
 
 float brt38_angle = 0.0f; // 编码器当前多圈角度
+uint8_t brt38_reset_success = 0;
+uint8_t brt38_need_reset = 0; // 设置复位标志
+uint8_t brt38_exist = 0; // 编码器存在标志
 
 static void brt38_process_task(void* arg);
 static void brt38_receive_cmpt_cb(uint8_t* buf, uint16_t len);
@@ -27,7 +30,7 @@ osThreadId_t brt38TaskHandle;
 const osThreadAttr_t brt38Task_attributes = {
   .name = "Brt38_TASK",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t)osPriorityNormal1,
+  .priority = (osPriority_t)osPriorityAboveNormal,
 };
 
 void brt38_encoder_init(void)
@@ -41,7 +44,7 @@ void brt38_encoder_init(void)
 }
 
 /* 返回当前编码角度 */
-float get_brt38_angle(void)
+inline float get_brt38_angle(void)
 {
 	return brt38_angle;
 }
@@ -52,6 +55,29 @@ uint8_t brt38_hw_reset(void)
 	uint8_t sendSize = modbus_rtu_write_single_reg_pack(brt38_uart_tx_buff, BRT38_MODBUS_ADDR, 0x08, 0x01);
 	
 	brt38_rx_len = 0;
+	brt38_reset_success = 0;
+	brt38_rs485_tx_enable();
+	if (serial_write(SERIAL_ID6, brt38_uart_tx_buff, sendSize) > 0) {
+		if (serial_can_read(SERIAL_ID6, 5000) && brt38_rx_len > 0) {
+			if (modbus_rtu_check_crc(brt38_rx_buff, brt38_rx_len)) {
+				brt38_reset_success = 1;
+				osDelay(1000);
+				if (brt38_set_dir(0)) {
+					return 1;
+				}
+			}
+		}
+	}
+		
+	return 0;
+}
+
+/* 设置方向 */
+uint8_t brt38_set_dir(uint8_t cw)
+{
+	cw = cw > 0 ? 0 : 1;
+	uint8_t sendSize = modbus_rtu_write_single_reg_pack(brt38_uart_tx_buff, BRT38_MODBUS_ADDR, 0x09, cw);
+	
 	brt38_rs485_tx_enable();
 	if (serial_write(SERIAL_ID6, brt38_uart_tx_buff, sendSize) > 0) {
 		if (serial_can_read(SERIAL_ID6, 5000) && brt38_rx_len > 0) {
@@ -77,6 +103,7 @@ uint8_t brt38_get_encoder_value(uint32_t* value)
 				uint16_t v[2] = {0, 0};
 				if (modbus_rtu_read_reg(brt38_rx_buff, brt38_rx_len, v)) {
 					*value = ((uint32_t)v[0] << 16) | v[1];
+					brt38_exist = 1;
 					return 1;
 				}
 			}
@@ -90,20 +117,21 @@ uint8_t brt38_get_encoder_value(uint32_t* value)
 static void brt38_process_task(void* arg)
 {
 	uint32_t last_time_ms = osKernelGetTickCount();
-
-	brt38_hw_reset();
 	
-	while (1) {
-		uint32_t now = osKernelGetTickCount();
-		if (now - last_time_ms >= 1000) {
-			uint32_t encoder_value;
-			if (brt38_get_encoder_value(&encoder_value)) {
-				brt38_angle = encoder_value * 360 / 1024.0f;
+	while (1) {			
+		if (brt38_need_reset) {
+			if (brt38_hw_reset()) {
+				brt38_need_reset = 0;
 			}
 		}
+		
+		uint32_t encoder_value;
+		if (brt38_get_encoder_value(&encoder_value)) {
+			brt38_angle = encoder_value * 360 / 1024.0f;
+		}
+		osDelay(20);
 	}
 }
-
 
 
 /////////////////////////////////////////////////////////////////
@@ -124,3 +152,20 @@ static void brt38_send_cmpt_cb(void* arg)
 	brt38_rs485_rx_enable(); // 开启接收
 }
 
+inline uint8_t brt38_get_reset_status(void)
+{
+	return brt38_reset_success;
+}
+
+/* 设置brt38复位 */
+inline void brt38_set_reset(void)
+{
+	brt38_reset_success = 0;
+	brt38_need_reset = 1;
+}
+
+/* brt38存在 */
+inline uint8_t brt38_is_exist(void)
+{
+	return brt38_exist;
+}

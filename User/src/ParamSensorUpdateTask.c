@@ -1,0 +1,53 @@
+#include "app.h"
+#include "ParamSensor5.h"
+extern osEventFlagsId_t collect_event;
+
+osThreadId_t paramSensorTaskHandle;
+const osThreadAttr_t paramSensorTask_attributes = {
+  .name = "Sensor_TASK",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t)osPriorityNormal7,
+};
+
+static osSemaphoreId_t _param_sensor_start_sem;
+
+void param_sensor_start(void)
+{
+	osSemaphoreRelease(_param_sensor_start_sem);
+}
+
+void param_sensor_update_task_init(void)
+{
+	param_sensor5_init();
+	osSemaphoreAttr_t attr = { NULL,  0, NULL };
+	_param_sensor_start_sem = osSemaphoreNew(1, 0, &attr);
+	osThreadNew(param_sensor_task, NULL, &paramSensorTask_attributes);
+}
+
+void param_sensor_task(void* arg)
+{
+	uint16_t count = 0;
+	while (1) {
+		if (osOK == osSemaphoreAcquire(_param_sensor_start_sem, 0xffffffffUL)) {
+			param_sensor5_restart();
+			osDelay(60000u);
+			while (1) {
+				const ParamSensor5* pparam = NULL;
+				param_sensor5_update();
+				pparam = get_current_param_sensor5();
+				if (pparam->success) {
+					count = 0;
+					osEventFlagsSet(collect_event, PARAM_SENSOR_SUCCESS_EVENT_BIT);
+					break;
+				}
+				++count;
+				if (count >= 200u) {
+					count = 0;
+					osEventFlagsSet(collect_event, PARAM_SENSOR_ERROR_EVENT_BIT);
+					break;
+				}
+				osDelay(50);
+			}
+		}
+	}
+}

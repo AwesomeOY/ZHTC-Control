@@ -4,15 +4,56 @@ static uint16_t collect_depth_dm = 0;   // 采水深度，单位分米
 static COLLECT_TASK_STATUS  collect_task_status = COLLECT_TASK_STATUS_IDLE; // 当前采集系统运行状态
 static COLLECT_TASK_STATUS  old_collect_task_status = COLLECT_TASK_STATUS_IDLE; // 前一次所处状态
 static COLLECT_TASK_CMD collect_task_cmd = COLLECT_TASK_CMD_NONE; // 当前执行任务指令
+static COLLECT_MODE collect_mode = COLLECT_MODE_NONE;  // 采集控制任务自动模式
+static float _target_ang = 0.0f;
+
+void collect_task_init(void)
+{
+	const osThreadAttr_t attributes = {
+	  .name = "COLLECT_TASK",
+	  .stack_size = 128 * 4,
+	  .priority = (osPriority_t)osPriorityLow,
+	};
+	osThreadNew(collect_task, NULL, &attributes);
+}
+
+static int8_t position_control(float pos)
+{
+	float cpos = get_brt38_angle();
+	if (fabs(pos - cpos) <= 2.0f) {
+		motor_set_speed(0.0f);
+		return 1;
+	} else {
+		if (pos - cpos > 2.0f) {
+			motor_set_speed(0.5f);
+		} if (pos - cpos < -2.0f) {
+			motor_set_speed(-0.5f);
+		}
+	}
+	return 0;
+}
 
 void collect_task(void* arg)
 {
 	while (1)
 	{
+		switch (collect_mode) {
+			case COLLECT_MODE_NONE:
+				break;
+			case COLLECT_MODE_AUTO:
+				break;
+			case COLLECT_MODE_MANUAL:
+				break;
+		}
+		
+		
 		switch (collect_task_status)
 		{
 			case COLLECT_TASK_STATUS_IDLE:	// 等待控制指令
 				// 判断取水指令有效
+				if (COLLECT_TASK_CMD_START_GET_WATER == collect_task_cmd) {
+					collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
+				}				
 				break;
 			case COLLECT_TASK_STATUS_PAUSE: // 暂停
 				break;
@@ -20,16 +61,27 @@ void collect_task(void* arg)
 				// 采水管下降
 			    // 直到预设深度
 			    // 进入开启阀门、隔膜泵进入采水润洗状态
+				if (position_control(_target_ang)) {
+					collect_task_status = COLLECT_TASK_STATUS_CLEANING;
+				}			
 				break;
 			case COLLECT_TASK_STATUS_CLEANING:  // 润洗
 				// 润洗管道三次，每次等待15秒
 			    // 完成后，关闭排水阀，开启采集水，进入泵吸状态
+				pipe_cleaning();
+				collect_task_status = COLLECT_TASK_STATUS_PUMP_WATER;
 				break;
 			case COLLECT_TASK_STATUS_PUMP_WATER:// 泵吸采水
 				// 等待液位有效
 			    // 进入采水完成状态
+				water_collecting();
+				collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
 				break;
 			case COLLECT_TASK_STATUS_PULL_PIPE: // 采水管上升
+				if (position_control(_target_ang)) {
+					measurement_running();
+					collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
+				}
 				break;
 			case COLLECT_TASK_STATUS_CLEAN_BUS: // 排空汇流排
 				// 开启排水阀门
@@ -50,6 +102,8 @@ void collect_task(void* arg)
 				// 开启测量
 			    // 等待测量完成
 			    // 进入空闲状态
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
 				break;
 			case COLLECT_TASK_STATUS_CLEAN_PIPE:// 清洗管路
 				break;

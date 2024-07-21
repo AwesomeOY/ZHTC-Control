@@ -9,6 +9,7 @@
 #include "serial.h"
 #include "ByteQueue.h"
 #include "mavlink.h"
+#include "motor.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -43,6 +44,12 @@ typedef enum {
 	COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL = 15,// 水管暂停   
 }COLLECT_TASK_STATUS;
 
+typedef enum {
+	COLLECT_MODE_NONE, 
+	COLLECT_MODE_AUTO, 	// 全自主模式
+	COLLECT_MODE_MANUAL // 手动模式
+}COLLECT_MODE;
+
 typedef struct {
 	uint8_t header1;  // 固定为0xFB
 	uint8_t header2;  // 固定为0xFB
@@ -74,6 +81,12 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 
+#define START_EVENT_BIT          (1<<0)
+#define ERROR_EVENT_BIT          (1<<1)
+#define EXIT_EVENT_BIT           (1<<2)
+#define PARAM_SENSOR_SUCCESS_EVENT_BIT (1<<3)
+#define PARAM_SENSOR_ERROR_EVENT_BIT   (1<<4)
+
 #define sys_run_led_toggle() HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin)
 
 #define key_is_down() 	 (READ_PIN(KEY_IN_GPIO_Port, KEY_IN_Pin) == GPIO_PIN_SET)
@@ -86,5 +99,25 @@ void app_run(void);
 void mavlink_init(void);
 
 void mavlink_process_task(void* arg);
+
+void collect_system_init(void);
+
+void water_test(void);
+
+void param_sensor_start(void);
+
+void param_sensor_update_task_init(void);
+
+void param_sensor_task(void* arg);
+
+uint8_t pipe_cleaning(void);
+
+uint8_t water_collecting(void);
+
+uint8_t measurement_running(void);
+
+void collect_task(void* arg);
+
+void collect_task_init(void);
 
 #endif
