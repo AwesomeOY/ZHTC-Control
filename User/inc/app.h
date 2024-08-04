@@ -104,6 +104,8 @@ void collect_system_init(void);
 
 void water_test(void);
 
+void gpio_auto_test(void);
+
 void param_sensor_start(void);
 
 void param_sensor_update_task_init(void);
@@ -119,6 +121,10 @@ uint8_t measurement_running(void);
 void collect_task(void* arg);
 
 void collect_task_init(void);
+
+void gpio_level_output_enable(void);
+
+void gpio_level_output_disable(void);
 
 void usb_task_init(void);
 void usb_process_rx_callback(const uint8_t* buf, uint32_t len);

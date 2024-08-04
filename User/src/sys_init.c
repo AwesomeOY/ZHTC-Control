@@ -70,6 +70,26 @@ const gpio_obj* bootle_power_gpios[] = {
 	&bottle6_in_valve_power_gpio
 };
 
+/* 电平转换芯片有效 */
+void gpio_level_output_enable(void)
+{
+	WRITE_PIN(GPIOE, GPIO_PIN_7,  GPIO_PIN_SET);
+	WRITE_PIN(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+	WRITE_PIN(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
+	WRITE_PIN(GPIOE, GPIO_PIN_12, GPIO_PIN_SET);
+	WRITE_PIN(GPIOD, GPIO_PIN_0,  GPIO_PIN_SET);
+}
+
+/* 电平转换芯片无效 */
+void gpio_level_output_disable(void)
+{
+	WRITE_PIN(GPIOE, GPIO_PIN_7,  GPIO_PIN_RESET);
+	WRITE_PIN(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+	WRITE_PIN(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
+	WRITE_PIN(GPIOE, GPIO_PIN_12, GPIO_PIN_RESET);
+	WRITE_PIN(GPIOD, GPIO_PIN_0,  GPIO_PIN_RESET);
+}
+
 /* 采集系统初始化; 关闭所有阀门 */
 void collect_system_init(void)
 {
@@ -300,7 +320,7 @@ uint8_t measurement_running(void)
 	
 	// 读取仪器状态
 	if (osOK == osEventFlagsWait(collect_event, PARAM_SENSOR_SUCCESS_EVENT_BIT | PARAM_SENSOR_ERROR_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT, 
-	                 osFlagsWaitAny, 60000u)) {
+	                 osFlagsWaitAny, 80000u)) {
 		// 读取仪器测量数据，整个流程完成
 	}
 	
@@ -357,4 +377,75 @@ void water_test(void)
 	gpio_output_invalid(&water_in_valve_power_gpio);
 	gpio_output_invalid(&pump_power_gpio);
 }
+
+void gpio_auto_test(void)
+{
+	uint8_t i = 0;
+	gpio_output_valid(&four_param_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&five_param_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&water_out_valve_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&water_in_valve_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&pump_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&motor_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&course_led1_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&course_led2_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_valid(&bottle_in_valve_power_gpio);
+	osDelay(2000);
+	
+	for (i = 0; i<sizeof(bootle_power_gpios)/sizeof(bootle_power_gpios[0]); ++i) {
+		gpio_output_valid(bootle_power_gpios[i]);
+		osDelay(2000);
+	}
+	
+	osDelay(5000);
+	
+	gpio_output_invalid(&four_param_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&five_param_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&water_out_valve_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&water_in_valve_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&pump_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&motor_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&course_led1_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&course_led2_power_gpio);
+	osDelay(2000);
+	
+	gpio_output_invalid(&bottle_in_valve_power_gpio);
+	osDelay(2000);
+	
+	for (i = 0; i<sizeof(bootle_power_gpios)/sizeof(bootle_power_gpios[0]); ++i) {
+		gpio_output_invalid(bootle_power_gpios[i]);
+		osDelay(2000);
+	}
+}
+
 

@@ -18,7 +18,8 @@ void app_init(void)
 	
 	HAL_TIM_Base_Start_IT(&htim1);
 	
-	WRITE_PIN(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
+	// 所有电平转换芯片有效
+	gpio_level_output_enable();
 	
 	collect_system_init();
 	
@@ -38,4 +39,5 @@ void app_init(void)
 void app_run(void)
 {
 	//param_sensor_start();
+	//gpio_auto_test();
 }
