@@ -32,7 +32,7 @@ uint8_t set_app_fw_flag(const app_fw_flag* pff)
 
 
 /* 应用程序跳转 */
-void jumpToApp(uint32_t app_addr)
+void jumpToApp(uint32_t app_addr, uint32_t vect_offset)
 {
 	pFunction JumpToApplication;
 	uint32_t JumpAddress;
@@ -48,7 +48,7 @@ void jumpToApp(uint32_t app_addr)
 		JumpToApplication = (pFunction) JumpAddress;
 
 		HAL_DeInit();
-		SCB->VTOR = FLASH_BASE | FLASH_PAGE_STEP;
+		SCB->VTOR = FLASH_BASE | vect_offset;
 		
 		/* Initialize user application's Stack Pointer */
 		__set_MSP(*(__IO uint32_t*) app_addr);
@@ -115,7 +115,7 @@ uint8_t app_update_end(app_upgrade_struct* upgrade, uint8_t need_update)
 			fw.crc32 = upgrade->crc32;
 			if (set_app_fw_flag(&fw)) {
 				// 跳转到bootloader
-				jumpToApp(ADDR_FLASH_PAGE_0);
+				jumpToApp(ADDR_FLASH_PAGE_0, 0x00000U);
 				return 1;
 			} else {
 				return 0;
@@ -165,21 +165,21 @@ uint8_t app_update_check_crc32(void)
 uint8_t app_update_check(void)
 {
 	app_fw_flag fw = *(read_app_fw_flag());
-	if (fw.update) {
+	if (fw.update == 0x01) {
 		if (app_update_check_crc32()) {
 			app_upgrade_struct upgrade;
 			if (app_update_start(&upgrade, APP_UPGRADE_APP1)) {
 				if (app_update_flash(&upgrade, (uint32_t*)APP2_FLASH_START_ADDR, fw.size/4)) {
 					fw.update = 0;
 					if (set_app_fw_flag(&fw)) {
-						jumpToApp(APP1_FLASH_START_ADDR);
+						jumpToApp(APP1_FLASH_START_ADDR, 0x20000U);
 						return 1;
 					}				
 				}
 			}
 		}
 	} else {
-		//jumpToApp(APP1_FLASH_START_ADDR);
+		jumpToApp(APP1_FLASH_START_ADDR, 0x20000U);
 	}
 	return 0;
 }
