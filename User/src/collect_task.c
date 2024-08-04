@@ -12,11 +12,12 @@ void collect_task_init(void)
 	const osThreadAttr_t attributes = {
 	  .name = "COLLECT_TASK",
 	  .stack_size = 128 * 4,
-	  .priority = (osPriority_t)osPriorityLow,
+	  .priority = (osPriority_t)osPriorityLow1,
 	};
 	osThreadNew(collect_task, NULL, &attributes);
 }
 
+/* 水管位置控制 */
 static int8_t position_control(float pos)
 {
 	float cpos = get_brt38_angle();
@@ -33,6 +34,7 @@ static int8_t position_control(float pos)
 	return 0;
 }
 
+/* 采水任务 */
 void collect_task(void* arg)
 {
 	while (1)
@@ -118,6 +120,7 @@ void collect_task(void* arg)
 			default:
 				break;
 		}
+		osDelay(10);
 	}
 }
 

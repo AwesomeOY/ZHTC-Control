@@ -13,6 +13,7 @@ static uint8_t _rx_len = 0;
 static int8_t _param_sensor5_parse_data(void);
 static void _param_sensor_receive_cmpt_cb(uint8_t* buf, uint16_t len);
 
+/* 多参数485串口初始化 */
 void param_sensor5_init(void)
 {
 	serial_init(SERIAL_ID3, _param_uart_rx_buff, sizeof(_param_uart_rx_buff), SERIAL_DOUBLE_BUF_MODE_DISABLE);
@@ -107,6 +108,7 @@ void param_sensor5_restart(void)
 	_paramSensor5.success = 0;
 }
 
+/* 轮询获取所有传感器的值 */
 void param_sensor5_update(void)
 {
 	uint8_t flag = 0;

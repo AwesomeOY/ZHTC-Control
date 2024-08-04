@@ -120,4 +120,7 @@ void collect_task(void* arg);
 
 void collect_task_init(void);
 
+void usb_task_init(void);
+void usb_process_rx_callback(const uint8_t* buf, uint32_t len);
+
 #endif

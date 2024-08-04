@@ -11,6 +11,7 @@ const osThreadAttr_t paramSensorTask_attributes = {
 
 static osSemaphoreId_t _param_sensor_start_sem;
 
+/* 应用层调用开启数据采集任务 */
 void param_sensor_start(void)
 {
 	osSemaphoreRelease(_param_sensor_start_sem);
@@ -24,6 +25,7 @@ void param_sensor_update_task_init(void)
 	osThreadNew(param_sensor_task, NULL, &paramSensorTask_attributes);
 }
 
+/* 多参数池数据更新任务，由采水任务到数据测量阶段才开启 */
 void param_sensor_task(void* arg)
 {
 	uint16_t count = 0;
@@ -34,7 +36,7 @@ void param_sensor_task(void* arg)
 			while (1) {
 				const ParamSensor5* pparam = NULL;
 				param_sensor5_update();
-				pparam = get_current_param_sensor5();
+				pparam = get_current_param_sensor5();  // 更新多参数参数
 				if (pparam->success) {
 					count = 0;
 					osEventFlagsSet(collect_event, PARAM_SENSOR_SUCCESS_EVENT_BIT);

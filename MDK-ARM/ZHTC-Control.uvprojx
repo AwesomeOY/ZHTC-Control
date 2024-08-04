@@ -78,9 +78,9 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
+            <UserProg1Name>fromelf.exe --bin --output=Bin\@L.bin !L</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -177,7 +177,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -1001,6 +1001,26 @@
               <FileName>ParamSensorUpdateTask.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\src\ParamSensorUpdateTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>boot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\boot.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\flash_if.c</FilePath>
+            </File>
+            <File>
+              <FileName>AwesomeProtocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\AwesomeProtocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbProcess.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\usbProcess.c</FilePath>
             </File>
           </Files>
         </Group>

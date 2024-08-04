@@ -31,6 +31,8 @@ void app_init(void)
 	motor_init();
 	
 	param_sensor_update_task_init();
+	
+	usb_task_init();
 }
 
 void app_run(void)
