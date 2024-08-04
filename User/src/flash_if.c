@@ -67,6 +67,7 @@ uint32_t FLASH_If_Erase(uint32_t sector, uint32_t saddr, uint32_t eaddr)
 
   /* Get the sector where start the user flash area */
   NbrOfPages = (eaddr - saddr)/FLASH_PAGE_SIZE;
+  NbrOfPages = (NbrOfPages == 0) ? 1 : NbrOfPages;
 
   pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;
   pEraseInit.NbSectors = NbrOfPages;

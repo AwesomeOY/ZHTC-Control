@@ -163,8 +163,8 @@ static void usb_data_parse(void)
 									if (_upgrade_data.rec_len > _upgrade_data.max_len) {
 										ack = 0;
 									}
-									_upgrade_data.crc32 = crc32(_upgrade_data.crc32, &awesomeMessage.data.upgrade_msg.data[0], awesomeMessage.data.upgrade_msg.size);
-									if (app_update_flash(&app_upgrade, (uint32_t*)&awesomeMessage.data.upgrade_msg.data[0], awesomeMessage.data.upgrade_msg.size/4)) {
+									_upgrade_data.crc32 = crc32(_upgrade_data.crc32, &(awesomeMessage.data.upgrade_msg.data[0]), awesomeMessage.data.upgrade_msg.size);
+									if (app_update_flash(&app_upgrade, (uint32_t*)(&(awesomeMessage.data.upgrade_msg.data[0])), awesomeMessage.data.upgrade_msg.size/4)) {
 										ack = 1;
 									}
 								} else if (awesomeParseStatus.last_seq == awesomeMessage.seq) {
@@ -178,7 +178,7 @@ static void usb_data_parse(void)
 												((uint32_t)awesomeMessage.data.upgrade_msg.data[1] << 8) |
 												((uint32_t)awesomeMessage.data.upgrade_msg.data[2] << 16) |
 												((uint32_t)awesomeMessage.data.upgrade_msg.data[3] << 24);
-								if (crc == _upgrade_data.crc32) {
+								if (crc == app_upgrade.crc32) {
 									ack = 1;								
 								}
 								upgrade_send_ack(ack);
@@ -193,6 +193,7 @@ static void usb_data_parse(void)
 							default:
 								break;
 						}
+
 						break;
 				}
 			} 
@@ -203,6 +204,7 @@ static void usb_data_parse(void)
 
 static void usb_task(void* arg)
 {
+	app_update_check();
 	while (1)
 	{
 		usb_data_parse();

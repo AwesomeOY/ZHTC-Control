@@ -39,6 +39,8 @@ uint8_t app_update_end(app_upgrade_struct* upgrade, uint8_t need_update);
 
 uint8_t app_update_check_crc32(void);
 
+uint8_t app_update_check(void);
+
 #define CLOSE_IRP()  set_PRIMASK(1)
 #define OPEN_IRP()   set_PRIMASK(0)
 

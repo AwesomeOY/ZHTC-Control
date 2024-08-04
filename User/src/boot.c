@@ -2,6 +2,7 @@
 #include "boot.h"
 #include "usbd_cdc.h"
 
+
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 static app_fw_flag fw_flag;
@@ -69,14 +70,18 @@ uint8_t app_update_start(app_upgrade_struct* upgrade, APP_UPGRADE_TYPE app_type)
 	uint32_t sector = 0;
 	upgrade->start = 1;
 	if (app_type == APP_UPGRADE_APP1) {
+		upgrade->type = app_type;
 		upgrade->start_addr = APP1_FLASH_START_ADDR;
 		upgrade->end_addr = APP1_FLASH_START_ADDR + FLASH_PAGE_SIZE * 3;
 		upgrade->current_addr = APP1_FLASH_START_ADDR;
+		upgrade->crc32 = 0;
 		sector = 5;
 	} else if (app_type == APP_UPGRADE_APP2) {
+		upgrade->type = app_type;
 		upgrade->start_addr = APP2_FLASH_START_ADDR;
 		upgrade->end_addr = APP2_FLASH_START_ADDR + FLASH_PAGE_SIZE * 3;
 		upgrade->current_addr = APP2_FLASH_START_ADDR;
+		upgrade->crc32 = 0;
 		sector = 8;
 	} else {
 		upgrade->start = 0;
@@ -111,6 +116,7 @@ uint8_t app_update_end(app_upgrade_struct* upgrade, uint8_t need_update)
 			fw.crc32 = upgrade->crc32;
 			if (set_app_fw_flag(&fw)) {
 				// 跳转到bootloader
+				jumpToApp(ADDR_FLASH_PAGE_0);
 				return 1;
 			} else {
 				return 0;
@@ -166,8 +172,10 @@ uint8_t app_update_check(void)
 			if (app_update_start(&upgrade, APP_UPGRADE_APP1)) {
 				if (app_update_flash(&upgrade, (uint32_t*)APP2_FLASH_START_ADDR, fw.size/4)) {
 					fw.update = 0;
-					if (set_app_fw_flag(&fw))
+					if (set_app_fw_flag(&fw)) {
+						jumpToApp(APP1_FLASH_START_ADDR);
 						return 1;
+					}				
 				}
 			}
 		}

@@ -59,7 +59,6 @@ AWESOME_PARSE_STATUS_ENUM awesome_protocol_parse_char(uint8_t data, AwesomeMessa
 AwesomeMessage* awesome_protocol_upgrade_msg_packed(AwesomeMessage* msg, AwesomeProtocolUpgradeMessage* upgrade)
 {
 	uint8_t i = 0;
-	uint16_t crc16 = 0;
 	
 	msg->header = AWESOME_PROTOCOL_HEADER;
 	msg->seq += 1;
