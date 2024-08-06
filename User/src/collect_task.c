@@ -6,6 +6,7 @@ static COLLECT_TASK_STATUS  old_collect_task_status = COLLECT_TASK_STATUS_IDLE; 
 static COLLECT_TASK_CMD collect_task_cmd = COLLECT_TASK_CMD_NONE; // 当前执行任务指令
 static COLLECT_MODE collect_mode = COLLECT_MODE_NONE;  // 采集控制任务自动模式
 static float _target_ang = 0.0f;
+extern osEventFlagsId_t collect_event;
 
 void collect_task_init(void)
 {
@@ -18,19 +19,20 @@ void collect_task_init(void)
 }
 
 /* 水管位置控制 */
-static int8_t position_control(float pos)
+uint8_t wait_motor_stop(void)
 {
-	float cpos = get_brt38_angle();
-	if (fabs(pos - cpos) <= 2.0f) {
-		motor_set_speed(0.0f);
-		return 1;
-	} else {
-		if (pos - cpos > 2.0f) {
-			motor_set_speed(0.5f);
-		} if (pos - cpos < -2.0f) {
-			motor_set_speed(-0.5f);
+	uint32_t check_flag = MOTOR_ACTION_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+	if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, 30000U)) {
+		uint32_t flag = osEventFlagsGet(collect_event);
+		osEventFlagsClear(collect_event, check_flag);
+		
+		if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
+			return 0;
 		}
-	}
+		if (flag & MOTOR_ACTION_EVENT_BIT) {
+			return 1;
+		}
+	}	
 	return 0;
 }
 
@@ -63,9 +65,12 @@ void collect_task(void* arg)
 				// 采水管下降
 			    // 直到预设深度
 			    // 进入开启阀门、隔膜泵进入采水润洗状态
-				if (position_control(_target_ang)) {
+				motor_set_position(_target_ang);
+				if (wait_motor_stop()) {
 					collect_task_status = COLLECT_TASK_STATUS_CLEANING;
-				}			
+				} else {
+					collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				}
 				break;
 			case COLLECT_TASK_STATUS_CLEANING:  // 润洗
 				// 润洗管道三次，每次等待15秒
@@ -80,9 +85,12 @@ void collect_task(void* arg)
 				collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
 				break;
 			case COLLECT_TASK_STATUS_PULL_PIPE: // 采水管上升
-				if (position_control(_target_ang)) {
+				motor_set_position(0.0f);
+				if (wait_motor_stop()) {
 					measurement_running();
 					collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
+				} else {
+					collect_task_status = COLLECT_TASK_STATUS_IDLE;
 				}
 				break;
 			case COLLECT_TASK_STATUS_CLEAN_BUS: // 排空汇流排

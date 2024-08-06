@@ -24,4 +24,8 @@ void motor_set_speed(float spd);
 
 void motor_stop(void);
 
+uint8_t motor_need_control(void);
+
+float motor_get_target_pos(void);
+
 #endif

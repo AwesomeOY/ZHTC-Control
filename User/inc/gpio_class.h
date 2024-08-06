@@ -16,7 +16,7 @@ typedef enum {
 typedef struct {
 	GPIO_TYPE type;
 	GPIO_LEVEL valid_level;
-	Pin pin;	
+	Pin pin;
 }gpio_obj;
 
 void gpio_output_valid(const gpio_obj* gpio);

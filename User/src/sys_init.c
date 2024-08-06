@@ -1,6 +1,11 @@
 #include "app.h"
-#include "sys_hw_def.h"
+
 extern osEventFlagsId_t collect_event;
+
+uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp);
+uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp);
+uint8_t _bottle_is_full(VAVLE_ID_ENUM id);
+uint8_t _vavle_is_open(VAVLE_ID_ENUM id);
 
 // 电磁阀完全开/关时间 ms
 #define VAVLE_ACTION_TIME_MS 8000U
@@ -55,11 +60,11 @@ uint8_t current_bottle_id = 0; // 当前使用的取样瓶号
 uint8_t target_bottle_id = 0;  // 配置接下来要使用的留样瓶
 
 // 留样瓶状态，高位到低位依次为7~0号瓶状态，1-代表满，0-空
-uint8_t bottle_status = 0;
+uint8_t bottle_full_status = 0;
 
 // 阀门开关状态标志；表示0~31 阀门开启状态，1为开启，0为开启中
 // pump(b9) | water_out(b8) | water_in(b7) | bottle(b6) | bottle6 ~ bottle1
-uint16_t vavle_status = 0;
+uint16_t vavle_open_status = 0;
 
 const gpio_obj* bootle_power_gpios[] = {
 	&bottle1_in_valve_power_gpio,
@@ -68,6 +73,19 @@ const gpio_obj* bootle_power_gpios[] = {
 	&bottle4_in_valve_power_gpio,
 	&bottle5_in_valve_power_gpio,
 	&bottle6_in_valve_power_gpio
+};
+
+const gpio_obj* valve_power_gpios[] = {
+	&bottle1_in_valve_power_gpio,
+	&bottle2_in_valve_power_gpio,
+	&bottle3_in_valve_power_gpio,
+	&bottle4_in_valve_power_gpio,
+	&bottle5_in_valve_power_gpio,
+	&bottle6_in_valve_power_gpio,
+	&bottle_in_valve_power_gpio,
+	&water_in_valve_power_gpio,
+	&water_out_valve_power_gpio,
+	&pump_power_gpio
 };
 
 /* 电平转换芯片有效 */
@@ -104,45 +122,64 @@ void collect_system_init(void)
 	gpio_output_invalid(&four_param_power_gpio);
 	gpio_output_invalid(&five_param_power_gpio);
 	
-	vavle_status = 0;
+	vavle_open_status = 0;
 }
 
-/* 留样瓶阀门控制,会存在开关时间的阻塞
-** 参数: id->1~6, open->1-开启，0-关闭
-*/
-uint8_t bottle_valve_control(uint8_t id, uint8_t open)
+/* 留样瓶阀门控制,会存在开关时间的阻塞 */
+uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open)
 {
+	// ID无效
+	if (id >= VAVLE_ID_MAX) {
+		return 0;
+	}
+	
 	// 留样瓶中的样本已经是满状态，则不能再次开启阀门
-	if (open && (bottle_status & (1<<id))) {
+	if (open && _bottle_is_full(id)) {
 		return 0;
 	}
 	
 	// 留样瓶已经是开启状态
-	if (open && (vavle_status & (1<<id))) {
+	if (open && _vavle_is_open(id)) {
 		return 0;
 	}
 	
 	// 留样瓶已经是关闭状态
-	if (!open && (((vavle_status & (1<<id))) == 0)) {
+	if (!open && (_vavle_is_open(id) == 0)) {
 		return 0;
 	}
 	
 	if (open) {
-		gpio_output_valid(bootle_power_gpios[id]);
-		vavle_status |= 1 << id;
-		osDelay(VAVLE_ACTION_TIME_MS);
+		gpio_output_valid(valve_power_gpios[id]);
+		vavle_open_status |= 1 << id;
 	} else {
-		gpio_output_invalid(bootle_power_gpios[id]);
-		vavle_status &= ~(1 << id);
+		gpio_output_invalid(valve_power_gpios[id]);
+		vavle_open_status &= ~(1 << id);
+	}
+	
+	// 其他阀门需要控制时间
+	if (id != VAVLE_ID_PUMP) {
 		osDelay(VAVLE_ACTION_TIME_MS);
 	}
+	
 	return 1;	
 }
 
 /* 判断留样瓶是否已经满 */
-uint8_t bottle_is_full(uint8_t id)
+inline uint8_t _bottle_is_full(VAVLE_ID_ENUM id)
 {
-	return bottle_status & (1<<id);
+	if (id >= VAVLE_ID_BOTTLE_ALL) {
+		return 0;
+	}
+	return bottle_full_status & (1<<id);
+}
+
+/* 判断阀门是否开启 */
+inline uint8_t _vavle_is_open(VAVLE_ID_ENUM id)
+{
+	if (id >= VAVLE_ID_MAX) {
+		return 1;
+	}
+	return vavle_open_status & (1<<id);
 }
 
 /* 清洗管路
@@ -159,9 +196,8 @@ uint8_t pipe_cleaning(void)
 	uint8_t i = 0;
 	
 	// 关闭留样阀
-	for ( ; i < sizeof(bootle_power_gpios)/sizeof(&bootle_power_gpios[0]); ++i) {
-		gpio_output_invalid(bootle_power_gpios[i]);
-		vavle_status &= ~(1 << i);
+	for (i = 0; i < sizeof(bootle_power_gpios)/sizeof(&bootle_power_gpios[0]); ++i) {
+		valve_control((VAVLE_ID_ENUM)i, 0);
 		if (i == 3) {
 			osDelay(VAVLE_ACTION_TIME_MS);
 		}
@@ -169,69 +205,38 @@ uint8_t pipe_cleaning(void)
 	osDelay(VAVLE_ACTION_TIME_MS);
 	
 	// 开启多参池阀，留样总阀
-	gpio_output_valid(&water_in_valve_power_gpio);	
-	gpio_output_valid(&bottle_in_valve_power_gpio);
-	vavle_status |= 0x03 << 6;
-	osDelay(VAVLE_ACTION_TIME_MS);
+	valve_control(VAVLE_ID_BOTTLE_ALL, 1);
+	valve_control(VAVLE_ID_WATER_IN, 1);
 	
 	uint8_t loop = 0;
 	for (loop = 0; loop < 3; ++loop) {
 		
 		// 关闭排水阀
-		gpio_output_invalid(&water_out_valve_power_gpio);
-		vavle_status &= ~(0x01 << 8);
-		osDelay(VAVLE_ACTION_TIME_MS);
+		valve_control(VAVLE_ID_WATER_OUT, 0);
 		
 		// 开启隔膜泵取水
-		gpio_output_valid(&pump_power_gpio);
-		vavle_status |= 0x01 << 9;
+		valve_control(VAVLE_ID_PUMP, 1);
 		
 		// 等待液位开关有效
-		uint32_t last = osKernelGetSysTimerCount();
-		while (1) {
-			osDelay(20);
-			if (gpio_input_valid(&water_level_sw1_gpio)) {
-				osDelay(20);
-				if (gpio_input_valid(&water_level_sw1_gpio)) {
-					break;
-				}
-			}
-			if (osKernelGetSysTimerCount() - last >= WATER_ERROR_TIMEOUT_MS) {
-				return 0; // 超时
-			}
+		if (!_water_sw1_wait(SWITCH_TYPE_ON)) {
+			return 0;
 		}
 		
 		// 关闭隔膜泵
-		gpio_output_invalid(&pump_power_gpio);
-		vavle_status &= ~(0x01 << 9);
-		osDelay(500U);
+		valve_control(VAVLE_ID_PUMP, 0);
 		
 		// 开始润洗排水
-		gpio_output_valid(&water_out_valve_power_gpio);
-		vavle_status |= 1 << 8;
-		osDelay(VAVLE_ACTION_TIME_MS);
+		valve_control(VAVLE_ID_WATER_OUT, 1);
 		
 		// 等待液位开关为低液位状态
-		last = osKernelGetSysTimerCount();
-		while (1) {
-			osDelay(20);
-			if (0 == gpio_input_valid(&water_level_sw1_gpio)) {
-				osDelay(20);
-				if (0 == gpio_input_valid(&water_level_sw1_gpio)) {
-					break;
-				}
-			}
-			if (osKernelGetSysTimerCount() - last >= WATER_ERROR_TIMEOUT_MS) {
-				return 0; // 超时
-			}
+		if (!_water_sw1_wait(SWITCH_TYPE_OFF)) {
+			return 0;
 		}
-		osDelay(1000U);
+		osDelay(5000U);
 	}
 	
 	// 关闭润洗阀
-	gpio_output_invalid(&water_out_valve_power_gpio);
-	vavle_status &= ~(1 << 8);
-	osDelay(VAVLE_ACTION_TIME_MS);
+	valve_control(VAVLE_ID_WATER_OUT, 0);
 	
 	return 1;
 }
@@ -247,43 +252,29 @@ uint8_t pipe_cleaning(void)
 uint8_t water_collecting(void)
 {
 	// 开启多参数进水阀、留样瓶总阀、对应的留样瓶阀
-	gpio_output_invalid(&water_out_valve_power_gpio);
-	vavle_status &= ~(1 << 8);
-	osDelay(VAVLE_ACTION_TIME_MS);
-	
-	gpio_output_valid(&water_in_valve_power_gpio);
-	gpio_output_valid(&bottle_in_valve_power_gpio);
-	vavle_status |= 0x03 << 6;
-	if (bottle_valve_control(target_bottle_id, 1)) {
+	valve_control(VAVLE_ID_WATER_OUT, 0);
+		
+	valve_control(VAVLE_ID_WATER_IN, 1);
+	valve_control(VAVLE_ID_BOTTLE_ALL, 1);
+	if (valve_control((VAVLE_ID_ENUM)target_bottle_id, 1)) {
 		current_bottle_id = target_bottle_id;
+	} else {
+		return 0;
 	}
 	
 	// 开启隔膜泵
-	gpio_output_valid(&pump_power_gpio);
-	vavle_status |= 0x01 << 9;
+	valve_control(VAVLE_ID_PUMP, 1);
 	
 	// 等待液位开关有效
-	uint32_t last = osKernelGetSysTimerCount();
-	while (1) {
-		osDelay(20);
-		if (gpio_input_valid(&water_level_sw1_gpio)) {
-			osDelay(20);
-			if (gpio_input_valid(&water_level_sw1_gpio)) {
-				break;
-			}
-		}
-		if (osKernelGetSysTimerCount() - last >= WATER_ERROR_TIMEOUT_MS) {
-			return 0; // 超时
-		}
+	if (!_water_sw1_wait(SWITCH_TYPE_ON)) {
+		return 0;
 	}
 	
 	// 关闭留样瓶阀，并标志留样品满
-	bottle_valve_control(target_bottle_id, 0);
-	bottle_status |= 1<<target_bottle_id;
+	valve_control((VAVLE_ID_ENUM)target_bottle_id, 0);
 	
 	// 关闭隔膜泵
-	gpio_output_invalid(&pump_power_gpio);
-	vavle_status &= ~(0x01 << 9);
+	valve_control(VAVLE_ID_PUMP, 0);
 	return 1;
 }
 
@@ -371,7 +362,7 @@ void water_test(void)
 	gpio_output_valid(&pump_power_gpio);
 	
 	// 判断水位开关，到达，则关闭进水阀
-	while (!gpio_input_valid(&water_level_sw1_gpio));
+	_water_sw1_wait(SWITCH_TYPE_OFF);
 	
 	// 关闭水泵
 	gpio_output_invalid(&water_in_valve_power_gpio);
@@ -448,4 +439,95 @@ void gpio_auto_test(void)
 	}
 }
 
+/* 等待液位开关1信号动作 */
+uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp)
+{
+	if (tp == SWITCH_TYPE_ON) {
+		uint32_t check_flag = WATER_SW1_ON_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+		osEventFlagsClear(collect_event, WATER_SW1_ON_EVENT_BIT);	
+		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
+			uint32_t flag = osEventFlagsGet(collect_event);
+			osEventFlagsClear(collect_event, check_flag);
+			
+			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
+				return 0;
+			}
+			if (flag & WATER_SW1_ON_EVENT_BIT) {
+				if (gpio_input_valid(&water_level_sw1_gpio)) {
+					osDelay(20); // 等待电平信号稳定
+					if (gpio_input_valid(&water_level_sw1_gpio)) {
+						return 1;
+					}
+				}
+			}
+		}
+	}
+	else if (tp == SWITCH_TYPE_OFF) {
+		uint32_t check_flag = WATER_SW1_OFF_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+		osEventFlagsClear(collect_event, WATER_SW1_OFF_EVENT_BIT);		
+		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
+			uint32_t flag = osEventFlagsGet(collect_event);
+			osEventFlagsClear(collect_event, check_flag);
+			
+			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
+				return 0;
+			}
+			if (flag & WATER_SW1_OFF_EVENT_BIT) {
+				if (gpio_input_valid(&water_level_sw1_gpio) == 0) {
+					osDelay(20); // 等待电平信号稳定
+					if (gpio_input_valid(&water_level_sw1_gpio) == 0) {
+						return 1;
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+/* 等待液位开关2信号有效 */
+uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp)
+{
+	if (tp == SWITCH_TYPE_ON) {
+		uint32_t check_flag = WATER_SW2_ON_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+		osEventFlagsClear(collect_event, WATER_SW2_ON_EVENT_BIT);	
+		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
+			uint32_t flag = osEventFlagsGet(collect_event);
+			osEventFlagsClear(collect_event, check_flag);
+			
+			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
+				return 0;
+			}
+			if (flag & WATER_SW2_ON_EVENT_BIT) {
+				if (gpio_input_valid(&water_level_sw2_gpio)) {
+					osDelay(20); // 等待电平信号稳定
+					if (gpio_input_valid(&water_level_sw2_gpio)) {
+						return 1;
+					}
+				}
+			}
+		}
+	}
+	else if (tp == SWITCH_TYPE_OFF) {
+		uint32_t check_flag = WATER_SW2_OFF_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+		osEventFlagsClear(collect_event, WATER_SW2_OFF_EVENT_BIT);	
+		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
+			uint32_t flag = osEventFlagsGet(collect_event);
+			osEventFlagsClear(collect_event, check_flag);
+			
+			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
+				return 0;
+			}
+			if (flag & WATER_SW2_OFF_EVENT_BIT) {
+				if (gpio_input_valid(&water_level_sw2_gpio) == 0) {
+					osDelay(20); // 等待电平信号稳定
+					if (gpio_input_valid(&water_level_sw2_gpio) == 0) {
+						return 1;
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
 

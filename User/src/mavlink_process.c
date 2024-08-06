@@ -2,7 +2,7 @@
 #include "mavlink.h"
 #include "usbd_cdc_if.h"
 
-static uint8_t _mavlink_serial_rec_buf[2*32];
+static uint8_t _mavlink_serial_rec_buf[2*80];
 static uint8_t _mavlink_serial_send_buf[256];
 static uint8_t _mavlink_rec_buff[3096];
 static uint8_t _mavlink_send_buff[2048];
@@ -72,7 +72,7 @@ static void _mavlink_parse(void)
 				switch (msg.msgid) {					
 					case MAVLINK_MSG_ID_HEARTBEAT:
 						if (_uav_mavlink_system.sysid==0 && _uav_mavlink_system.compid == 0) {
-							_uav_mavlink_system.sysid = 2;
+							_uav_mavlink_system.sysid = 1;
 							_uav_mavlink_system.compid = 1;
 						}
 						break;
@@ -142,6 +142,7 @@ static void _mavlink_request_msg(void)
 {
 	static uint32_t _last_time_ms = 0;
 	static uint32_t _last_heabeat_ms = 0;
+	mavlink_request_data_stream_t stream;
 	uint32_t now = osKernelGetTickCount();
 	if (now - _last_time_ms >= 5000) {
 		_last_time_ms = now;		
@@ -149,9 +150,9 @@ static void _mavlink_request_msg(void)
 		mavlink_command_long_t commd_long;
 		memset(&commd_long, 0, sizeof(commd_long));
 		
-//		if (_uav_mavlink_system.sysid == 0 && _uav_mavlink_system.compid == 0) {
-//			return;
-//		}
+		if (_uav_mavlink_system.sysid == 0 && _uav_mavlink_system.compid == 0) {
+			return;
+		}
 		
 		commd_long.target_system = _uav_mavlink_system.sysid;
 		commd_long.target_component = 0;
@@ -174,6 +175,13 @@ static void _mavlink_request_msg(void)
 		commd_long.param1 = MAVLINK_MSG_ID_SYS_STATUS;   // 系统状态标志
 		commd_long.param2 = 500000;   // 500ms发一次
 		mavlink_msg_command_long_send_struct((mavlink_channel_t)SERIAL_ID1, &commd_long);
+		
+//		stream.target_system = 0x01;
+//		stream.target_component = _uav_mavlink_system.compid;
+//		stream.req_message_rate = 0;
+//		stream.start_stop = 0;
+//		stream.req_stream_id = MAV_DATA_STREAM_ALL;
+//		mavlink_msg_request_data_stream_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_request_data_stream_t*)&stream);
 	}
 
 	if (now - _last_heabeat_ms >= 1000){
@@ -181,6 +189,7 @@ static void _mavlink_request_msg(void)
 		hbt.autopilot = 0;
 		hbt.base_mode = 0;
 		hbt.custom_mode = 0;
+		hbt.mavlink_version = 3;
 		_last_heabeat_ms = now;
 		mavlink_msg_heartbeat_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_heartbeat_t*)&hbt);
 	}

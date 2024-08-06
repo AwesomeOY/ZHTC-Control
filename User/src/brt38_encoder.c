@@ -30,7 +30,7 @@ osThreadId_t brt38TaskHandle;
 const osThreadAttr_t brt38Task_attributes = {
   .name = "Brt38_TASK",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t)osPriorityAboveNormal,
+  .priority = (osPriority_t)osPriorityAboveNormal7,
 };
 
 void brt38_encoder_init(void)

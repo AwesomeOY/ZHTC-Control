@@ -2,6 +2,8 @@
 #include <math.h>
 
 extern TIM_HandleTypeDef htim4;
+float _target_pos;
+uint8_t _need_update = 0;
 
 void motor_init(void)
 {
@@ -13,7 +15,18 @@ void motor_init(void)
 
 void motor_set_position(float pos)
 {
+	_target_pos = pos;
+	_need_update = 1;
+}
 
+float motor_get_target_pos(void)
+{
+	return _target_pos;
+}
+
+uint8_t motor_need_control(void)
+{
+	return _need_update;
 }
 
 void motor_set_speed(float spd)
@@ -35,8 +48,8 @@ void motor_set_speed(float spd)
 	}
 }
 
-void motor_close(void)
+void motor_stop(void)
 {
-	
 	htim4.Instance->CCR2 = 0;
+	_need_update = 0;
 }

@@ -1,5 +1,7 @@
 #include "app.h"
 
+extern osSemaphoreId_t timer_task_sem;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim == &htim1) {
@@ -8,8 +10,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		if (count >= 20000) {
 			//HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin);
 			count = 0;
-		}
+		}	
+	}
 	
+	else if (htim == &htim6) {
+		osSemaphoreRelease(timer_task_sem);
 	}
 }
 

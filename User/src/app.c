@@ -23,6 +23,8 @@ void app_init(void)
 	
 	collect_system_init();
 	
+	timer_task_init();
+	
 	collect_task_init();
 	
 	mavlink_init();
@@ -34,10 +36,13 @@ void app_init(void)
 	param_sensor_update_task_init();
 	
 	usb_task_init();
+	
+	HAL_TIM_Base_Start_IT(&htim6);
 }
 
 void app_run(void)
 {
 	//param_sensor_start();
 	//gpio_auto_test();
+	param_sensor_start();
 }

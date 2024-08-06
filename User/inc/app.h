@@ -10,6 +10,7 @@
 #include "ByteQueue.h"
 #include "mavlink.h"
 #include "motor.h"
+#include "sys_hw_def.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -74,18 +75,50 @@ typedef struct {
 	uint8_t res[7];
 }collect_status;
 
+typedef enum {
+	SWITCH_TYPE_OFF = 0,
+	SWITCH_TYPE_ON = 1
+}SWITCH_TYPE_ENUM;
+
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim6;
 extern UART_HandleTypeDef huart5;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 
-#define START_EVENT_BIT          (1<<0)
-#define ERROR_EVENT_BIT          (1<<1)
-#define EXIT_EVENT_BIT           (1<<2)
-#define PARAM_SENSOR_SUCCESS_EVENT_BIT (1<<3)
-#define PARAM_SENSOR_ERROR_EVENT_BIT   (1<<4)
+// COLLECT EVENT
+#define START_EVENT_BIT          (1U<<0)
+#define ERROR_EVENT_BIT          (1U<<1)
+#define EXIT_EVENT_BIT           (1U<<2)
+#define PARAM_SENSOR_SUCCESS_EVENT_BIT (1U<<3)
+#define PARAM_SENSOR_ERROR_EVENT_BIT   (1U<<4)
+
+#define WATER_SW1_ON_EVENT_BIT  (1U<<16)   // 液位开关1有效事件
+#define WATER_SW1_OFF_EVENT_BIT (1U<<17)   // 液位开关1无效事件
+#define WATER_SW2_ON_EVENT_BIT  (1U<<18)   // 液位开关2有效事件
+#define WATER_SW2_OFF_EVENT_BIT (1U<<19)   // 液位开关2无效事件
+
+#define METAL_SW1_ON_EVENT_BIT  (1U<<20)   // 限位开关1有效事件
+#define METAL_SW2_ON_EVENT_BIT  (1U<<22)   // 限位开关2有效事件
+ 
+#define MOTOR_ACTION_EVENT_BIT  (1U<<31)   // 电机达到位置事件
+
+// 阀门ID定义 pump(b9) | water_out(b8) | water_in(b7) | bottle(b6) | bottle6 ~ bottle1
+typedef enum {
+	VAVLE_ID_BOTTLE1 = 0,
+	VAVLE_ID_BOTTLE2 = 1,
+	VAVLE_ID_BOTTLE3 = 2,
+	VAVLE_ID_BOTTLE4 = 3,
+	VAVLE_ID_BOTTLE5 = 4,
+	VAVLE_ID_BOTTLE6 = 5,
+	VAVLE_ID_BOTTLE_ALL = 6,
+	VAVLE_ID_WATER_IN   = 7,
+	VAVLE_ID_WATER_OUT  = 8,
+	VAVLE_ID_PUMP       = 9,
+	VAVLE_ID_MAX,
+}VAVLE_ID_ENUM;
 
 #define sys_run_led_toggle() HAL_GPIO_TogglePin(SYS_LED_GPIO_Port, SYS_LED_Pin)
 
@@ -128,5 +161,9 @@ void gpio_level_output_disable(void);
 
 void usb_task_init(void);
 void usb_process_rx_callback(const uint8_t* buf, uint32_t len);
+
+void timer_task_init(void);
+
+void timer_task(void* arg);
 
 #endif
