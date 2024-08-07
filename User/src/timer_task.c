@@ -144,7 +144,7 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	
 	// PC4，限位开关1，用于复位电机编码器，强制停止控制
 	else if (&metal_sw1_gpio == p_input->p_gpio) {
-		if (valid == 0) {
+		if (valid) {
 			motor_stop();      // 关闭电机控制
 			brt38_set_reset(); // 需要复位编码器，复位零点
 		}
@@ -152,7 +152,7 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	
 	// PA7，限位开关2，用于确定水管已经被拉到最长，强制停止控制
 	else if (&metal_sw2_gpio == p_input->p_gpio) {
-		if (valid == 0) {
+		if (valid) {
 			motor_stop();
 		}
 	}
