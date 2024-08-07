@@ -1,4 +1,5 @@
 #include "app.h"
+#include <string.h>
 
 static uint16_t collect_depth_dm = 0;   // 采水深度，单位分米
 static COLLECT_TASK_STATUS  collect_task_status = COLLECT_TASK_STATUS_IDLE; // 当前采集系统运行状态
@@ -6,7 +7,20 @@ static COLLECT_TASK_STATUS  old_collect_task_status = COLLECT_TASK_STATUS_IDLE; 
 static COLLECT_TASK_CMD collect_task_cmd = COLLECT_TASK_CMD_NONE; // 当前执行任务指令
 static COLLECT_MODE collect_mode = COLLECT_MODE_NONE;  // 采集控制任务自动模式
 static float _target_ang = 0.0f;
+static uint16_t collect_task_index = 0;
 extern osEventFlagsId_t collect_event;
+extern uint8_t target_bottle_id;
+
+/* 当前任务状态 */
+inline COLLECT_TASK_STATUS current_collect_task_status(void)
+{
+	return collect_task_status;
+}
+
+inline uint8_t current_collect_task_is_idle(void)
+{
+	return collect_task_status == COLLECT_TASK_STATUS_IDLE;
+}
 
 void collect_task_init(void)
 {
@@ -88,6 +102,7 @@ void collect_task(void* arg)
 				motor_set_position(0.0f);
 				if (wait_motor_stop()) {
 					measurement_running();
+					++collect_task_index;
 					collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
 				} else {
 					collect_task_status = COLLECT_TASK_STATUS_IDLE;
@@ -164,4 +179,54 @@ void set_collect_action(COLLECT_TASK_CMD cmd, void* param)
 		case COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL: // 抽水管暂停上升或者下降
 			break;
 	} 
+}
+
+void collect_protocol_parse(mavlink_data32_t* data32)
+{
+	collect_data_frame frame;
+	memcpy(&frame, data32->data, 32);
+	if (frame.msg_id == COLLECT_PROTOCOL_MSG_ID_CMD) {
+		uint8_t bottle_id = frame.package.cmd_data.bottle_id;
+		
+		// 目标瓶已经满，则不能再次开启，应答开启错误
+		if (!current_collect_task_is_idle() || (bottle_id != 255 && bottle_is_full((VAVLE_ID_ENUM)bottle_id))) {
+			ack_data_package ack;
+			mavlink_data32_t data32;
+			ack.ack = 0;
+			ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
+			collect_protocol_ack_data_packed(&data32, &ack);
+			mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
+		}
+		else {
+			ack_data_package ack;
+			mavlink_data32_t data32;
+			ack.ack = 0;
+			ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
+			target_bottle_id = bottle_id;
+			switch (frame.package.cmd_data.type) {
+				case COLLECT_TASK_CMD_START_GET_WATER:
+					ack.ack = 1;
+					set_collect_action(COLLECT_TASK_CMD_START_GET_WATER, NULL);
+					break;
+				default:
+					break;
+			}			
+			collect_protocol_ack_data_packed(&data32, &ack);
+			mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
+		}
+		
+	}
+}
+
+void collect_protocol_send_heartbeat(void)
+{
+	heartbeat_data_package hbt;
+	mavlink_data32_t data32;
+	hbt.bottle_id = target_bottle_id;
+	hbt.collect_status = collect_task_status;
+	hbt.collect_current_index = collect_task_index;
+	hbt.target_depth_mm = (uint32_t)_target_ang;
+	hbt.current_depth_mm = (uint32_t)get_brt38_angle();
+	collect_protocol_heartbeat_data_packed(&data32, &hbt);
+	mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
 }

@@ -17,6 +17,7 @@ mavlink_gps_raw_int_t gps_raw;
 mavlink_attitude_t attitude;
 mavlink_sys_status_t uav_status;
 mavlink_command_ack_t ack;
+mavlink_data32_t rec_data32;
 
 static void _mavlink_request_msg(void);
 
@@ -91,6 +92,12 @@ static void _mavlink_parse(void)
 					case MAVLINK_MSG_ID_COMMAND_ACK:
 					{
 						mavlink_msg_command_ack_decode(&msg, &ack);
+						break;
+					}
+					case MAVLINK_MSG_ID_DATA32:
+					{
+						mavlink_msg_data32_decode(&msg, &rec_data32);						
+						collect_protocol_parse(&rec_data32);
 						break;
 					}
 					default:

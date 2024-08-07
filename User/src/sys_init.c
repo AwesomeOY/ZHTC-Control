@@ -4,8 +4,8 @@ extern osEventFlagsId_t collect_event;
 
 uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp);
 uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp);
-uint8_t _bottle_is_full(VAVLE_ID_ENUM id);
-uint8_t _vavle_is_open(VAVLE_ID_ENUM id);
+uint8_t bottle_is_full(VAVLE_ID_ENUM id);
+uint8_t vavle_is_open(VAVLE_ID_ENUM id);
 
 // 电磁阀完全开/关时间 ms
 #define VAVLE_ACTION_TIME_MS 8000U
@@ -55,9 +55,9 @@ gpio_obj bottle4_in_valve_power_gpio = SIGNAL4_OUT_GPIO_DEF;
 gpio_obj bottle5_in_valve_power_gpio = SIGNAL5_OUT_GPIO_DEF;
 gpio_obj bottle6_in_valve_power_gpio = SIGNAL6_OUT_GPIO_DEF;
 
-uint8_t pre_bottle_id = 0;     // 之前使用的取样瓶号 0 ~ 5
-uint8_t current_bottle_id = 0; // 当前使用的取样瓶号
-uint8_t target_bottle_id = 0;  // 配置接下来要使用的留样瓶
+uint8_t pre_bottle_id = 0;       // 之前使用的取样瓶号 0 ~ 5
+uint8_t current_bottle_id = 0;   // 当前使用的取样瓶号
+uint8_t target_bottle_id = 255;  // 配置接下来要使用的留样瓶
 
 // 留样瓶状态，高位到低位依次为7~0号瓶状态，1-代表满，0-空
 uint8_t bottle_full_status = 0;
@@ -127,24 +127,24 @@ void collect_system_init(void)
 
 /* 留样瓶阀门控制,会存在开关时间的阻塞 */
 uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open)
-{
+{	
 	// ID无效
 	if (id >= VAVLE_ID_MAX) {
 		return 0;
 	}
 	
 	// 留样瓶中的样本已经是满状态，则不能再次开启阀门
-	if (open && _bottle_is_full(id)) {
+	if (open && bottle_is_full(id)) {
 		return 0;
 	}
 	
 	// 留样瓶已经是开启状态
-	if (open && _vavle_is_open(id)) {
+	if (open && vavle_is_open(id)) {
 		return 0;
 	}
 	
 	// 留样瓶已经是关闭状态
-	if (!open && (_vavle_is_open(id) == 0)) {
+	if (!open && (vavle_is_open(id) == 0)) {
 		return 0;
 	}
 	
@@ -165,7 +165,7 @@ uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open)
 }
 
 /* 判断留样瓶是否已经满 */
-inline uint8_t _bottle_is_full(VAVLE_ID_ENUM id)
+inline uint8_t bottle_is_full(VAVLE_ID_ENUM id)
 {
 	if (id >= VAVLE_ID_BOTTLE_ALL) {
 		return 0;
@@ -174,7 +174,7 @@ inline uint8_t _bottle_is_full(VAVLE_ID_ENUM id)
 }
 
 /* 判断阀门是否开启 */
-inline uint8_t _vavle_is_open(VAVLE_ID_ENUM id)
+inline uint8_t vavle_is_open(VAVLE_ID_ENUM id)
 {
 	if (id >= VAVLE_ID_MAX) {
 		return 1;
@@ -256,7 +256,7 @@ uint8_t water_collecting(void)
 		
 	valve_control(VAVLE_ID_WATER_IN, 1);
 	valve_control(VAVLE_ID_BOTTLE_ALL, 1);
-	if (valve_control((VAVLE_ID_ENUM)target_bottle_id, 1)) {
+	if (target_bottle_id == 255 || valve_control((VAVLE_ID_ENUM)target_bottle_id, 1)) {
 		current_bottle_id = target_bottle_id;
 	} else {
 		return 0;
@@ -271,7 +271,9 @@ uint8_t water_collecting(void)
 	}
 	
 	// 关闭留样瓶阀，并标志留样品满
-	valve_control((VAVLE_ID_ENUM)target_bottle_id, 0);
+	if (target_bottle_id != 255) {
+		valve_control((VAVLE_ID_ENUM)target_bottle_id, 0);
+	}	
 	
 	// 关闭隔膜泵
 	valve_control(VAVLE_ID_PUMP, 0);

@@ -11,6 +11,7 @@
 #include "mavlink.h"
 #include "motor.h"
 #include "sys_hw_def.h"
+#include "CollectDataProtocol.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -151,6 +152,10 @@ uint8_t water_collecting(void);
 
 uint8_t measurement_running(void);
 
+uint8_t bottle_is_full(VAVLE_ID_ENUM id);
+
+uint8_t vavle_is_open(VAVLE_ID_ENUM id);
+
 void collect_task(void* arg);
 
 void collect_task_init(void);
@@ -165,5 +170,12 @@ void usb_process_rx_callback(const uint8_t* buf, uint32_t len);
 void timer_task_init(void);
 
 void timer_task(void* arg);
+
+COLLECT_TASK_STATUS current_collect_task_status(void);
+uint8_t current_collect_task_is_idle(void);
+
+void collect_protocol_send_heartbeat(void);
+
+void collect_protocol_parse(mavlink_data32_t* data32);
 
 #endif
