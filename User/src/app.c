@@ -44,5 +44,5 @@ void app_run(void)
 {
 	//param_sensor_start();
 	//gpio_auto_test();
-	param_sensor_start();
+	//param_sensor_start();
 }

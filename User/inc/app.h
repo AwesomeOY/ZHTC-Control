@@ -12,6 +12,7 @@
 #include "motor.h"
 #include "sys_hw_def.h"
 #include "CollectDataProtocol.h"
+#include "ParamSensor5.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -35,15 +36,17 @@ typedef enum {
 	COLLECT_TASK_STATUS_CLEANING = 3,       // 润洗
 	COLLECT_TASK_STATUS_PUMP_WATER = 4,     // 泵吸采水
 	COLLECT_TASK_STATUS_PULL_PIPE = 5,      // 采水管上升
-	COLLECT_TASK_STATUS_CLEAN_BUS = 6,      // 排空汇流排
-	COLLECT_TASK_STATUS_CLEAN_TREE = 7,     // 排空支路
-	COLLECT_TASK_STATUS_CLOSE_FAN = 8,      // 关闭阀门
-	COLLECT_TASK_STATUS_SUCCESS = 10,       // 采水完成
-	COLLECT_TASK_STATUS_CLEAN_PIPE = 11,    // 清洗管路
-	COLLECT_TASK_STATUS_FAN_CLEAN_PIPE = 12,  // 吹洗管路  	
-	COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE = 13,// 水管手动下降
-	COLLECT_TASK_STATUS_MANUAL_PULL_PIPE = 14,// 水管手动上升         
-	COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL = 15,// 水管暂停   
+	COLLECT_TASK_STATUS_MEASURE  = 6,       // 测量中 
+	COLLECT_TASK_STATUS_CLEAN_BUS = 7,      // 排空汇流排
+	COLLECT_TASK_STATUS_CLEAN_TREE = 8,     // 排空支路
+	COLLECT_TASK_STATUS_CLOSE_FAN = 9,      // 关闭阀门
+	COLLECT_TASK_STATUS_SUCCESS = 11,       // 采水完成
+	COLLECT_TASK_STATUS_CLEAN_PIPE = 12,    // 清洗管路
+	COLLECT_TASK_STATUS_FAN_CLEAN_PIPE = 13,  // 吹洗管路  	
+	COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE = 14,// 水管手动下降
+	COLLECT_TASK_STATUS_MANUAL_PULL_PIPE = 15,// 水管手动上升         
+	COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL = 16,// 水管暂停
+	
 }COLLECT_TASK_STATUS;
 
 typedef enum {
@@ -175,6 +178,8 @@ COLLECT_TASK_STATUS current_collect_task_status(void);
 uint8_t current_collect_task_is_idle(void);
 
 void collect_protocol_send_heartbeat(void);
+
+void collect_protocol_send_param5(void);
 
 void collect_protocol_parse(mavlink_data32_t* data32);
 

@@ -129,7 +129,7 @@ static void brt38_process_task(void* arg)
 		if (brt38_get_encoder_value(&encoder_value)) {
 			brt38_angle = encoder_value * 360 / 1024.0f;
 		}
-		osDelay(20);
+		osDelay(10);
 	}
 }
 

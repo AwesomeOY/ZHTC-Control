@@ -126,7 +126,7 @@ void collect_system_init(void)
 }
 
 /* 留样瓶阀门控制,会存在开关时间的阻塞 */
-uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open)
+uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open, uint8_t waitEn)
 {	
 	// ID无效
 	if (id >= VAVLE_ID_MAX) {
@@ -157,7 +157,7 @@ uint8_t valve_control(VAVLE_ID_ENUM id, uint8_t open)
 	}
 	
 	// 其他阀门需要控制时间
-	if (id != VAVLE_ID_PUMP) {
+	if ((id != VAVLE_ID_PUMP) && waitEn) {
 		osDelay(VAVLE_ACTION_TIME_MS);
 	}
 	
@@ -170,7 +170,7 @@ inline uint8_t bottle_is_full(VAVLE_ID_ENUM id)
 	if (id >= VAVLE_ID_BOTTLE_ALL) {
 		return 0;
 	}
-	return bottle_full_status & (1<<id);
+	return (bottle_full_status & (1<<id)) > 0;
 }
 
 /* 判断阀门是否开启 */
@@ -179,7 +179,7 @@ inline uint8_t vavle_is_open(VAVLE_ID_ENUM id)
 	if (id >= VAVLE_ID_MAX) {
 		return 1;
 	}
-	return vavle_open_status & (1<<id);
+	return (vavle_open_status & (1U<<id)) > 0;
 }
 
 /* 清洗管路
@@ -197,25 +197,22 @@ uint8_t pipe_cleaning(void)
 	
 	// 关闭留样阀
 	for (i = 0; i < sizeof(bootle_power_gpios)/sizeof(&bootle_power_gpios[0]); ++i) {
-		valve_control((VAVLE_ID_ENUM)i, 0);
-		if (i == 3) {
-			osDelay(VAVLE_ACTION_TIME_MS);
-		}
+		valve_control((VAVLE_ID_ENUM)i, 0, 0);
 	}
 	osDelay(VAVLE_ACTION_TIME_MS);
 	
 	// 开启多参池阀，留样总阀
-	valve_control(VAVLE_ID_BOTTLE_ALL, 1);
-	valve_control(VAVLE_ID_WATER_IN, 1);
+	valve_control(VAVLE_ID_BOTTLE_ALL, 1, 0);
+	valve_control(VAVLE_ID_WATER_IN, 1, 1);
 	
 	uint8_t loop = 0;
 	for (loop = 0; loop < 3; ++loop) {
 		
 		// 关闭排水阀
-		valve_control(VAVLE_ID_WATER_OUT, 0);
+		valve_control(VAVLE_ID_WATER_OUT, 0, 1);
 		
 		// 开启隔膜泵取水
-		valve_control(VAVLE_ID_PUMP, 1);
+		valve_control(VAVLE_ID_PUMP, 1, 0);
 		
 		// 等待液位开关有效
 		if (!_water_sw1_wait(SWITCH_TYPE_ON)) {
@@ -223,10 +220,10 @@ uint8_t pipe_cleaning(void)
 		}
 		
 		// 关闭隔膜泵
-		valve_control(VAVLE_ID_PUMP, 0);
+		valve_control(VAVLE_ID_PUMP, 0, 0);
 		
 		// 开始润洗排水
-		valve_control(VAVLE_ID_WATER_OUT, 1);
+		valve_control(VAVLE_ID_WATER_OUT, 1, 1);
 		
 		// 等待液位开关为低液位状态
 		if (!_water_sw1_wait(SWITCH_TYPE_OFF)) {
@@ -236,7 +233,7 @@ uint8_t pipe_cleaning(void)
 	}
 	
 	// 关闭润洗阀
-	valve_control(VAVLE_ID_WATER_OUT, 0);
+	valve_control(VAVLE_ID_WATER_OUT, 0, 1);
 	
 	return 1;
 }
@@ -252,18 +249,18 @@ uint8_t pipe_cleaning(void)
 uint8_t water_collecting(void)
 {
 	// 开启多参数进水阀、留样瓶总阀、对应的留样瓶阀
-	valve_control(VAVLE_ID_WATER_OUT, 0);
+	valve_control(VAVLE_ID_WATER_OUT, 0, 1);
 		
-	valve_control(VAVLE_ID_WATER_IN, 1);
-	valve_control(VAVLE_ID_BOTTLE_ALL, 1);
-	if (target_bottle_id == 255 || valve_control((VAVLE_ID_ENUM)target_bottle_id, 1)) {
+	valve_control(VAVLE_ID_WATER_IN, 1, 0);
+	valve_control(VAVLE_ID_BOTTLE_ALL, 1, 0);
+	if (target_bottle_id == 255 || valve_control((VAVLE_ID_ENUM)target_bottle_id, 1, 1)) {
 		current_bottle_id = target_bottle_id;
 	} else {
 		return 0;
 	}
 	
 	// 开启隔膜泵
-	valve_control(VAVLE_ID_PUMP, 1);
+	valve_control(VAVLE_ID_PUMP, 1, 0);
 	
 	// 等待液位开关有效
 	if (!_water_sw1_wait(SWITCH_TYPE_ON)) {
@@ -272,11 +269,11 @@ uint8_t water_collecting(void)
 	
 	// 关闭留样瓶阀，并标志留样品满
 	if (target_bottle_id != 255) {
-		valve_control((VAVLE_ID_ENUM)target_bottle_id, 0);
+		valve_control((VAVLE_ID_ENUM)target_bottle_id, 0, 1);
 	}	
 	
 	// 关闭隔膜泵
-	valve_control(VAVLE_ID_PUMP, 0);
+	valve_control(VAVLE_ID_PUMP, 0, 0);
 	return 1;
 }
 
@@ -304,6 +301,8 @@ uint8_t water_collecting(void)
 */
 uint8_t measurement_running(void)
 {
+	uint32_t flag = 0;
+	uint32_t check_flag = 0;
 	// 开启五、四参数电源
 	gpio_output_valid(&four_param_power_gpio);
 	gpio_output_valid(&five_param_power_gpio);
@@ -312,8 +311,9 @@ uint8_t measurement_running(void)
 	param_sensor_start();
 	
 	// 读取仪器状态
-	if (osOK == osEventFlagsWait(collect_event, PARAM_SENSOR_SUCCESS_EVENT_BIT | PARAM_SENSOR_ERROR_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT, 
-	                 osFlagsWaitAny, 80000u)) {
+	check_flag = PARAM_SENSOR_SUCCESS_EVENT_BIT | PARAM_SENSOR_ERROR_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny, 80000u);
+	if ((flag & check_flag) > 0) {
 		// 读取仪器测量数据，整个流程完成
 	}
 	
@@ -328,7 +328,7 @@ uint8_t measurement_running(void)
 /*** 测试代码 ***/
 void water_test(void)
 {
-	float ang = 0.0f;
+//	float ang = 0.0f;
 	// 判断电机角度是否为0，不为0，则上升
 //	while (1) {
 //		if (brt38_is_exist()) {
@@ -446,9 +446,10 @@ uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp)
 {
 	if (tp == SWITCH_TYPE_ON) {
 		uint32_t check_flag = WATER_SW1_ON_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+		uint32_t flag = 0;
 		osEventFlagsClear(collect_event, WATER_SW1_ON_EVENT_BIT);	
-		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
-			uint32_t flag = osEventFlagsGet(collect_event);
+		flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS);
+		if ((flag & check_flag) > 0) {
 			osEventFlagsClear(collect_event, check_flag);
 			
 			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
@@ -466,9 +467,10 @@ uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp)
 	}
 	else if (tp == SWITCH_TYPE_OFF) {
 		uint32_t check_flag = WATER_SW1_OFF_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
-		osEventFlagsClear(collect_event, WATER_SW1_OFF_EVENT_BIT);		
-		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
-			uint32_t flag = osEventFlagsGet(collect_event);
+		uint32_t flag = 0;
+		osEventFlagsClear(collect_event, WATER_SW1_OFF_EVENT_BIT);
+		flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS);
+		if ((flag & check_flag) > 0) {
 			osEventFlagsClear(collect_event, check_flag);
 			
 			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
@@ -492,9 +494,10 @@ uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp)
 {
 	if (tp == SWITCH_TYPE_ON) {
 		uint32_t check_flag = WATER_SW2_ON_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
-		osEventFlagsClear(collect_event, WATER_SW2_ON_EVENT_BIT);	
-		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
-			uint32_t flag = osEventFlagsGet(collect_event);
+		uint32_t flag = 0;
+		osEventFlagsClear(collect_event, WATER_SW2_ON_EVENT_BIT);
+		flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS);
+		if ((flag & check_flag) > 0) {
 			osEventFlagsClear(collect_event, check_flag);
 			
 			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
@@ -512,9 +515,10 @@ uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp)
 	}
 	else if (tp == SWITCH_TYPE_OFF) {
 		uint32_t check_flag = WATER_SW2_OFF_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
-		osEventFlagsClear(collect_event, WATER_SW2_OFF_EVENT_BIT);	
-		if (osOK == osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS)) {
-			uint32_t flag = osEventFlagsGet(collect_event);
+		uint32_t flag = 0;
+		osEventFlagsClear(collect_event, WATER_SW2_OFF_EVENT_BIT);
+		flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, WATER_ERROR_TIMEOUT_MS);
+		if ((flag & check_flag) > 0) {
 			osEventFlagsClear(collect_event, check_flag);
 			
 			if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {

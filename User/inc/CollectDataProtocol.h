@@ -21,6 +21,8 @@ typedef __packed struct {
 	uint8_t collect_status;
 	uint16_t collect_current_index;
 	uint16_t bottle_id;
+	uint32_t bottle_status;
+	uint32_t vavle_status;
 	uint32_t target_depth_mm;
 	uint32_t current_depth_mm;
 }heartbeat_data_package;
@@ -35,12 +37,13 @@ typedef __packed struct {
 	float cond_value;
 	float do_value;
 	float turb_value;
+	float temp_value;
 }param5_data_package;
 
 typedef __packed struct {
 	uint16_t type;
 	uint16_t bottle_id;
-	uint32_t depth_cm;
+	uint32_t depth_mm;
 }cmd_data_package;
 
 typedef __packed struct {

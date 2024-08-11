@@ -19,7 +19,7 @@ void motor_set_position(float pos)
 	_need_update = 1;
 }
 
-float motor_get_target_pos(void)
+inline float motor_get_target_pos(void)
 {
 	return _target_pos;
 }

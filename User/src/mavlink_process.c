@@ -20,6 +20,7 @@ mavlink_command_ack_t ack;
 mavlink_data32_t rec_data32;
 
 static void _mavlink_request_msg(void);
+void serial_back_test(void);
 
 /* 串口接收数据回调函数，将接收到数据放到队列中存储 */
 static inline void _mavlink_serial_rx_cb(uint8_t* buf, uint16_t size)
@@ -139,6 +140,7 @@ void mavlink_process_task(void* arg)
 			
 			// mavkink数据解析处理
 			_mavlink_parse();
+			//serial_back_test();
 			osDelay(1);
 		}
 	}
@@ -149,7 +151,7 @@ static void _mavlink_request_msg(void)
 {
 	static uint32_t _last_time_ms = 0;
 	static uint32_t _last_heabeat_ms = 0;
-	mavlink_request_data_stream_t stream;
+//	mavlink_request_data_stream_t stream;
 	uint32_t now = osKernelGetTickCount();
 	if (now - _last_time_ms >= 5000) {
 		_last_time_ms = now;		
@@ -199,5 +201,22 @@ static void _mavlink_request_msg(void)
 		hbt.mavlink_version = 3;
 		_last_heabeat_ms = now;
 		mavlink_msg_heartbeat_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_heartbeat_t*)&hbt);
+		collect_protocol_send_heartbeat();
+		collect_protocol_send_param5();
+	}
+}
+
+void serial_back_test(void)
+{
+	uint8_t data = 0;
+	int i = 0;
+	int rec_len = queue_len(&_mavlink_rec_queue);
+	
+	if (rec_len > 0) {
+		for (i = 0; i < rec_len; ++i) {
+			queue_de(&_mavlink_rec_queue, &data);
+			
+			queue_en(&_mavlink_send_queue, data);
+		}
 	}
 }

@@ -13,6 +13,7 @@ extern osEventFlagsId_t collect_event;
 typedef struct {
 	uint8_t changed;      // 引脚电平被改变
 	uint8_t old_status;   // 上一次判断有效状态
+	uint32_t last_time_ms;
 	const gpio_obj* p_gpio;
 }gpio_input_class;
 
@@ -22,10 +23,10 @@ static void _gpio_callback(const gpio_input_class* p_input, uint8_t valid);
 static int8_t _position_control(float pos);
 
 osSemaphoreId_t timer_task_sem;
-gpio_input_class water_sw1_input = { 0, 0, &water_level_sw1_gpio};
-gpio_input_class water_sw2_input = { 0, 0, &water_level_sw2_gpio};
-gpio_input_class metal_sw1_input = { 0, 0, &metal_sw1_gpio};
-gpio_input_class metal_sw2_input = { 0, 0, &metal_sw2_gpio};
+gpio_input_class water_sw1_input = { 0, 0, 0, &water_level_sw1_gpio};
+gpio_input_class water_sw2_input = { 0, 0, 0, &water_level_sw2_gpio};
+gpio_input_class metal_sw1_input = { 0, 0, 0, &metal_sw1_gpio};
+gpio_input_class metal_sw2_input = { 0, 0, 0, &metal_sw2_gpio};
 
 gpio_input_class* gpio_inputs[] = {
 	&water_sw1_input,
@@ -69,16 +70,20 @@ static int8_t _position_control(float pos)
 {
 	float cpos = get_brt38_angle();
 	
-	if (pos <= 0.001f) {
-		if (cpos >= 7000.0f) {
-			motor_set_speed(0.0f);
-			brt38_set_reset();
-		}		
+	// 目标深度为0，并且超出范围，则强制停止，再进行编码器复位
+	if (pos <= 0.001f && cpos >= 7000.0f) {
+		motor_set_speed(0.0f);
+		brt38_set_reset();	
 		return 1;
 	}
 	
+	// 误差为两个mm，则停下
 	if (fabs(pos - cpos) <= 2.0f) {
 		motor_set_speed(0.0f);
+		// 如果目标值为0，则选择复位
+		if (pos <= 0.001f) {
+			brt38_set_reset();
+		}
 		osEventFlagsClear(collect_event, MOTOR_ACTION_EVENT_BIT);
 		osEventFlagsSet (collect_event, MOTOR_ACTION_EVENT_BIT);
 		return 1;
@@ -106,15 +111,18 @@ static void _gpio_inputs_init(void)
 static void _gpio_input_update(gpio_input_class* p_input)
 {
 	uint8_t status = gpio_input_valid(p_input->p_gpio);
+	uint32_t now = osKernelGetTickCount();
+	
 	if (p_input->old_status != status) {
 		p_input->changed = 1;
 		p_input->old_status = status;
 		return;
 	}
 	
-	if (p_input->changed) {
-		_gpio_callback(p_input, status);
+	if (p_input->changed || (now - p_input->last_time_ms) >= 20U) {
 		p_input->changed = 0;
+		p_input->last_time_ms = now;
+		_gpio_callback(p_input, status);
 	}
 }
 
@@ -127,8 +135,10 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	// PB0，液位开关1
 	if (&water_level_sw1_gpio == p_input->p_gpio) {
 		if (valid) {
+			osEventFlagsClear(collect_event, WATER_SW1_OFF_EVENT_BIT);
 			osEventFlagsSet(collect_event, WATER_SW1_ON_EVENT_BIT);
 		} else {
+			osEventFlagsClear(collect_event, WATER_SW1_ON_EVENT_BIT);
 			osEventFlagsSet(collect_event, WATER_SW1_OFF_EVENT_BIT);
 		}
 	}
@@ -136,8 +146,10 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	// PC5，液位开关2
 	else if (&water_level_sw2_gpio == p_input->p_gpio) {
 		if (valid) {
+			osEventFlagsClear(collect_event, WATER_SW2_OFF_EVENT_BIT);
 			osEventFlagsSet(collect_event, WATER_SW2_ON_EVENT_BIT);
 		} else {
+			osEventFlagsClear(collect_event, WATER_SW2_ON_EVENT_BIT);
 			osEventFlagsSet(collect_event, WATER_SW2_OFF_EVENT_BIT);
 		}
 	}
@@ -145,8 +157,10 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	// PC4，限位开关1，用于复位电机编码器，强制停止控制
 	else if (&metal_sw1_gpio == p_input->p_gpio) {
 		if (valid) {
-			motor_stop();      // 关闭电机控制
-			brt38_set_reset(); // 需要复位编码器，复位零点
+			if (motor_get_target_pos() <= 0.001f) {
+				motor_stop();      // 关闭电机控制
+				brt38_set_reset(); // 需要复位编码器，复位零点
+			}			
 		}
 	}
 	

@@ -111,7 +111,6 @@ static void upgrade_send_ack(uint8_t ack)
 /* USB数据缓冲区发送循环 */
 static void usb_process_tx_loop(void)
 {
-	uint8_t result = USBD_OK;
 	uint32_t len = 0;
 	USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
 	if (hcdc->TxState == USBD_OK && usb_process.init){		
