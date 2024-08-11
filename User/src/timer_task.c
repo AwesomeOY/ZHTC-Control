@@ -159,8 +159,10 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 		if (valid) {
 			if (motor_get_target_pos() <= 0.001f) {
 				motor_stop();      // 关闭电机控制
-				brt38_set_reset(); // 需要复位编码器，复位零点
-			}			
+				if (get_brt38_angle() >= 0.01f) {
+					brt38_set_reset(); // 需要复位编码器，复位零点
+				}				
+			}
 		}
 	}
 	
