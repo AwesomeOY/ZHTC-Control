@@ -1132,6 +1132,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\src\CollectDataProtocol.c</FilePath>
             </File>
+            <File>
+              <FileName>RS485_4G.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\src\RS485_4G.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -13,6 +13,7 @@
 #include "sys_hw_def.h"
 #include "CollectDataProtocol.h"
 #include "ParamSensor5.h"
+#include "RS485_4G.h"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -182,5 +183,9 @@ void collect_protocol_send_heartbeat(void);
 void collect_protocol_send_param5(void);
 
 void collect_protocol_parse(mavlink_data32_t* data32);
+
+void course_led_open(void);
+
+void course_led_close(void);
 
 #endif

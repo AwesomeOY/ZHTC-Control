@@ -37,7 +37,11 @@ void app_init(void)
 	
 	usb_task_init();
 	
+	rs485_4g_init();
+	
 	HAL_TIM_Base_Start_IT(&htim6);
+	
+	course_led_open();
 }
 
 void app_run(void)

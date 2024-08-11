@@ -255,6 +255,7 @@ uint8_t water_collecting(void)
 	valve_control(VAVLE_ID_BOTTLE_ALL, 1, 0);
 	if (target_bottle_id == 255 || valve_control((VAVLE_ID_ENUM)target_bottle_id, 1, 1)) {
 		current_bottle_id = target_bottle_id;
+		bottle_full_status |= (1<<current_bottle_id);
 	} else {
 		return 0;
 	}
@@ -535,5 +536,17 @@ uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp)
 		}
 	}
 	return 0;
+}
+
+void course_led_open(void)
+{
+	gpio_output_valid(&course_led1_power_gpio);
+	gpio_output_valid(&course_led2_power_gpio);
+}
+
+void course_led_close(void)
+{
+	gpio_output_invalid(&course_led1_power_gpio);
+	gpio_output_invalid(&course_led2_power_gpio);
 }
 
