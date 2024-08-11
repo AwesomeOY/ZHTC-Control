@@ -87,7 +87,7 @@ void collect_task(void* arg)
 			    // 直到预设深度
 			    // 进入开启阀门、隔膜泵进入采水润洗状态
 				motor_set_position(_target_depth_mm);
-				if (1 || wait_motor_stop()) {
+				if (wait_motor_stop()) {
 					old_collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
 					collect_task_status = COLLECT_TASK_STATUS_CLEANING;
 				} else {
@@ -119,7 +119,7 @@ void collect_task(void* arg)
 				break;
 			case COLLECT_TASK_STATUS_PULL_PIPE: // 采水管上升
 				motor_set_position(0.0f);
-				if (1 || wait_motor_stop()) {
+				if (wait_motor_stop()) {
 					old_collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
 					collect_task_status = COLLECT_TASK_STATUS_MEASURE;					
 				} else {
