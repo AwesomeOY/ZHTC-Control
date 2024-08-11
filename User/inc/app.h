@@ -27,7 +27,8 @@ typedef enum {
 	COLLECT_TASK_CMD_STOP_PURGE_PIPE = 9, // 关闭吹洗管路
 	COLLECT_TASK_CMD_MANUAL_PUSH_PIPE = 10,      // 抽水管手动下降
 	COLLECT_TASK_CMD_MANUAL_PULL_PIPE = 11,      // 抽水管手动上升          
-	COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL = 12, // 抽水管暂停上升或者下降   
+	COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL = 12, // 抽水管暂停上升或者下降
+	COLLECT_TASK_CMD_STOP = 13,           // 停止任务
 }COLLECT_TASK_CMD;
 
 typedef enum {
@@ -47,7 +48,6 @@ typedef enum {
 	COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE = 14,// 水管手动下降
 	COLLECT_TASK_STATUS_MANUAL_PULL_PIPE = 15,// 水管手动上升         
 	COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL = 16,// 水管暂停
-	
 }COLLECT_TASK_STATUS;
 
 typedef enum {

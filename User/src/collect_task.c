@@ -222,34 +222,33 @@ void collect_protocol_parse(mavlink_data32_t* data32)
 	memcpy(&frame, data32->data, 32);
 	if (frame.msg_id == COLLECT_PROTOCOL_MSG_ID_CMD) {
 		uint8_t bottle_id = frame.package.cmd_data.bottle_id;
+		ack_data_package ack;
+		mavlink_data32_t data32;
+		ack.ack = 0;
+		ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
 		
-		// 目标瓶已经满，则不能再次开启，应答开启错误
-		if (!current_collect_task_is_idle() || (bottle_id != 255 && bottle_is_full((VAVLE_ID_ENUM)bottle_id))) {
-			ack_data_package ack;
-			mavlink_data32_t data32;
-			ack.ack = 0;
-			ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
-			collect_protocol_ack_data_packed(&data32, &ack);
-			mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
-		}
-		else {
-			ack_data_package ack;
-			mavlink_data32_t data32;
-			ack.ack = 0;
-			ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
-			target_bottle_id = bottle_id;
-			switch (frame.package.cmd_data.type) {
-				case COLLECT_TASK_CMD_START_GET_WATER:
+		switch (frame.package.cmd_data.type) {
+			case COLLECT_TASK_CMD_START_GET_WATER:
+				// 目标瓶已经满，则不能再次开启，应答开启错误
+				if (!current_collect_task_is_idle() || (bottle_id != 255 && bottle_is_full((VAVLE_ID_ENUM)bottle_id))) {
+					break;
+				} else {
 					ack.ack = 1;
+					target_bottle_id = bottle_id;
 					set_collect_action(COLLECT_TASK_CMD_START_GET_WATER, NULL);
-					break;
-				default:
-					break;
-			}			
-			collect_protocol_ack_data_packed(&data32, &ack);
-			mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
+				}				
+				break;
+			case COLLECT_TASK_CMD_STOP:
+				if (!current_collect_task_is_idle()) {
+					ack.ack = 1;
+					osEventFlagsSet(collect_event, EXIT_EVENT_BIT);
+				}
+				break;
+			default:
+				break;
 		}
-		
+		collect_protocol_ack_data_packed(&data32, &ack);
+		mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
 	}
 }
 
