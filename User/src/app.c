@@ -15,6 +15,7 @@ void app_init(void)
 {
 	osEventFlagsAttr_t event = {"COLLECT_EVENT", 0, NULL, 0};
 	collect_event = osEventFlagsNew(&event);
+	osEventFlagsClear(collect_event, 0xFFFFFFFF);
 	
 	HAL_TIM_Base_Start_IT(&htim1);
 	

@@ -192,6 +192,7 @@ void set_collect_action(COLLECT_TASK_CMD cmd, void* param)
 			break;
 		case COLLECT_TASK_CMD_START_GET_WATER: // 开始取水
 			collect_task_cmd = cmd;
+			_target_depth_mm = (float)(*((uint32_t*)param));
 			break;
 		case COLLECT_TASK_CMD_PAUSE_GET_WATER: // 暂停取水
 			break;
@@ -233,9 +234,11 @@ void collect_protocol_parse(mavlink_data32_t* data32)
 				if (!current_collect_task_is_idle() || (bottle_id != 255 && bottle_is_full((VAVLE_ID_ENUM)bottle_id))) {
 					break;
 				} else {
+					uint32_t mm = 0;
 					ack.ack = 1;
 					target_bottle_id = bottle_id;
-					set_collect_action(COLLECT_TASK_CMD_START_GET_WATER, NULL);
+					mm = frame.package.cmd_data.depth_mm;
+					set_collect_action(COLLECT_TASK_CMD_START_GET_WATER, (void*)&mm);
 				}				
 				break;
 			case COLLECT_TASK_CMD_STOP:

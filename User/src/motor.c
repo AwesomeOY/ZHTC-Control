@@ -33,6 +33,7 @@ void motor_set_speed(float spd)
 {
 	if (spd <= 0.001f && spd >= -0.001f ) {
 		spd = 0.0f;
+		_need_update = 0;
 	}
 	if (spd < 0.0f) {
 		motor_pull();
