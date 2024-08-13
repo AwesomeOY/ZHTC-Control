@@ -239,8 +239,8 @@ void collect_protocol_parse(mavlink_data32_t* data32)
 				}				
 				break;
 			case COLLECT_TASK_CMD_STOP:
+				ack.ack = 1;
 				if (!current_collect_task_is_idle()) {
-					ack.ack = 1;
 					osEventFlagsSet(collect_event, EXIT_EVENT_BIT);
 				}
 				break;
