@@ -108,7 +108,7 @@ extern UART_HandleTypeDef huart6;
 #define METAL_SW1_ON_EVENT_BIT  (1U<<20)   // 限位开关1有效事件
 #define METAL_SW2_ON_EVENT_BIT  (1U<<22)   // 限位开关2有效事件
  
-#define MOTOR_ACTION_EVENT_BIT  (1U<<26)   // 电机达到位置事件
+#define MOTOR_ACTION_EVENT_BIT  (1U<<23)   // 电机达到位置事件
 
 // 阀门ID定义 pump(b9) | water_out(b8) | water_in(b7) | bottle(b6) | bottle6 ~ bottle1
 typedef enum {

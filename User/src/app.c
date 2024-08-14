@@ -43,6 +43,8 @@ void app_init(void)
 	HAL_TIM_Base_Start_IT(&htim6);
 	
 	course_led_open();
+	
+	motor_set_position(0.0f);
 }
 
 void app_run(void)
@@ -50,4 +52,8 @@ void app_run(void)
 	//param_sensor_start();
 	//gpio_auto_test();
 	//param_sensor_start();
+//	motor_set_speed(0.5f);
+//	osDelay(3000);
+//	motor_set_speed(-0.5f);
+//	osDelay(3000);
 }
