@@ -17,6 +17,9 @@ typedef struct {
 	const gpio_obj* p_gpio;
 }gpio_input_class;
 
+static float _last_pos = 0.0f;
+static uint8_t _last_update_pos_count = 0;
+
 static void _gpio_inputs_init(void);
 static void _gpio_input_update(gpio_input_class* p_input);
 static void _gpio_callback(const gpio_input_class* p_input, uint8_t valid);
@@ -73,16 +76,43 @@ static int8_t _position_control(float pos)
 	// 目标深度为0，并且超出范围，则强制停止，再进行编码器复位
 	if (pos <= 0.001f && cpos >= 7000.0f) {
 		motor_set_speed(0.0f);
-		brt38_set_reset();	
+		brt38_set_reset();
+		_last_update_pos_count = 0;
+		motor_power_off();
+		osDelay(1000);
+		motor_power_on();
+		osDelay(2000);
 		return 1;
 	}
 	
+	// 判断角度是否变化
+	if (fabsf(_last_pos - cpos) <= 0.01f) {
+		++_last_update_pos_count;
+	} else {
+		_last_update_pos_count = 0;
+	}
+	_last_pos = cpos;
+	
 	// 误差为两个mm，则停下
-	if (fabs(pos - cpos) <= 2.0f) {
+	if (fabsf(pos - cpos) <= 2.0f || _last_update_pos_count >= 50) {
 		motor_set_speed(0.0f);
+		_last_update_pos_count = 0;
+		
+		// 出现阻塞情况则重启电机电源
+		if (_last_update_pos_count >= 50) {
+			motor_power_off();
+			osDelay(1000);
+			motor_power_on();
+			osDelay(2000);
+		}
+		
 		// 如果目标值为0，则选择复位
 		if (pos <= 0.001f) {
 			brt38_set_reset();
+			motor_power_off();
+			osDelay(1000);
+			motor_power_on();
+			osDelay(2000);
 		}
 		osEventFlagsClear(collect_event, MOTOR_ACTION_EVENT_BIT);
 		osEventFlagsSet (collect_event, MOTOR_ACTION_EVENT_BIT);
