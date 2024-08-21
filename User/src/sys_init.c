@@ -6,6 +6,7 @@ uint8_t _water_sw1_wait(SWITCH_TYPE_ENUM tp);
 uint8_t _water_sw2_wait(SWITCH_TYPE_ENUM tp);
 uint8_t bottle_is_full(VAVLE_ID_ENUM id);
 uint8_t vavle_is_open(VAVLE_ID_ENUM id);
+uint8_t _common_wait_ms(uint32_t ms);
 
 // 电磁阀完全开/关时间 ms
 #define VAVLE_ACTION_TIME_MS 8000U
@@ -229,7 +230,10 @@ uint8_t pipe_cleaning(void)
 		if (!_water_sw1_wait(SWITCH_TYPE_OFF)) {
 			return 0;
 		}
-		osDelay(5000U);
+		
+		if (_common_wait_ms(60000UL) == 0) {
+			return 0;
+		}
 	}
 	
 	// 关闭润洗阀
@@ -440,6 +444,19 @@ void gpio_auto_test(void)
 		gpio_output_invalid(bootle_power_gpios[i]);
 		osDelay(2000);
 	}
+}
+
+/* 通用等待时间，等待成功则返回1，失败返回0 */
+uint8_t _common_wait_ms(uint32_t ms)
+{
+	uint32_t check_flag = EXIT_EVENT_BIT | ERROR_EVENT_BIT;
+	uint32_t flag = 0;
+	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, ms);
+	if ((flag & check_flag) > 0) {
+		osEventFlagsClear(collect_event, check_flag);
+		return 0;
+	}
+	return 1;
 }
 
 /* 等待液位开关1信号动作 */
