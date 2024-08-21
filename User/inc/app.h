@@ -15,6 +15,9 @@
 #include "ParamSensor5.h"
 #include "RS485_4G.h"
 
+#define APP_NAME "ZHTC-Control-System"
+#define APP_VERSION "V1.2.3"
+
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
 	COLLECT_TASK_CMD_START_GET_WATER = 1, // 开始取水
