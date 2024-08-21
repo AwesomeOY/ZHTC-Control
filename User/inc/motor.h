@@ -11,8 +11,8 @@
 #define MOTOR_SPD_PWM_MAX 4200U
 
 // 调速电机，驱动绞盘
-#define motor_push() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_SET)
-#define motor_pull() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET)
+#define motor_push() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET)
+#define motor_pull() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_SET)
 #define motor_power_on() WRITE_PIN(GPIOE, GPIO_PIN_11, GPIO_PIN_SET)
 #define motor_power_off() WRITE_PIN(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET)
 
