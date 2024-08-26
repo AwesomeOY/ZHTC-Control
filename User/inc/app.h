@@ -16,7 +16,7 @@
 #include "RS485_4G.h"
 
 #define APP_NAME "ZHTC-Control-System"
-#define APP_VERSION "V1.2.3"
+#define APP_VERSION "V1.2.5"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
@@ -182,6 +182,8 @@ COLLECT_TASK_STATUS current_collect_task_status(void);
 uint8_t current_collect_task_is_idle(void);
 
 void collect_protocol_send_heartbeat(void);
+
+void collect_protocol_send_param4(void);
 
 void collect_protocol_send_param5(void);
 
