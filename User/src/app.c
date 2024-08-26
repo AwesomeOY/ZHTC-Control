@@ -44,7 +44,9 @@ void app_init(void)
 	
 	course_led_open();
 	
-	motor_set_position(0.0f);
+	if (!metal_sw1_valid()) {
+		motor_set_position(0.0f);
+	}	
 }
 
 void app_run(void)

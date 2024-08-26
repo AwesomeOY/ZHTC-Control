@@ -191,4 +191,8 @@ void course_led_open(void);
 
 void course_led_close(void);
 
+uint8_t metal_sw1_valid(void);
+
+uint8_t metal_sw2_valid(void);
+
 #endif

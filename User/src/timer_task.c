@@ -74,16 +74,16 @@ static int8_t _position_control(float pos)
 	float cpos = get_brt38_angle();
 	
 	// 目标深度为0，并且超出范围，则强制停止，再进行编码器复位
-	if (pos <= 0.001f && cpos >= 7000.0f) {
-		motor_set_speed(0.0f);
-		brt38_set_reset();
-		_last_update_pos_count = 0;
-		motor_power_off();
-		osDelay(1000);
-		motor_power_on();
-		osDelay(2000);
-		return 1;
-	}
+//	if (pos <= 0.001f && cpos >= 7000.0f) {
+//		motor_set_speed(0.0f);
+//		brt38_set_reset();
+//		_last_update_pos_count = 0;
+//		motor_power_off();
+//		osDelay(1000);
+//		motor_power_on();
+//		osDelay(2000);
+//		return 1;
+//	}
 	
 	// 判断角度是否变化
 	if (fabsf(_last_pos - cpos) <= 0.01f) {
@@ -93,8 +93,26 @@ static int8_t _position_control(float pos)
 	}
 	_last_pos = cpos;
 	
+	// 如果目标值为0，则选择复位
+	if (pos <= 0.001f) {
+		motor_set_speed(-0.3f);
+		if (metal_sw1_valid() || _last_update_pos_count >= 50) {
+			motor_set_speed(0.0f);
+			_last_update_pos_count = 0;
+			brt38_set_reset();
+			motor_power_off();
+			osDelay(1000);
+			motor_power_on();
+			osDelay(2000);
+			osEventFlagsClear(collect_event, MOTOR_ACTION_EVENT_BIT);
+			osEventFlagsSet(collect_event, MOTOR_ACTION_EVENT_BIT);
+			return 1;
+		}
+		return 0;
+	}
+	
 	// 误差为两个mm，则停下
-	if (fabsf(pos - cpos) <= 2.0f || _last_update_pos_count >= 50) {
+	if (fabsf(pos - cpos) <= 2.0f) {
 		motor_set_speed(0.0f);
 		_last_update_pos_count = 0;
 		
@@ -106,22 +124,15 @@ static int8_t _position_control(float pos)
 			osDelay(2000);
 		}
 		
-		// 如果目标值为0，则选择复位
-		if (pos <= 0.001f) {
-			brt38_set_reset();
-			motor_power_off();
-			osDelay(1000);
-			motor_power_on();
-			osDelay(2000);
-		}
 		osEventFlagsClear(collect_event, MOTOR_ACTION_EVENT_BIT);
-		osEventFlagsSet (collect_event, MOTOR_ACTION_EVENT_BIT);
+		osEventFlagsSet(collect_event, MOTOR_ACTION_EVENT_BIT);
+		
 		return 1;
 	} else {
 		if (pos - cpos > 2.0f) {
-			motor_set_speed(0.5f);
+			motor_set_speed(0.3f);
 		} if (pos - cpos < -2.0f) {
-			motor_set_speed(-0.5f);
+			motor_set_speed(-0.3f);
 		}
 	}
 	
@@ -191,7 +202,7 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 				motor_stop();      // 关闭电机控制
 				if (get_brt38_angle() >= 0.01f) {
 					brt38_set_reset(); // 需要复位编码器，复位零点
-				}				
+				}			
 			}
 		}
 	}
@@ -206,4 +217,14 @@ void _gpio_callback(const gpio_input_class* p_input, uint8_t valid)
 	else {
 	
 	}
+}
+
+uint8_t metal_sw1_valid(void)
+{
+	return gpio_input_valid(&metal_sw1_gpio);
+}
+
+uint8_t metal_sw2_valid(void)
+{
+	return gpio_input_valid(&metal_sw2_gpio);
 }

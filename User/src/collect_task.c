@@ -43,7 +43,7 @@ uint8_t wait_motor_stop(void)
 {
 	uint32_t check_flag = MOTOR_ACTION_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
 	uint32_t flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, 30000U);
-	if ((flag & check_flag) > 0) {
+	if ((flag <= 0xFFFFFFFA) && (flag & check_flag) > 0) {
 		osEventFlagsClear(collect_event, check_flag);
 		
 		if ((flag & (EXIT_EVENT_BIT | ERROR_EVENT_BIT)) > 0) {
