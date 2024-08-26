@@ -452,7 +452,7 @@ uint8_t _common_wait_ms(uint32_t ms)
 	uint32_t check_flag = EXIT_EVENT_BIT | ERROR_EVENT_BIT;
 	uint32_t flag = 0;
 	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny | osFlagsNoClear, ms);
-	if (flag == osErrorTimeout) {
+	if ((int32_t)flag == osErrorTimeout) {
 		return 1;
 	}
 	if ((flag & check_flag) > 0) {

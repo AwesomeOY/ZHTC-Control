@@ -28,7 +28,11 @@ typedef __packed struct {
 }heartbeat_data_package;
 
 typedef __packed struct {
-	float a;
+	uint16_t index;
+	float gao_value;
+	float andan_value;
+	float lin_value;
+	float an_value;
 }param4_data_package;
 
 typedef __packed struct {

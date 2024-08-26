@@ -284,3 +284,17 @@ void collect_protocol_send_param5(void)
 	collect_protocol_param5_data_packed(&data32, &param5);
 	mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
 }
+
+void collect_protocol_send_param4(void)
+{
+	param4_data_package param4;
+	mavlink_data32_t data32;
+	const ParamSensor4* p4 = get_current_param_sensor4();
+	param4.gao_value = p4->gao_value;
+	param4.andan_value = p4->andan_value;
+	param4.lin_value = p4->lin_value;
+	param4.an_value = p4->an_value;
+	param4.index = collect_task_index;
+	collect_protocol_param4_data_packed(&data32, &param4);
+	mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
+}

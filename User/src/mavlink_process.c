@@ -203,6 +203,7 @@ static void _mavlink_request_msg(void)
 		mavlink_msg_heartbeat_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_heartbeat_t*)&hbt);
 		collect_protocol_send_heartbeat();
 		collect_protocol_send_param5();
+		collect_protocol_send_param4();
 	}
 }
 
