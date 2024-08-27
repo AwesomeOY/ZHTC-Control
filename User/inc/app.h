@@ -16,7 +16,7 @@
 #include "RS485_4G.h"
 
 #define APP_NAME "ZHTC-Control-System"
-#define APP_VERSION "V1.3.0"
+#define APP_VERSION "V1.3.1"
 
 typedef enum {
 	COLLECT_TASK_CMD_NONE = 0,            // 无动作
