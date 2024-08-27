@@ -15,8 +15,8 @@
 	#define motor_push() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET)
 	#define motor_pull() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_SET)
 #else
-	#define motor_push() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET)
-	#define motor_pull() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_SET)
+	#define motor_push() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_SET)
+	#define motor_pull() WRITE_PIN(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET)
 #endif
 #define motor_power_on() WRITE_PIN(GPIOE, GPIO_PIN_11, GPIO_PIN_SET)
 #define motor_power_off() WRITE_PIN(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET)
