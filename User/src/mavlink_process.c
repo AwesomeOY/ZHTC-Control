@@ -151,6 +151,7 @@ static void _mavlink_request_msg(void)
 {
 	static uint32_t _last_time_ms = 0;
 	static uint32_t _last_heabeat_ms = 0;
+	static uint32_t _last_collect_time_ms = 0;
 //	mavlink_request_data_stream_t stream;
 	uint32_t now = osKernelGetTickCount();
 	if (now - _last_time_ms >= 5000) {
@@ -201,9 +202,13 @@ static void _mavlink_request_msg(void)
 		hbt.mavlink_version = 3;
 		_last_heabeat_ms = now;
 		mavlink_msg_heartbeat_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_heartbeat_t*)&hbt);
-		collect_protocol_send_heartbeat();
+		collect_protocol_send_heartbeat();		
+	}
+	
+	if (now - _last_collect_time_ms >= 1500) {
 		collect_protocol_send_param5();
 		collect_protocol_send_param4();
+		_last_collect_time_ms = now;
 	}
 }
 

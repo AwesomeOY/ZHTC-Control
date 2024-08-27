@@ -64,7 +64,7 @@ static int8_t _get_param_sensor5_turb(void)
 /* 四参数串口通信相关定义 */
 static int8_t _param_sensor4_start(uint8_t id)
 {
-	uint8_t sendSize = modbus_rtu_write_single_reg_pack(_param_uart_tx_buff, id, 40001, 1);
+	uint8_t sendSize = modbus_rtu_write_single_reg_pack(_param_uart_tx_buff, id, 30001, 1);
 	if (serial_write(SERIAL_ID3, _param_uart_tx_buff, sendSize) > 0) {
 		if (serial_can_read(SERIAL_ID3, 2000) && _rx_len > 0) {
 			if (modbus_rtu_check_crc(_param_uart_rx_buff, _rx_len)) {
@@ -72,6 +72,7 @@ static int8_t _param_sensor4_start(uint8_t id)
 			}
 		}
 	}
+	return 0;
 }
 
 static int8_t _param_sensor4_get_value(uint8_t id)
@@ -122,7 +123,7 @@ static int8_t _param_sensor_parse_data(void)
 		if (_rx_buff[1] == 0x06) {
 			uint16_t reg = ((uint16_t)_rx_buff[2] << 8) |  (uint16_t)_rx_buff[3];
 			uint16_t value = ((uint16_t)_rx_buff[4] << 8) |  (uint16_t)_rx_buff[5];
-			if (reg == 40001 && value == 1) {
+			if (reg == 30001 && value == 1) {
 				return 1;
 			} else {
 				return 0;
