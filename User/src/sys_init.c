@@ -317,8 +317,11 @@ uint8_t measurement_running(void)
 	
 	// 读取仪器状态
 	check_flag = PARAM_SENSOR_SUCCESS_EVENT_BIT | PARAM_SENSOR_ERROR_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
-	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny, 80000u);
-	if ((flag & check_flag) > 0) {
+	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny, 51U*60U*1000U);
+	if ((flag <= 0xFFFFFFF9) && (flag & check_flag) > 0) {
+		if (check_flag & PARAM_SENSOR_ERROR_EVENT_BIT) {
+			return 0;
+		}
 		// 读取仪器测量数据，整个流程完成
 	}
 	

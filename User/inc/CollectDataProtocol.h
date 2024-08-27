@@ -33,6 +33,8 @@ typedef __packed struct {
 	float andan_value;
 	float lin_value;
 	float an_value;
+	uint16_t start_flag;
+	uint16_t success_flag;
 }param4_data_package;
 
 typedef __packed struct {
@@ -42,6 +44,7 @@ typedef __packed struct {
 	float do_value;
 	float turb_value;
 	float temp_value;
+	uint16_t success_flag;
 }param5_data_package;
 
 typedef __packed struct {
