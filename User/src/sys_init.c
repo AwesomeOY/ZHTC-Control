@@ -326,7 +326,7 @@ uint8_t measurement_running(void)
 	}
 	
 	// 关闭所有外设电源：电磁阀、四五参数电源、隔膜泵
-	collect_system_init();
+	//collect_system_init();
 	
 	return 1;
 }
