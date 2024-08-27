@@ -223,6 +223,7 @@ void param_sensor_restart(void)
 /* 轮询获取所有传感器的值 */
 void param_sensor_update(void)
 {
+#if 1
 	if (_paramSensor4.success == 0) {
 		if (0 == (_paramSensor4.start_flag & (1<<0))) {
 			_paramSensor4.start_flag |= _param_sensor4_start(PARAM_SENSOR4_GAO_ID) ? (1<<0) : 0;
@@ -261,10 +262,14 @@ void param_sensor_update(void)
 			}
 		}
 		
-		if ((_paramSensor5.success_flag & 0x0F) == 0x0F) {
+		if ((_paramSensor4.success_flag & 0x0F) == 0x0F) {
 			_paramSensor4.success = 1;
 		}
 	}
+#else
+	_paramSensor4.success_flag = 0x0F;
+	_paramSensor4.success = 1;
+#endif
 		
 	if (_paramSensor5.success == 0) {
 		_paramSensor5.success_flag |= _get_param_sensor5_ph()   ? (1<<0) : 0;
