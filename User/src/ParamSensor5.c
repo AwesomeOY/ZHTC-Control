@@ -15,10 +15,6 @@ static int8_t _param_sensor_parse_data(void);
 static void _param_sensor_receive_cmpt_cb(uint8_t* buf, uint16_t len);
 static float _convert_float(float* f);  // 浮点数转换由CCDDAABB -> DDCCBBAA
 
-static uint16_t _param4_start_flag = 0;
-static uint16_t _param4_success_flag = 0;
-static uint16_t _param5_success_flag = 0;
-
 /* 多参数485串口初始化 */
 void param_sensor_init(void)
 {
@@ -218,66 +214,66 @@ void param_sensor_restart(void)
 {
 	_paramSensor5.success = 0;
 	_paramSensor4.success = 0;
-	_param5_success_flag = 0;
-	_param4_success_flag = 0;
-	_param4_start_flag = 0;
+	_paramSensor5.success_flag = 0;
+	_paramSensor4.success_flag = 0;
+	_paramSensor4.start_flag = 0;
 }
 
 /* 轮询获取所有传感器的值 */
 void param_sensor_update(void)
 {
 	if (_paramSensor4.success == 0) {
-		if (0 == (_param4_start_flag & (1<<0))) {
-			_param4_start_flag |= _param_sensor4_start(PARAM_SENSOR4_GAO_ID) ? (1<<0) : 0;
+		if (0 == (_paramSensor4.start_flag & (1<<0))) {
+			_paramSensor4.start_flag |= _param_sensor4_start(PARAM_SENSOR4_GAO_ID) ? (1<<0) : 0;
 		}
-		if (0 == (_param4_start_flag & (1<<1))) {
-			_param4_start_flag |= _param_sensor4_start(PARAM_SENSOR4_AN_DAN_ID) ? (1<<1) : 0;
+		if (0 == (_paramSensor4.start_flag & (1<<1))) {
+			_paramSensor4.start_flag |= _param_sensor4_start(PARAM_SENSOR4_AN_DAN_ID) ? (1<<1) : 0;
 		}
-		if (0 == (_param4_start_flag & (1<<2))) {
-			_param4_start_flag |= _param_sensor4_start(PARAM_SENSOR4_LIN_ID) ? (1<<2) : 0;
+		if (0 == (_paramSensor4.start_flag & (1<<2))) {
+			_paramSensor4.start_flag |= _param_sensor4_start(PARAM_SENSOR4_LIN_ID) ? (1<<2) : 0;
 		}
-		if (0 == (_param4_start_flag & (1<<3))) {
-			_param4_start_flag |= _param_sensor4_start(PARAM_SENSOR4_AN_ID) ? (1<<3) : 0;
+		if (0 == (_paramSensor4.start_flag & (1<<3))) {
+			_paramSensor4.start_flag |= _param_sensor4_start(PARAM_SENSOR4_AN_ID) ? (1<<3) : 0;
 		}
 		
-		if (_param4_start_flag & (1<<0)) {
-			if (0 == (_param4_success_flag & (1<<0))) {
-				_param4_success_flag |= _get_param_sensor4_gao() ? (1<<0) : 0;
+		if (_paramSensor4.start_flag & (1<<0)) {
+			if (0 == (_paramSensor4.success_flag & (1<<0))) {
+				_paramSensor4.success_flag |= _get_param_sensor4_gao() ? (1<<0) : 0;
 			}			
 		}
 		
-		if (_param4_start_flag & (1<<1)) {
-			if (0 == (_param4_success_flag & (1<<1))) {
-				_param4_success_flag |= _get_param_sensor4_andan() ? (1<<1) : 0;
+		if (_paramSensor4.start_flag & (1<<1)) {
+			if (0 == (_paramSensor4.success_flag & (1<<1))) {
+				_paramSensor4.success_flag |= _get_param_sensor4_andan() ? (1<<1) : 0;
 			}
 		}
 		
-		if (_param4_start_flag & (1<<2)) {
-			if (0 == (_param4_success_flag & (1<<2))) {
-				_param4_success_flag |= _get_param_sensor4_lin() ? (1<<2) : 0;
+		if (_paramSensor4.start_flag & (1<<2)) {
+			if (0 == (_paramSensor4.success_flag & (1<<2))) {
+				_paramSensor4.success_flag |= _get_param_sensor4_lin() ? (1<<2) : 0;
 			}
 		}
 		
-		if (_param4_start_flag & (1<<3)) {
-			if (0 == (_param4_success_flag & (1<<3))) {
-				_param4_success_flag |= _get_param_sensor4_an() ? (1<<3) : 0;
+		if (_paramSensor4.start_flag & (1<<3)) {
+			if (0 == (_paramSensor4.success_flag & (1<<3))) {
+				_paramSensor4.success_flag |= _get_param_sensor4_an() ? (1<<3) : 0;
 			}
 		}
 		
-		if ((_param5_success_flag & 0x0F) == 0x0F) {
+		if ((_paramSensor5.success_flag & 0x0F) == 0x0F) {
 			_paramSensor4.success = 1;
 		}
 	}
 		
 	if (_paramSensor5.success == 0) {
-		_param5_success_flag |= _get_param_sensor5_ph()   ? (1<<0) : 0;
-		_param5_success_flag |= _get_param_sensor5_cond() ? (1<<1) : 0;
-		_param5_success_flag |= _get_param_sensor5_do()   ? (1<<2) : 0;
-		_param5_success_flag |= _get_param_sensor5_turb() ? (1<<3) : 0;
-		if ((_param5_success_flag & 0x0F) == 0x0F) {
+		_paramSensor5.success_flag |= _get_param_sensor5_ph()   ? (1<<0) : 0;
+		_paramSensor5.success_flag |= _get_param_sensor5_cond() ? (1<<1) : 0;
+		_paramSensor5.success_flag |= _get_param_sensor5_do()   ? (1<<2) : 0;
+		_paramSensor5.success_flag |= _get_param_sensor5_turb() ? (1<<3) : 0;
+		if ((_paramSensor5.success_flag & 0x0F) == 0x0F) {
 			_paramSensor5.success = 1;
 		}
-	}		
+	}
 }
 
 /* 将接收到的浮点数转换成本平台浮点数

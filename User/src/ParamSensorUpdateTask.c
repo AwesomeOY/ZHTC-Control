@@ -28,11 +28,11 @@ void param_sensor_update_task_init(void)
 /* 多参数池数据更新任务，由采水任务到数据测量阶段才开启 */
 void param_sensor_task(void* arg)
 {
-	uint16_t count = 0;
+	uint32_t count = 0;
 	while (1) {
 		if (osOK == osSemaphoreAcquire(_param_sensor_start_sem, 0xffffffffUL)) {
 			param_sensor_restart();
-			osDelay(60000u);
+			//osDelay(60000u);
 			while (1) {
 				const ParamSensor5* pparam5 = NULL;
 				const ParamSensor4* pparam4 = NULL;
@@ -44,12 +44,12 @@ void param_sensor_task(void* arg)
 					osEventFlagsSet(collect_event, PARAM_SENSOR_SUCCESS_EVENT_BIT);
 					break;
 				}
-//				++count;
-//				if (count >= 200u) {
-//					count = 0;
-//					osEventFlagsSet(collect_event, PARAM_SENSOR_ERROR_EVENT_BIT);
-//					break;
-//				}
+				++count;
+				if (count >= (50U*60U*1000U/50U)) {  // 50min超时
+					count = 0;
+					osEventFlagsSet(collect_event, PARAM_SENSOR_ERROR_EVENT_BIT);
+					break;
+				}
 				osDelay(50);
 			}
 		}

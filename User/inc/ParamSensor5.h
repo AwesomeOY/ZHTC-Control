@@ -16,6 +16,8 @@
 
 typedef struct {
 	uint8_t success;
+	uint16_t start_flag;
+	uint16_t success_flag;
 	float ph_value;
 	float cond_value;
 	float do_value;
@@ -25,6 +27,7 @@ typedef struct {
 
 typedef struct {
 	uint8_t success;
+	uint16_t success_flag;
 	float gao_value;
 	float andan_value;
 	float lin_value;

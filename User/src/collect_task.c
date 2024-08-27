@@ -281,6 +281,7 @@ void collect_protocol_send_param5(void)
 	param5.turb_value = p5->turb_value;
 	param5.temp_value = p5->temp_value;
 	param5.index = collect_task_index;
+	param5.success_flag = p5->success_flag;
 	collect_protocol_param5_data_packed(&data32, &param5);
 	mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
 }
@@ -295,6 +296,8 @@ void collect_protocol_send_param4(void)
 	param4.lin_value = p4->lin_value;
 	param4.an_value = p4->an_value;
 	param4.index = collect_task_index;
+	param4.success_flag = p4->success_flag;
+	param4.start_flag = p4->start_flag;
 	collect_protocol_param4_data_packed(&data32, &param4);
 	mavlink_msg_data32_send_struct((mavlink_channel_t)SERIAL_ID1, (const mavlink_data32_t*)&data32);
 }
