@@ -54,8 +54,8 @@ void app_run(void)
 	//param_sensor_start();
 	//gpio_auto_test();
 	//param_sensor_start();
-//	motor_set_speed(0.5f);
-//	osDelay(3000);
-//	motor_set_speed(-0.5f);
-//	osDelay(3000);
+//	motor_set_speed(0.3f);
+//	osDelay(1000);
+//	motor_set_speed(-0.3f);
+//	osDelay(1000);
 }

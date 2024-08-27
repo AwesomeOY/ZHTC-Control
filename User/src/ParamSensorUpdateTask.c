@@ -32,6 +32,7 @@ void param_sensor_task(void* arg)
 	while (1) {
 		if (osOK == osSemaphoreAcquire(_param_sensor_start_sem, 0xffffffffUL)) {
 			param_sensor_restart();
+			count = 0;
 			//osDelay(60000u);
 			while (1) {
 				const ParamSensor5* pparam5 = NULL;

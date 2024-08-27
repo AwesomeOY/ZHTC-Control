@@ -230,10 +230,16 @@ uint8_t pipe_cleaning(void)
 		if (!_water_sw1_wait(SWITCH_TYPE_OFF)) {
 			return 0;
 		}
-		
+
+#if 1	
 		if (_common_wait_ms(60000UL) == 0) {
 			return 0;
 		}
+#else
+		if (_common_wait_ms(5000UL) == 0) {
+			return 0;
+		}
+#endif
 	}
 	
 	// 关闭润洗阀
@@ -319,7 +325,7 @@ uint8_t measurement_running(void)
 	check_flag = PARAM_SENSOR_SUCCESS_EVENT_BIT | PARAM_SENSOR_ERROR_EVENT_BIT | EXIT_EVENT_BIT | ERROR_EVENT_BIT;
 	flag = osEventFlagsWait(collect_event, check_flag, osFlagsWaitAny, 51U*60U*1000U);
 	if ((flag <= 0xFFFFFFF9) && (flag & check_flag) > 0) {
-		if (check_flag & PARAM_SENSOR_ERROR_EVENT_BIT) {
+		if (flag & PARAM_SENSOR_ERROR_EVENT_BIT) {
 			return 0;
 		}
 		// 读取仪器测量数据，整个流程完成
