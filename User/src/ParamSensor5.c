@@ -155,7 +155,7 @@ static int8_t _param_sensor_parse_data(void)
 					_paramSensor4.an_value = _convert_float(&float_union.data[0]);
 					break;
 				default:
-					break;
+					return 0;
 			}
 			return 1;
 		}
@@ -187,7 +187,7 @@ static int8_t _param_sensor_parse_data(void)
 				_paramSensor5.turb_value = _convert_float(&float_union.data[0]);
 				break;
 			default:
-				break;
+				return 0;
 		}
 		return 1;
 	}
