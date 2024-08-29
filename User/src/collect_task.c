@@ -6,6 +6,7 @@ static COLLECT_TASK_STATUS  collect_task_status = COLLECT_TASK_STATUS_IDLE; // �
 static COLLECT_TASK_STATUS  old_collect_task_status = COLLECT_TASK_STATUS_IDLE; // 前一次所处状态
 static COLLECT_TASK_CMD collect_task_cmd = COLLECT_TASK_CMD_NONE; // 当前执行任务指令
 static COLLECT_MODE collect_mode = COLLECT_MODE_NONE;  // 采集控制任务自动模式
+static uint32_t _last_manual_time_ms = 0; // 手动模式控制指令最后接收时间
 static float _target_depth_mm = 0.0f;
 static uint16_t collect_task_index = 0;
 extern osEventFlagsId_t collect_event;
@@ -56,6 +57,158 @@ uint8_t wait_motor_stop(void)
 	return 0;
 }
 
+/* 自动采集任务状态机 */
+static void _auto_collect_task(void)
+{
+	if (collect_mode != COLLECT_MODE_AUTO) {
+		return;
+	}
+	
+	switch (collect_task_status)
+	{
+		case COLLECT_TASK_STATUS_IDLE:	// 等待控制指令
+			// 判断取水指令有效
+			if (COLLECT_TASK_CMD_START_GET_WATER == collect_task_cmd) {
+				old_collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
+			}				
+			break;
+		case COLLECT_TASK_STATUS_PAUSE: // 暂停
+			break;
+		case COLLECT_TASK_STATUS_PUSH_PIPE: // 采水管下降
+			// 采水管下降
+			// 直到预设深度
+			// 进入开启阀门、隔膜泵进入采水润洗状态
+			motor_set_position(_target_depth_mm);
+			if (wait_motor_stop()) {
+				old_collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
+				collect_task_status = COLLECT_TASK_STATUS_CLEANING;
+			} else {
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			}
+			break;
+		case COLLECT_TASK_STATUS_CLEANING:  // 润洗
+			// 润洗管道三次，每次等待15秒
+			// 完成后，关闭排水阀，开启采集水，进入泵吸状态
+			if (pipe_cleaning()) {
+				old_collect_task_status = COLLECT_TASK_STATUS_CLEANING;
+				collect_task_status = COLLECT_TASK_STATUS_PUMP_WATER;
+			} else {
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			}					
+			break;
+		case COLLECT_TASK_STATUS_PUMP_WATER:// 泵吸采水
+			// 等待液位有效
+			// 进入采水完成状态
+			if (water_collecting()) {
+				old_collect_task_status = COLLECT_TASK_STATUS_PUMP_WATER;
+				collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
+			} else {
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			}				
+			break;
+		case COLLECT_TASK_STATUS_PULL_PIPE: // 采水管上升
+			motor_set_position(0.0f);
+			if (wait_motor_stop()) {
+				old_collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
+				collect_task_status = COLLECT_TASK_STATUS_MEASURE;					
+			} else {
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			}
+			break;
+		case COLLECT_TASK_STATUS_MEASURE:
+			if (measurement_running()) {
+				++collect_task_index;
+				old_collect_task_status = COLLECT_TASK_STATUS_MEASURE;
+				collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
+			} else {
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+				collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			}
+			break;
+		case COLLECT_TASK_STATUS_CLEAN_BUS: // 排空汇流排
+			// 开启排水阀门
+			//output_valve_open();
+			// 等待一段时间
+			// 进入排空支路状态
+			break;
+		case COLLECT_TASK_STATUS_CLEAN_TREE:// 排空支路
+			// 等待一段时间
+			// 进入关闭阀门状态，指定排水阀
+			break;
+		case COLLECT_TASK_STATUS_CLOSE_FAN: // 关闭阀门
+			// 关闭指定的阀门
+			// 等待阀门完全动作信号
+			// 选择进入是放管或者空闲等待
+			break;
+		case COLLECT_TASK_STATUS_SUCCESS:   // 采水完成
+			// 开启测量
+			// 等待测量完成
+			// 进入空闲状态
+			old_collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
+			collect_task_status = COLLECT_TASK_STATUS_IDLE;
+			collect_task_cmd = COLLECT_TASK_CMD_NONE;
+			break;
+		case COLLECT_TASK_STATUS_CLEAN_PIPE:// 清洗管路
+			break;
+		case COLLECT_TASK_STATUS_FAN_CLEAN_PIPE:  // 吹洗管路
+			break;
+		case COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE:// 水管手动下降
+			break;
+		case COLLECT_TASK_STATUS_MANUAL_PULL_PIPE:// 水管手动上升
+			break;
+		case COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL:// 水管暂停  
+			break;
+		default:
+			break;
+	}
+	
+	if (collect_task_status == COLLECT_TASK_STATUS_IDLE && old_collect_task_status != collect_task_status) {
+		old_collect_task_status = COLLECT_TASK_STATUS_IDLE;
+		collect_system_init();
+	}
+}
+
+
+/* 手动控制 */
+static void _manual_collect_task(void)
+{
+	if (collect_mode != COLLECT_MODE_MANUAL) {
+		return;
+	}
+	
+	uint32_t now = osKernelGetTickCount();
+	
+	switch (collect_task_status) {
+		case COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE:// 水管手动下降
+			if (now - _last_manual_time_ms >= 2000U) {
+				motor_set_speed(0.0f);
+				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL;
+				break;
+			}
+			motor_set_speed(0.3f);
+			break;
+		case COLLECT_TASK_STATUS_MANUAL_PULL_PIPE:// 水管手动上升
+			if (now - _last_manual_time_ms >= 2000U) {
+				motor_set_speed(0.0f);
+				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL;
+				break;
+			}
+			motor_set_speed(-0.3f);
+			break;
+		case COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL:// 水管暂停 
+			motor_set_speed(0.0f);
+			collect_task_status = COLLECT_TASK_STATUS_IDLE;
+			break;
+		default:
+			break;
+	}
+}
+
 /* 采水任务 */
 void collect_task(void* arg)
 {
@@ -65,119 +218,13 @@ void collect_task(void* arg)
 			case COLLECT_MODE_NONE:
 				break;
 			case COLLECT_MODE_AUTO:
+				_auto_collect_task();
 				break;
 			case COLLECT_MODE_MANUAL:
+				_manual_collect_task();
 				break;
 		}
 		
-		
-		switch (collect_task_status)
-		{
-			case COLLECT_TASK_STATUS_IDLE:	// 等待控制指令
-				// 判断取水指令有效
-				if (COLLECT_TASK_CMD_START_GET_WATER == collect_task_cmd) {
-					old_collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
-				}				
-				break;
-			case COLLECT_TASK_STATUS_PAUSE: // 暂停
-				break;
-			case COLLECT_TASK_STATUS_PUSH_PIPE: // 采水管下降
-				// 采水管下降
-			    // 直到预设深度
-			    // 进入开启阀门、隔膜泵进入采水润洗状态
-				motor_set_position(_target_depth_mm);
-				if (wait_motor_stop()) {
-					old_collect_task_status = COLLECT_TASK_STATUS_PUSH_PIPE;
-					collect_task_status = COLLECT_TASK_STATUS_CLEANING;
-				} else {
-					collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				}
-				break;
-			case COLLECT_TASK_STATUS_CLEANING:  // 润洗
-				// 润洗管道三次，每次等待15秒
-			    // 完成后，关闭排水阀，开启采集水，进入泵吸状态
-				if (pipe_cleaning()) {
-					old_collect_task_status = COLLECT_TASK_STATUS_CLEANING;
-					collect_task_status = COLLECT_TASK_STATUS_PUMP_WATER;
-				} else {
-					collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				}					
-				break;
-			case COLLECT_TASK_STATUS_PUMP_WATER:// 泵吸采水
-				// 等待液位有效
-			    // 进入采水完成状态
-				if (water_collecting()) {
-					old_collect_task_status = COLLECT_TASK_STATUS_PUMP_WATER;
-					collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
-				} else {
-					collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				}				
-				break;
-			case COLLECT_TASK_STATUS_PULL_PIPE: // 采水管上升
-				motor_set_position(0.0f);
-				if (wait_motor_stop()) {
-					old_collect_task_status = COLLECT_TASK_STATUS_PULL_PIPE;
-					collect_task_status = COLLECT_TASK_STATUS_MEASURE;					
-				} else {
-					collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				}
-				break;
-			case COLLECT_TASK_STATUS_MEASURE:
-				if (measurement_running()) {
-					++collect_task_index;
-					old_collect_task_status = COLLECT_TASK_STATUS_MEASURE;
-					collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
-				} else {
-					collect_task_status = COLLECT_TASK_STATUS_IDLE;
-					collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				}
-				break;
-			case COLLECT_TASK_STATUS_CLEAN_BUS: // 排空汇流排
-				// 开启排水阀门
-				//output_valve_open();
-				// 等待一段时间
-				// 进入排空支路状态
-				break;
-			case COLLECT_TASK_STATUS_CLEAN_TREE:// 排空支路
-				// 等待一段时间
-				// 进入关闭阀门状态，指定排水阀
-				break;
-			case COLLECT_TASK_STATUS_CLOSE_FAN: // 关闭阀门
-				// 关闭指定的阀门
-				// 等待阀门完全动作信号
-				// 选择进入是放管或者空闲等待
-				break;
-			case COLLECT_TASK_STATUS_SUCCESS:   // 采水完成
-				// 开启测量
-			    // 等待测量完成
-			    // 进入空闲状态
-				old_collect_task_status = COLLECT_TASK_STATUS_SUCCESS;
-				collect_task_status = COLLECT_TASK_STATUS_IDLE;
-				collect_task_cmd = COLLECT_TASK_CMD_NONE;
-				break;
-			case COLLECT_TASK_STATUS_CLEAN_PIPE:// 清洗管路
-				break;
-			case COLLECT_TASK_STATUS_FAN_CLEAN_PIPE:  // 吹洗管路
-				break;
-			case COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE:// 水管手动下降
-				break;
-			case COLLECT_TASK_STATUS_MANUAL_PULL_PIPE:// 水管手动上升
-				break;
-			case COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL:// 水管暂停  
-				break;
-			default:
-				break;
-		}
-		
-		if (collect_task_status == COLLECT_TASK_STATUS_IDLE && old_collect_task_status != collect_task_status) {
-			old_collect_task_status = COLLECT_TASK_STATUS_IDLE;
-			collect_system_init();
-		}
 		osDelay(10);
 	}
 }
@@ -209,10 +256,24 @@ void set_collect_action(COLLECT_TASK_CMD cmd, void* param)
 		case COLLECT_TASK_CMD_STOP_PURGE_PIPE: // 关闭吹洗管路
 			break;
 		case COLLECT_TASK_CMD_MANUAL_PUSH_PIPE: // 抽水管手动下降
+			if (collect_mode == COLLECT_MODE_MANUAL) {
+				collect_task_cmd = cmd;
+				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PUSH_PIPE;
+				_last_manual_time_ms = osKernelGetTickCount();
+			}
 			break;
 		case COLLECT_TASK_CMD_MANUAL_PULL_PIPE: // 抽水管手动上升
+			if (collect_mode == COLLECT_MODE_MANUAL) {
+				collect_task_cmd = cmd;
+				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PULL_PIPE;
+				_last_manual_time_ms = osKernelGetTickCount();
+			}
 			break;			
 		case COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL: // 抽水管暂停上升或者下降
+			if (collect_mode == COLLECT_MODE_MANUAL) {
+				collect_task_cmd = cmd;
+				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL;
+			}
 			break;
 	} 
 }
@@ -223,10 +284,21 @@ void collect_protocol_parse(mavlink_data32_t* data32)
 	memcpy(&frame, data32->data, 32);
 	if (frame.msg_id == COLLECT_PROTOCOL_MSG_ID_CMD) {
 		uint8_t bottle_id = frame.package.cmd_data.bottle_id;
+		COLLECT_MODE mode = (COLLECT_MODE)frame.package.cmd_data.mode;
 		ack_data_package ack;
 		mavlink_data32_t data32;
 		ack.ack = 0;
 		ack.msg_id = COLLECT_PROTOCOL_MSG_ID_CMD;
+		
+		// 目标模式为手动模式，判断自动模式是否处于空闲状态
+		// 只有在空闲状态时，才能切入手动模式
+		if (mode == COLLECT_MODE_MANUAL) {
+			if (collect_mode != COLLECT_MODE_MANUAL && current_collect_task_is_idle()) {
+				collect_mode = COLLECT_MODE_MANUAL;
+			}
+		} else {
+			collect_mode = COLLECT_MODE_AUTO;
+		}
 		
 		switch (frame.package.cmd_data.type) {
 			case COLLECT_TASK_CMD_START_GET_WATER:
@@ -247,6 +319,18 @@ void collect_protocol_parse(mavlink_data32_t* data32)
 					osEventFlagsSet(collect_event, EXIT_EVENT_BIT);
 				}
 				break;
+			case COLLECT_TASK_CMD_MANUAL_PUSH_PIPE:      // 抽水管手动下降
+				ack.ack = 1;
+				set_collect_action(COLLECT_TASK_CMD_MANUAL_PUSH_PIPE, (void*)0);
+				break;
+			case COLLECT_TASK_CMD_MANUAL_PULL_PIPE:      // 抽水管手动上升
+				ack.ack = 1;
+				set_collect_action(COLLECT_TASK_CMD_MANUAL_PULL_PIPE, (void*)0);
+				break;				
+			case COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL:// 抽水管暂停上升或者下降
+				ack.ack = 1;
+				set_collect_action(COLLECT_TASK_CMD_MANUAL_PAUSE_PUSH_PULL, (void*)0);
+				break;
 			default:
 				break;
 		}
@@ -259,6 +343,7 @@ void collect_protocol_send_heartbeat(void)
 {
 	heartbeat_data_package hbt;
 	mavlink_data32_t data32;
+	hbt.collect_mode = (uint8_t)collect_mode;
 	hbt.bottle_id = target_bottle_id;
 	hbt.collect_status = collect_task_status;
 	hbt.collect_current_index = collect_task_index;

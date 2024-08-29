@@ -18,6 +18,7 @@ typedef __packed struct {
 }ack_data_package;
 
 typedef __packed struct {
+	uint8_t collect_mode;
 	uint8_t collect_status;
 	uint16_t collect_current_index;
 	uint16_t bottle_id;
@@ -48,6 +49,7 @@ typedef __packed struct {
 }param5_data_package;
 
 typedef __packed struct {
+	uint8_t mode;
 	uint16_t type;
 	uint16_t bottle_id;
 	uint32_t depth_mm;
