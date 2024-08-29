@@ -130,9 +130,17 @@ static int8_t _position_control(float pos)
 		return 1;
 	} else {
 		if (pos - cpos > 2.0f) {
-			motor_set_speed(0.3f);
+			motor_set_speed(0.35f);
 		} if (pos - cpos < -2.0f) {
-			motor_set_speed(-0.3f);
+			motor_set_speed(-0.35f);
+		}
+		// 出现阻塞情况则重启电机电源
+		if (_last_update_pos_count >= 50) {
+			motor_power_off();
+			osDelay(1000);
+			motor_power_on();
+			osDelay(2000);
+			_last_update_pos_count = 0;
 		}
 	}
 	

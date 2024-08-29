@@ -190,7 +190,13 @@ static void _manual_collect_task(void)
 				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL;
 				break;
 			}
-			motor_set_speed(0.3f);
+			if (!metal_sw2_valid())
+			{
+				motor_set_speed(0.35f);
+			} else {
+				motor_set_speed(0.0f);
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+			}		
 			break;
 		case COLLECT_TASK_STATUS_MANUAL_PULL_PIPE:// 水管手动上升
 			if (now - _last_manual_time_ms >= 2000U) {
@@ -198,7 +204,15 @@ static void _manual_collect_task(void)
 				collect_task_status = COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL;
 				break;
 			}
-			motor_set_speed(-0.3f);
+			
+			if (!metal_sw1_valid())
+			{
+				motor_set_speed(-0.35f);
+			} else {
+				motor_set_speed(0.0f);
+				collect_task_status = COLLECT_TASK_STATUS_IDLE;
+			}
+			
 			break;
 		case COLLECT_TASK_STATUS_MANUAL_PAUSE_PUSH_PULL:// 水管暂停 
 			motor_set_speed(0.0f);
